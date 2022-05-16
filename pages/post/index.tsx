@@ -1,10 +1,13 @@
+import { formatDistance } from 'date-fns'
+
 type Post = {
   id: number,
   title: string,
   url: string,
   submitter: string,
   upvoteCount: number,
-  commentCount: number
+  commentCount: number,
+  create: Date
 }
 
 const posts: Post[] = [
@@ -15,6 +18,7 @@ const posts: Post[] = [
     submitter: "jackypan1989@gmail.com",
     upvoteCount: 32,
     commentCount: 12,
+    create: new Date()
   },
   {
     id: 2,
@@ -23,17 +27,18 @@ const posts: Post[] = [
     submitter: "jackypan1989@gmail.com",
     upvoteCount: 21,
     commentCount: 22,
+    create: new Date()
   }
 ]
 
 const PostIndex = () => {
   return posts.map(post => {
-    return <div>
+    return <div key={post.id}>
       <div>
         <a href={post.url}>{post.title}</a>
         <>{`(${new URL(post.url).hostname})`}</>
       </div>
-      <div>{post.submitter}</div>
+      <div>{post.submitter} {formatDistance(post.create, new Date())}</div>
     </div>
   })
 }
