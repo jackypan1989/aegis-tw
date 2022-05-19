@@ -2,14 +2,15 @@ import { AppProps } from 'next/app'
 import Footer from '../components/footer'
 import Navbar from '../components/navbar'
 import '../styles/globals.css'
+import { ChakraProvider } from "@chakra-ui/react"
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <ChakraProvider>
       <Navbar />
       <Component {...pageProps} />
       <Footer />
-    </div>
+    </ChakraProvider>
   )
 }
 
