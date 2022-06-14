@@ -1,0 +1,254 @@
+scalar BigInt
+
+"""
+Boolean expression comparing fields on type "BigInt"
+"""
+input BigIntFilter {
+  eq: BigInt
+  gt: BigInt
+  gte: BigInt
+  lt: BigInt
+  lte: BigInt
+  neq: BigInt
+}
+
+"""
+Boolean expression comparing fields on type "Boolean"
+"""
+input BooleanFilter {
+  eq: Boolean
+  gt: Boolean
+  gte: Boolean
+  lt: Boolean
+  lte: Boolean
+  neq: Boolean
+}
+
+scalar Cursor
+
+scalar Date
+
+"""
+Boolean expression comparing fields on type "Date"
+"""
+input DateFilter {
+  eq: Date
+  gt: Date
+  gte: Date
+  lt: Date
+  lte: Date
+  neq: Date
+}
+
+scalar Datetime
+
+"""
+Boolean expression comparing fields on type "Datetime"
+"""
+input DatetimeFilter {
+  eq: Datetime
+  gt: Datetime
+  gte: Datetime
+  lt: Datetime
+  lte: Datetime
+  neq: Datetime
+}
+
+"""
+Boolean expression comparing fields on type "Float"
+"""
+input FloatFilter {
+  eq: Float
+  gt: Float
+  gte: Float
+  lt: Float
+  lte: Float
+  neq: Float
+}
+
+"""
+Boolean expression comparing fields on type "Int"
+"""
+input IntFilter {
+  eq: Int
+  gt: Int
+  gte: Int
+  lt: Int
+  lte: Int
+  neq: Int
+}
+
+scalar JSON
+
+"""
+Boolean expression comparing fields on type "JSON"
+"""
+input JSONFilter {
+  eq: JSON
+  neq: JSON
+}
+
+"""The root type for creating and mutating data"""
+type Mutation {
+  """Deletes zero or more records from the collection"""
+  deleteFromarticleCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: articleFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): articleDeleteResponse!
+
+  """Adds one or more `articleInsertResponse` records to the collection"""
+  insertIntoarticleCollection(objects: [articleInsertInput!]!): articleInsertResponse
+
+  """Updates zero or more records in the collection"""
+  updatearticleCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: articleUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: articleFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): articleUpdateResponse!
+}
+
+"""Defines a per-field sorting order"""
+enum OrderByDirection {
+  AscNullsFirst
+  AscNullsLast
+  DescNullsFirst
+  DescNullsLast
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+"""The root type for querying data"""
+type Query {
+  """A pagable collection of type `article`"""
+  articleCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: articleFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [articleOrderBy!]
+  ): articleConnection
+}
+
+"""
+Boolean expression comparing fields on type "String"
+"""
+input StringFilter {
+  eq: String
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  neq: String
+}
+
+scalar Time
+
+"""
+Boolean expression comparing fields on type "Time"
+"""
+input TimeFilter {
+  eq: Time
+  gt: Time
+  gte: Time
+  lt: Time
+  lte: Time
+  neq: Time
+}
+
+scalar UUID
+
+"""
+Boolean expression comparing fields on type "UUID"
+"""
+input UUIDFilter {
+  eq: UUID
+  neq: UUID
+}
+
+type article {
+  id: BigInt!
+  created_at: Datetime
+}
+
+type articleConnection {
+  edges: [articleEdge!]!
+  pageInfo: PageInfo!
+}
+
+type articleDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [article!]!
+}
+
+type articleEdge {
+  cursor: String!
+  node: article
+}
+
+input articleFilter {
+  id: BigIntFilter
+  created_at: DatetimeFilter
+}
+
+input articleInsertInput {
+  created_at: Datetime
+}
+
+type articleInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [article!]!
+}
+
+input articleOrderBy {
+  id: OrderByDirection
+  created_at: OrderByDirection
+}
+
+input articleUpdateInput {
+  created_at: Datetime
+}
+
+type articleUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [article!]!
+}

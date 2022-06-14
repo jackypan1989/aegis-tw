@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "utils/fetchSchema.js"  ],
   "exclude": [
     "node_modules"
   ]
