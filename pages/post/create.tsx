@@ -15,7 +15,7 @@ const PostCreate = () => {
     formState: { errors, isSubmitting },
   } = useForm()
 
-  function onSubmit(values: any) {
+  function onSubmit(values: unknown) {
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         alert(JSON.stringify(values, null, 2))

@@ -47,7 +47,7 @@ type PostEntryProps = {
 }
 
 const PostEntry = (props: PostEntryProps) => {
-  let { post } = props
+  const { post } = props
 
   return <HStack w='100%'>
     <VStack minWidth='30'>

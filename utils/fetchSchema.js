@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 require("dotenv").config()
 
 const fs = require("fs")
@@ -15,7 +16,7 @@ const fetchGraphQLSchema = (url, options = {}) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      apiKey: process.env.SUPABASE_ANON_KEY,
+      apiKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     },
     body: JSON.stringify({
       query: getIntrospectionQuery(),
@@ -30,9 +31,9 @@ const fetchGraphQLSchema = (url, options = {}) => {
       return JSON.stringify(schemaJSON, null, 2)
     })
 }
-const filePath = path.join(__dirname, "../graphql/schema/", "schema.graphql")
+const filePath = path.join(__dirname, "../graphql/", "schema.graphql")
 
-fetchGraphQLSchema(`${process.env.SUPABASE_URL}/graphql/v1`, {
+fetchGraphQLSchema(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/graphql/v1`, {
   readable: true,
 }).then((schema) => {
   fs.writeFileSync(filePath, schema, "utf-8");

@@ -24,6 +24,63 @@ input BooleanFilter {
   neq: Boolean
 }
 
+type Comment {
+  id: BigInt!
+  created_at: Datetime
+}
+
+type CommentConnection {
+  edges: [CommentEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CommentDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Comment!]!
+}
+
+type CommentEdge {
+  cursor: String!
+  node: Comment
+}
+
+input CommentFilter {
+  id: BigIntFilter
+  created_at: DatetimeFilter
+}
+
+input CommentInsertInput {
+  created_at: Datetime
+}
+
+type CommentInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Comment!]!
+}
+
+input CommentOrderBy {
+  id: OrderByDirection
+  created_at: OrderByDirection
+}
+
+input CommentUpdateInput {
+  created_at: Datetime
+}
+
+type CommentUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Comment!]!
+}
+
 scalar Cursor
 
 scalar Date
@@ -91,34 +148,64 @@ input JSONFilter {
 """The root type for creating and mutating data"""
 type Mutation {
   """Deletes zero or more records from the collection"""
-  deleteFromarticleCollection(
+  deleteFromCommentCollection(
     """Restricts the mutation's impact to records matching the critera"""
-    filter: articleFilter
+    filter: CommentFilter
 
     """
     The maximum number of records in the collection permitted to be affected
     """
     atMost: Int! = 1
-  ): articleDeleteResponse!
+  ): CommentDeleteResponse!
 
-  """Adds one or more `articleInsertResponse` records to the collection"""
-  insertIntoarticleCollection(objects: [articleInsertInput!]!): articleInsertResponse
+  """Deletes zero or more records from the collection"""
+  deleteFromPostCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: PostFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): PostDeleteResponse!
+
+  """Adds one or more `CommentInsertResponse` records to the collection"""
+  insertIntoCommentCollection(objects: [CommentInsertInput!]!): CommentInsertResponse
+
+  """Adds one or more `PostInsertResponse` records to the collection"""
+  insertIntoPostCollection(objects: [PostInsertInput!]!): PostInsertResponse
 
   """Updates zero or more records in the collection"""
-  updatearticleCollection(
+  updateCommentCollection(
     """
     Fields that are set will be updated for all records matching the `filter`
     """
-    set: articleUpdateInput!
+    set: CommentUpdateInput!
 
     """Restricts the mutation's impact to records matching the critera"""
-    filter: articleFilter
+    filter: CommentFilter
 
     """
     The maximum number of records in the collection permitted to be affected
     """
     atMost: Int! = 1
-  ): articleUpdateResponse!
+  ): CommentUpdateResponse!
+
+  """Updates zero or more records in the collection"""
+  updatePostCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: PostUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: PostFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): PostUpdateResponse!
 }
 
 """Defines a per-field sorting order"""
@@ -136,10 +223,67 @@ type PageInfo {
   startCursor: String
 }
 
+type Post {
+  id: BigInt!
+  created_at: Datetime
+}
+
+type PostConnection {
+  edges: [PostEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PostDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Post!]!
+}
+
+type PostEdge {
+  cursor: String!
+  node: Post
+}
+
+input PostFilter {
+  id: BigIntFilter
+  created_at: DatetimeFilter
+}
+
+input PostInsertInput {
+  created_at: Datetime
+}
+
+type PostInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Post!]!
+}
+
+input PostOrderBy {
+  id: OrderByDirection
+  created_at: OrderByDirection
+}
+
+input PostUpdateInput {
+  created_at: Datetime
+}
+
+type PostUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Post!]!
+}
+
 """The root type for querying data"""
 type Query {
-  """A pagable collection of type `article`"""
-  articleCollection(
+  """A pagable collection of type `Comment`"""
+  commentCollection(
     """Query the first `n` records in the collection"""
     first: Int
 
@@ -153,11 +297,32 @@ type Query {
     after: Cursor
 
     """Filters to apply to the results set when querying from the collection"""
-    filter: articleFilter
+    filter: CommentFilter
 
     """Sort order to apply to the collection"""
-    orderBy: [articleOrderBy!]
-  ): articleConnection
+    orderBy: [CommentOrderBy!]
+  ): CommentConnection
+
+  """A pagable collection of type `Post`"""
+  postCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: PostFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [PostOrderBy!]
+  ): PostConnection
 }
 
 """
@@ -194,61 +359,4 @@ Boolean expression comparing fields on type "UUID"
 input UUIDFilter {
   eq: UUID
   neq: UUID
-}
-
-type article {
-  id: BigInt!
-  created_at: Datetime
-}
-
-type articleConnection {
-  edges: [articleEdge!]!
-  pageInfo: PageInfo!
-}
-
-type articleDeleteResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [article!]!
-}
-
-type articleEdge {
-  cursor: String!
-  node: article
-}
-
-input articleFilter {
-  id: BigIntFilter
-  created_at: DatetimeFilter
-}
-
-input articleInsertInput {
-  created_at: Datetime
-}
-
-type articleInsertResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [article!]!
-}
-
-input articleOrderBy {
-  id: OrderByDirection
-  created_at: OrderByDirection
-}
-
-input articleUpdateInput {
-  created_at: Datetime
-}
-
-type articleUpdateResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [article!]!
 }
