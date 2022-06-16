@@ -4,9 +4,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --fix",
-    "schema": "node ./utils/fetchSchema",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "lint": "next lint",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen:schema": "node ./utils/fetchSchema"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint"
   },
   "dependencies": {
     "@apollo/client": "3.6.8",
@@ -42,6 +45,8 @@
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "8.5.0",
+    "husky": "8.0.1",
+    "lint-staged": "13.0.1",
     "prettier": "2.7.1",
     "typescript": "4.7.3"
   }

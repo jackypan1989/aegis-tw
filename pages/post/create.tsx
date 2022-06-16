@@ -7,20 +7,44 @@ import {
   Button,
   Box,
 } from '@chakra-ui/react'
+import { gql } from '@apollo/client'
+import { NextPage } from 'next'
+import { useCreatePostMutation, PostInsertInput } from '../../codegen/graphql'
+import { useUser } from '@supabase/auth-helpers-react'
 
-const PostCreate = () => {
+export const CREATE_POST = gql`
+  mutation createPost($input: PostInsertInput!) {
+    insertIntoPostCollection(objects: [$input]) {
+      affectedCount
+      records {
+        id
+      }
+    }
+  }
+`
+
+const PostCreate: NextPage = () => {
+  const { user } = useUser()
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm()
 
-  function onSubmit(values: unknown) {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2))
-        resolve()
-      }, 3000)
+  const [createPostMutation, { loading, error }] = useCreatePostMutation()
+
+  if (loading) return <Box>Submitting...</Box>
+  if (error) return <Box>Submission error! ${error.message}</Box>
+
+  const onSubmit = async (value: PostInsertInput) => {
+    await createPostMutation({
+      variables: {
+        input: {
+          posterId: user?.id,
+          title: value.title,
+          url: value.url
+        }
+      }
     })
   }
 
