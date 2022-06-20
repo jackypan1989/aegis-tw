@@ -282,6 +282,10 @@ type Post {
   url: String
   posterId: UUID
   updatedAt: Datetime
+  upvoteCount: BigInt
+  viewCount: BigInt
+  commentCount: BigInt
+  rankingScore: Float
   commentCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -329,6 +333,10 @@ input PostFilter {
   url: StringFilter
   posterId: UUIDFilter
   updatedAt: DatetimeFilter
+  upvoteCount: BigIntFilter
+  viewCount: BigIntFilter
+  commentCount: BigIntFilter
+  rankingScore: FloatFilter
 }
 
 input PostInsertInput {
@@ -337,6 +345,10 @@ input PostInsertInput {
   url: String
   posterId: UUID
   updatedAt: Datetime
+  upvoteCount: BigInt
+  viewCount: BigInt
+  commentCount: BigInt
+  rankingScore: Float
 }
 
 type PostInsertResponse {
@@ -354,6 +366,10 @@ input PostOrderBy {
   url: OrderByDirection
   posterId: OrderByDirection
   updatedAt: OrderByDirection
+  upvoteCount: OrderByDirection
+  viewCount: OrderByDirection
+  commentCount: OrderByDirection
+  rankingScore: OrderByDirection
 }
 
 input PostUpdateInput {
@@ -362,6 +378,10 @@ input PostUpdateInput {
   url: String
   posterId: UUID
   updatedAt: Datetime
+  upvoteCount: BigInt
+  viewCount: BigInt
+  commentCount: BigInt
+  rankingScore: Float
 }
 
 type PostUpdateResponse {
