@@ -1,4 +1,4 @@
-import { VStack, StackDivider, Flex } from "@chakra-ui/react"
+import { VStack, StackDivider, Flex, Box } from "@chakra-ui/react"
 import { Post } from "../../codegen/graphql"
 import PostCard from "../../components/postCard"
 
@@ -38,6 +38,90 @@ const posts: Post[] = [
     upvoteCount: 1,
     commentCount: 22,
     createdAt: new Date("2022-05-19 12:29:42")
+  },
+  {
+    id: 4,
+    title: "在 AmazingTalker 開始建立 Component Library",
+    url: "https://medium.com/amazingtalker-tech/building-a-component-library-at-amazingtalker-b9d46f1ce8d0",
+    poster: { 
+      id: 123,
+      username: "jackypan1989",
+    },
+    upvoteCount: 1,
+    commentCount: 22,
+    createdAt: new Date("2022-05-19 12:29:42")
+  },
+  {
+    id: 5,
+    title: "在 AmazingTalker 開始建立 Component Library",
+    url: "https://medium.com/amazingtalker-tech/building-a-component-library-at-amazingtalker-b9d46f1ce8d0",
+    poster: { 
+      id: 123,
+      username: "jackypan1989",
+    },
+    upvoteCount: 1,
+    commentCount: 22,
+    createdAt: new Date("2022-05-19 12:29:42")
+  },
+  {
+    id: 6,
+    title: "在 AmazingTalker 開始建立 Component Library",
+    url: "https://medium.com/amazingtalker-tech/building-a-component-library-at-amazingtalker-b9d46f1ce8d0",
+    poster: { 
+      id: 123,
+      username: "jackypan1989",
+    },
+    upvoteCount: 1,
+    commentCount: 22,
+    createdAt: new Date("2022-05-19 12:29:42")
+  },
+  {
+    id: 7,
+    title: "在 AmazingTalker 開始建立 Component Library",
+    url: "https://medium.com/amazingtalker-tech/building-a-component-library-at-amazingtalker-b9d46f1ce8d0",
+    poster: { 
+      id: 123,
+      username: "jackypan1989",
+    },
+    upvoteCount: 1,
+    commentCount: 22,
+    createdAt: new Date("2022-05-19 12:29:42")
+  },
+  {
+    id: 8,
+    title: "在 AmazingTalker 開始建立 Component Library",
+    url: "https://medium.com/amazingtalker-tech/building-a-component-library-at-amazingtalker-b9d46f1ce8d0",
+    poster: { 
+      id: 123,
+      username: "jackypan1989",
+    },
+    upvoteCount: 1,
+    commentCount: 22,
+    createdAt: new Date("2022-05-19 12:29:42")
+  },
+  {
+    id: 9,
+    title: "在 AmazingTalker 開始建立 Component Library",
+    url: "https://medium.com/amazingtalker-tech/building-a-component-library-at-amazingtalker-b9d46f1ce8d0",
+    poster: { 
+      id: 123,
+      username: "jackypan1989",
+    },
+    upvoteCount: 1,
+    commentCount: 22,
+    createdAt: new Date("2022-05-19 12:29:42")
+  },
+  {
+    id: 10,
+    title: "在 AmazingTalker 開始建立 Component Library",
+    url: "https://medium.com/amazingtalker-tech/building-a-component-library-at-amazingtalker-b9d46f1ce8d0",
+    poster: { 
+      id: 123,
+      username: "jackypan1989",
+    },
+    upvoteCount: 1,
+    commentCount: 22,
+    createdAt: new Date("2022-05-19 12:29:42")
   }
 ]
 
@@ -46,6 +130,7 @@ const PostIndex = () => {
     {posts.map(post => {
       return <PostCard key={post.id} post={post} />
     })}
+    <Box p='30px'>Pagination Placeholder</Box>
   </Flex>
 }
 
