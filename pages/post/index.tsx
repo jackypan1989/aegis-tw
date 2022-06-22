@@ -1,11 +1,12 @@
 import { gql } from "@apollo/client"
-import { Box, Flex } from "@chakra-ui/react"
+import { Box, Center, Flex, Spinner } from "@chakra-ui/react"
 import { useListPostQuery } from "../../codegen/graphql"
 import PostCard from "../../components/postCard"
 
 export const LIST_POST = gql`
   query listPost {
     postCollection(
+      orderBy: [{ rankingScore: DescNullsLast }, { createdAt: DescNullsLast }]
       first: 30
     ) {
       pageInfo {
@@ -16,9 +17,12 @@ export const LIST_POST = gql`
         cursor
         node {
           id
+          createdAt
           title
           url
-          createdAt
+          upvoteCount
+          commentCount
+          rankingScore
           poster {
             id
             username
@@ -32,8 +36,8 @@ export const LIST_POST = gql`
 const PostIndex = () => {
   const { data, loading, error } = useListPostQuery()
   
-  if (loading) return <Box>loading</Box>
-  if (error) return <Box>{error.message}</Box>
+  if (loading) return <Center><Spinner /></Center>
+  if (error) return <Center>{error.message}</Center>
 
   return <Flex direction='column' alignItems='center' gap='8px'>
     {data?.postCollection?.edges.map(edge => {

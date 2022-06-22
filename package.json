@@ -5,7 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen": "graphql-codegen",
+    "codegen:watch": "graphql-codegen --watch",
     "codegen:schema": "node ./utils/fetchSchema"
   },
   "lint-staged": {

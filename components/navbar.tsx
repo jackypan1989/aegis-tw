@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { Flex, Heading } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import Link from "next/link"
 
@@ -14,9 +14,7 @@ const Navbar = () => {
     <Link href='/post/create'>Submit</Link>
     <Flex flex='1'/>
     <Link href='/auth/signIn'>
-      <Box>
-        {user ? <Text>{user.email}</Text> : <Text> Sign In</Text>}
-      </Box>
+      {user ? user.email : `Sign In`}
     </Link>
   </Flex>
 }

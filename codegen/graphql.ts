@@ -712,7 +712,7 @@ export type CreatePostMutation = { __typename?: 'Mutation', insertIntoPostCollec
 export type ListPostQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: any, title?: string | null, url?: string | null, createdAt?: any | null, poster?: { __typename?: 'Profile', id: any, username?: string | null } | null } | null }> } | null };
+export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: any, createdAt?: any | null, title?: string | null, url?: string | null, upvoteCount?: any | null, commentCount?: any | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: any, username?: string | null } | null } | null }> } | null };
 
 
 export const CreatePostDocument = gql`
@@ -753,7 +753,10 @@ export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const ListPostDocument = gql`
     query listPost {
-  postCollection(first: 30) {
+  postCollection(
+    orderBy: [{rankingScore: DescNullsLast}, {createdAt: DescNullsLast}]
+    first: 30
+  ) {
     pageInfo {
       hasNextPage
       endCursor
@@ -762,9 +765,12 @@ export const ListPostDocument = gql`
       cursor
       node {
         id
+        createdAt
         title
         url
-        createdAt
+        upvoteCount
+        commentCount
+        rankingScore
         poster {
           id
           username

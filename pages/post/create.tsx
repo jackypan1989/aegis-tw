@@ -69,6 +69,7 @@ const PostCreate: NextPage = () => {
             {...register('url', {
               required: 'This is required',
               minLength: { value: 4, message: 'Minimum length should be 4' },
+              pattern: { value: /^((?:https?:\/\/)?(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b[-a-zA-Z0-9@:%_+.~#?&/=]*|)$/, message: 'Please enter a valid url'}
             })}
           />
           <FormErrorMessage>
