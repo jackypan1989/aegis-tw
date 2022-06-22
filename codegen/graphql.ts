@@ -179,18 +179,24 @@ export type Mutation = {
   deleteFromPostCollection: PostDeleteResponse;
   /** Deletes zero or more records from the collection */
   deleteFromProfileCollection: ProfileDeleteResponse;
+  /** Deletes zero or more records from the collection */
+  deleteFromVoteCollection: VoteDeleteResponse;
   /** Adds one or more `CommentInsertResponse` records to the collection */
   insertIntoCommentCollection?: Maybe<CommentInsertResponse>;
   /** Adds one or more `PostInsertResponse` records to the collection */
   insertIntoPostCollection?: Maybe<PostInsertResponse>;
   /** Adds one or more `ProfileInsertResponse` records to the collection */
   insertIntoProfileCollection?: Maybe<ProfileInsertResponse>;
+  /** Adds one or more `VoteInsertResponse` records to the collection */
+  insertIntoVoteCollection?: Maybe<VoteInsertResponse>;
   /** Updates zero or more records in the collection */
   updateCommentCollection: CommentUpdateResponse;
   /** Updates zero or more records in the collection */
   updatePostCollection: PostUpdateResponse;
   /** Updates zero or more records in the collection */
   updateProfileCollection: ProfileUpdateResponse;
+  /** Updates zero or more records in the collection */
+  updateVoteCollection: VoteUpdateResponse;
 };
 
 
@@ -216,6 +222,13 @@ export type MutationDeleteFromProfileCollectionArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationDeleteFromVoteCollectionArgs = {
+  atMost?: Scalars['Int'];
+  filter?: InputMaybe<VoteFilter>;
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntoCommentCollectionArgs = {
   objects: Array<CommentInsertInput>;
 };
@@ -230,6 +243,12 @@ export type MutationInsertIntoPostCollectionArgs = {
 /** The root type for creating and mutating data */
 export type MutationInsertIntoProfileCollectionArgs = {
   objects: Array<ProfileInsertInput>;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationInsertIntoVoteCollectionArgs = {
+  objects: Array<VoteInsertInput>;
 };
 
 
@@ -254,6 +273,14 @@ export type MutationUpdateProfileCollectionArgs = {
   atMost?: Scalars['Int'];
   filter?: InputMaybe<ProfileFilter>;
   set: ProfileUpdateInput;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationUpdateVoteCollectionArgs = {
+  atMost?: Scalars['Int'];
+  filter?: InputMaybe<VoteFilter>;
+  set: VoteUpdateInput;
 };
 
 /** Defines a per-field sorting order */
@@ -286,6 +313,7 @@ export type Post = {
   upvoteCount?: Maybe<Scalars['BigInt']>;
   url?: Maybe<Scalars['String']>;
   viewCount?: Maybe<Scalars['BigInt']>;
+  voteCollection?: Maybe<VoteConnection>;
 };
 
 
@@ -296,6 +324,16 @@ export type PostCommentCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<CommentOrderBy>>;
+};
+
+
+export type PostVoteCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<VoteFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<VoteOrderBy>>;
 };
 
 export type PostConnection = {
@@ -393,6 +431,7 @@ export type Profile = {
   postCollection?: Maybe<PostConnection>;
   updatedAt?: Maybe<Scalars['Datetime']>;
   username?: Maybe<Scalars['String']>;
+  voteCollection?: Maybe<VoteConnection>;
   website?: Maybe<Scalars['String']>;
 };
 
@@ -414,6 +453,16 @@ export type ProfilePostCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<PostOrderBy>>;
+};
+
+
+export type ProfileVoteCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<VoteFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<VoteOrderBy>>;
 };
 
 export type ProfileConnection = {
@@ -497,6 +546,8 @@ export type Query = {
   postCollection?: Maybe<PostConnection>;
   /** A pagable collection of type `Profile` */
   profileCollection?: Maybe<ProfileConnection>;
+  /** A pagable collection of type `Vote` */
+  voteCollection?: Maybe<VoteConnection>;
 };
 
 
@@ -532,6 +583,17 @@ export type QueryProfileCollectionArgs = {
   orderBy?: InputMaybe<Array<ProfileOrderBy>>;
 };
 
+
+/** The root type for querying data */
+export type QueryVoteCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<VoteFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<VoteOrderBy>>;
+};
+
 /** Boolean expression comparing fields on type "String" */
 export type StringFilter = {
   eq?: InputMaybe<Scalars['String']>;
@@ -558,12 +620,99 @@ export type UuidFilter = {
   neq?: InputMaybe<Scalars['UUID']>;
 };
 
+export type Vote = {
+  __typename?: 'Vote';
+  createdAt?: Maybe<Scalars['Datetime']>;
+  direction?: Maybe<Scalars['BigInt']>;
+  id: Scalars['BigInt'];
+  post?: Maybe<Post>;
+  postId?: Maybe<Scalars['BigInt']>;
+  updatedAt?: Maybe<Scalars['Datetime']>;
+  voter?: Maybe<Profile>;
+  voterId?: Maybe<Scalars['UUID']>;
+};
+
+export type VoteConnection = {
+  __typename?: 'VoteConnection';
+  edges: Array<VoteEdge>;
+  pageInfo: PageInfo;
+};
+
+export type VoteDeleteResponse = {
+  __typename?: 'VoteDeleteResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int'];
+  /** Array of records impacted by the mutation */
+  records: Array<Vote>;
+};
+
+export type VoteEdge = {
+  __typename?: 'VoteEdge';
+  cursor: Scalars['String'];
+  node?: Maybe<Vote>;
+};
+
+export type VoteFilter = {
+  createdAt?: InputMaybe<DatetimeFilter>;
+  direction?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  postId?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  voterId?: InputMaybe<UuidFilter>;
+};
+
+export type VoteInsertInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  direction?: InputMaybe<Scalars['BigInt']>;
+  postId?: InputMaybe<Scalars['BigInt']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  voterId?: InputMaybe<Scalars['UUID']>;
+};
+
+export type VoteInsertResponse = {
+  __typename?: 'VoteInsertResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int'];
+  /** Array of records impacted by the mutation */
+  records: Array<Vote>;
+};
+
+export type VoteOrderBy = {
+  createdAt?: InputMaybe<OrderByDirection>;
+  direction?: InputMaybe<OrderByDirection>;
+  id?: InputMaybe<OrderByDirection>;
+  postId?: InputMaybe<OrderByDirection>;
+  updatedAt?: InputMaybe<OrderByDirection>;
+  voterId?: InputMaybe<OrderByDirection>;
+};
+
+export type VoteUpdateInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  direction?: InputMaybe<Scalars['BigInt']>;
+  postId?: InputMaybe<Scalars['BigInt']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  voterId?: InputMaybe<Scalars['UUID']>;
+};
+
+export type VoteUpdateResponse = {
+  __typename?: 'VoteUpdateResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int'];
+  /** Array of records impacted by the mutation */
+  records: Array<Vote>;
+};
+
 export type CreatePostMutationVariables = Exact<{
   input: PostInsertInput;
 }>;
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', insertIntoPostCollection?: { __typename?: 'PostInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Post', id: any }> } | null };
+
+export type ListPostQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: any, title?: string | null, url?: string | null, createdAt?: any | null, poster?: { __typename?: 'Profile', id: any, username?: string | null } | null } | null }> } | null };
 
 
 export const CreatePostDocument = gql`
@@ -602,3 +751,53 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const ListPostDocument = gql`
+    query listPost {
+  postCollection(first: 30) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        title
+        url
+        createdAt
+        poster {
+          id
+          username
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useListPostQuery__
+ *
+ * To run a query within a React component, call `useListPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListPostQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListPostQuery(baseOptions?: Apollo.QueryHookOptions<ListPostQuery, ListPostQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListPostQuery, ListPostQueryVariables>(ListPostDocument, options);
+      }
+export function useListPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListPostQuery, ListPostQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListPostQuery, ListPostQueryVariables>(ListPostDocument, options);
+        }
+export type ListPostQueryHookResult = ReturnType<typeof useListPostQuery>;
+export type ListPostLazyQueryHookResult = ReturnType<typeof useListPostLazyQuery>;
+export type ListPostQueryResult = Apollo.QueryResult<ListPostQuery, ListPostQueryVariables>;

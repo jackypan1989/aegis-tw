@@ -202,6 +202,17 @@ type Mutation {
     atMost: Int! = 1
   ): ProfileDeleteResponse!
 
+  """Deletes zero or more records from the collection"""
+  deleteFromVoteCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: VoteFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): VoteDeleteResponse!
+
   """Adds one or more `CommentInsertResponse` records to the collection"""
   insertIntoCommentCollection(objects: [CommentInsertInput!]!): CommentInsertResponse
 
@@ -210,6 +221,9 @@ type Mutation {
 
   """Adds one or more `ProfileInsertResponse` records to the collection"""
   insertIntoProfileCollection(objects: [ProfileInsertInput!]!): ProfileInsertResponse
+
+  """Adds one or more `VoteInsertResponse` records to the collection"""
+  insertIntoVoteCollection(objects: [VoteInsertInput!]!): VoteInsertResponse
 
   """Updates zero or more records in the collection"""
   updateCommentCollection(
@@ -258,6 +272,22 @@ type Mutation {
     """
     atMost: Int! = 1
   ): ProfileUpdateResponse!
+
+  """Updates zero or more records in the collection"""
+  updateVoteCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: VoteUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: VoteFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): VoteUpdateResponse!
 }
 
 """Defines a per-field sorting order"""
@@ -306,6 +336,25 @@ type Post {
     orderBy: [CommentOrderBy!]
   ): CommentConnection
   poster: Profile
+  voteCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: VoteFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [VoteOrderBy!]
+  ): VoteConnection
 }
 
 type PostConnection {
@@ -437,6 +486,25 @@ type Profile {
     """Sort order to apply to the collection"""
     orderBy: [PostOrderBy!]
   ): PostConnection
+  voteCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: VoteFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [VoteOrderBy!]
+  ): VoteConnection
 }
 
 type ProfileConnection {
@@ -573,6 +641,27 @@ type Query {
     """Sort order to apply to the collection"""
     orderBy: [ProfileOrderBy!]
   ): ProfileConnection
+
+  """A pagable collection of type `Vote`"""
+  voteCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: VoteFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [VoteOrderBy!]
+  ): VoteConnection
 }
 
 """
@@ -609,4 +698,83 @@ Boolean expression comparing fields on type "UUID"
 input UUIDFilter {
   eq: UUID
   neq: UUID
+}
+
+type Vote {
+  id: BigInt!
+  postId: BigInt
+  voterId: UUID
+  direction: BigInt
+  createdAt: Datetime
+  updatedAt: Datetime
+  post: Post
+  voter: Profile
+}
+
+type VoteConnection {
+  edges: [VoteEdge!]!
+  pageInfo: PageInfo!
+}
+
+type VoteDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Vote!]!
+}
+
+type VoteEdge {
+  cursor: String!
+  node: Vote
+}
+
+input VoteFilter {
+  id: BigIntFilter
+  postId: BigIntFilter
+  voterId: UUIDFilter
+  direction: BigIntFilter
+  createdAt: DatetimeFilter
+  updatedAt: DatetimeFilter
+}
+
+input VoteInsertInput {
+  postId: BigInt
+  voterId: UUID
+  direction: BigInt
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+type VoteInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Vote!]!
+}
+
+input VoteOrderBy {
+  id: OrderByDirection
+  postId: OrderByDirection
+  voterId: OrderByDirection
+  direction: OrderByDirection
+  createdAt: OrderByDirection
+  updatedAt: OrderByDirection
+}
+
+input VoteUpdateInput {
+  postId: BigInt
+  voterId: UUID
+  direction: BigInt
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+type VoteUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Vote!]!
 }

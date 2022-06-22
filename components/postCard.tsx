@@ -1,6 +1,6 @@
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui/react'
-import { formatDistanceToNowStrict } from 'date-fns'
+import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import { Post } from '../codegen/graphql'
 
@@ -10,6 +10,7 @@ type PostCardProps = {
 
 const PostCard = (props: PostCardProps) => {
   const { post } = props
+  console.log(post.createdAt)
 
   return <Flex w='800px' bg='white' p='8px 16px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)' gap='20px'>
     <Flex direction='column' w='32px' alignItems='center'>
@@ -40,7 +41,7 @@ const PostCard = (props: PostCardProps) => {
         </Flex>
       </Flex>
       <Flex w='60px' justifyContent='flex-end'>
-        <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(post.createdAt)}</Text>
+        <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt))}</Text>
       </Flex> 
     </Flex>
   </Flex>
