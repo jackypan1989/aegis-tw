@@ -1,4 +1,4 @@
-import { createHttpLink, ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
 import { useUser } from "@supabase/auth-helpers-react"
 import { ReactNode } from "react"

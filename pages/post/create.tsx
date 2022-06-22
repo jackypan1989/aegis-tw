@@ -1,16 +1,12 @@
-import { useForm } from 'react-hook-form'
-import {
-  FormErrorMessage,
-  FormLabel,
-  FormControl,
-  Input,
-  Button,
-  Box,
-} from '@chakra-ui/react'
 import { gql } from '@apollo/client'
-import { NextPage } from 'next'
-import { useCreatePostMutation, PostInsertInput } from '../../codegen/graphql'
+import {
+  Box, Button, FormControl, FormErrorMessage,
+  FormLabel, Input
+} from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
+import { NextPage } from 'next'
+import { useForm } from 'react-hook-form'
+import { PostInsertInput, useCreatePostMutation } from '../../codegen/graphql'
 
 export const CREATE_POST = gql`
   mutation createPost($input: PostInsertInput!) {

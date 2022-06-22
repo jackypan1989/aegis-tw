@@ -1,9 +1,8 @@
-import React from 'react'
-import { Center, Box, Button } from '@chakra-ui/react'
-import { NextPage } from 'next'
-import { useUser } from '@supabase/auth-helpers-react'
+import { Box, Button, Center } from '@chakra-ui/react'
 import { supabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useUser } from '@supabase/auth-helpers-react'
 import { Auth } from '@supabase/ui'
+import { NextPage } from 'next'
 
 const SignIn: NextPage = () => {
   const { user } = useUser()

@@ -1,9 +1,8 @@
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui/react'
 import { formatDistanceToNowStrict } from 'date-fns'
-import React from 'react'
-import { Post } from '../codegen/graphql'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
+import { Post } from '../codegen/graphql'
 
 type PostCardProps = {
   post: Post

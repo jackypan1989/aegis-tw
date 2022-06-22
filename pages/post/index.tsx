@@ -1,4 +1,4 @@
-import { VStack, StackDivider, Flex, Box } from "@chakra-ui/react"
+import { Box, Flex } from "@chakra-ui/react"
 import { Post } from "../../codegen/graphql"
 import PostCard from "../../components/postCard"
 
