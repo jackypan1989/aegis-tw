@@ -38,6 +38,9 @@ type Comment {
 type CommentConnection {
   edges: [CommentEdge!]!
   pageInfo: PageInfo!
+
+  """The total number of records matching the `filter` criteria"""
+  totalCount: Int!
 }
 
 type CommentDeleteResponse {
@@ -312,7 +315,7 @@ type Post {
   url: String
   posterId: UUID
   updatedAt: Datetime
-  upvoteCount: BigInt
+  voteCount: BigInt
   viewCount: BigInt
   commentCount: BigInt
   rankingScore: Float
@@ -360,6 +363,9 @@ type Post {
 type PostConnection {
   edges: [PostEdge!]!
   pageInfo: PageInfo!
+
+  """The total number of records matching the `filter` criteria"""
+  totalCount: Int!
 }
 
 type PostDeleteResponse {
@@ -382,7 +388,7 @@ input PostFilter {
   url: StringFilter
   posterId: UUIDFilter
   updatedAt: DatetimeFilter
-  upvoteCount: BigIntFilter
+  voteCount: BigIntFilter
   viewCount: BigIntFilter
   commentCount: BigIntFilter
   rankingScore: FloatFilter
@@ -394,7 +400,7 @@ input PostInsertInput {
   url: String
   posterId: UUID
   updatedAt: Datetime
-  upvoteCount: BigInt
+  voteCount: BigInt
   viewCount: BigInt
   commentCount: BigInt
   rankingScore: Float
@@ -415,7 +421,7 @@ input PostOrderBy {
   url: OrderByDirection
   posterId: OrderByDirection
   updatedAt: OrderByDirection
-  upvoteCount: OrderByDirection
+  voteCount: OrderByDirection
   viewCount: OrderByDirection
   commentCount: OrderByDirection
   rankingScore: OrderByDirection
@@ -427,7 +433,7 @@ input PostUpdateInput {
   url: String
   posterId: UUID
   updatedAt: Datetime
-  upvoteCount: BigInt
+  voteCount: BigInt
   viewCount: BigInt
   commentCount: BigInt
   rankingScore: Float
@@ -510,6 +516,9 @@ type Profile {
 type ProfileConnection {
   edges: [ProfileEdge!]!
   pageInfo: PageInfo!
+
+  """The total number of records matching the `filter` criteria"""
+  totalCount: Int!
 }
 
 type ProfileDeleteResponse {
@@ -714,6 +723,9 @@ type Vote {
 type VoteConnection {
   edges: [VoteEdge!]!
   pageInfo: PageInfo!
+
+  """The total number of records matching the `filter` criteria"""
+  totalCount: Int!
 }
 
 type VoteDeleteResponse {

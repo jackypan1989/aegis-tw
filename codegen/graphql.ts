@@ -13,13 +13,13 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  BigInt: any;
+  BigInt: number;
   Cursor: any;
-  Date: any;
+  Date: Date;
   Datetime: any;
   JSON: any;
   Time: any;
-  UUID: any;
+  UUID: string;
 };
 
 /** Boolean expression comparing fields on type "BigInt" */
@@ -58,6 +58,8 @@ export type CommentConnection = {
   __typename?: 'CommentConnection';
   edges: Array<CommentEdge>;
   pageInfo: PageInfo;
+  /** The total number of records matching the `filter` criteria */
+  totalCount: Scalars['Int'];
 };
 
 export type CommentDeleteResponse = {
@@ -310,10 +312,10 @@ export type Post = {
   rankingScore?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['Datetime']>;
-  upvoteCount?: Maybe<Scalars['BigInt']>;
   url?: Maybe<Scalars['String']>;
   viewCount?: Maybe<Scalars['BigInt']>;
   voteCollection?: Maybe<VoteConnection>;
+  voteCount?: Maybe<Scalars['BigInt']>;
 };
 
 
@@ -340,6 +342,8 @@ export type PostConnection = {
   __typename?: 'PostConnection';
   edges: Array<PostEdge>;
   pageInfo: PageInfo;
+  /** The total number of records matching the `filter` criteria */
+  totalCount: Scalars['Int'];
 };
 
 export type PostDeleteResponse = {
@@ -364,9 +368,9 @@ export type PostFilter = {
   rankingScore?: InputMaybe<FloatFilter>;
   title?: InputMaybe<StringFilter>;
   updatedAt?: InputMaybe<DatetimeFilter>;
-  upvoteCount?: InputMaybe<BigIntFilter>;
   url?: InputMaybe<StringFilter>;
   viewCount?: InputMaybe<BigIntFilter>;
+  voteCount?: InputMaybe<BigIntFilter>;
 };
 
 export type PostInsertInput = {
@@ -376,9 +380,9 @@ export type PostInsertInput = {
   rankingScore?: InputMaybe<Scalars['Float']>;
   title?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  upvoteCount?: InputMaybe<Scalars['BigInt']>;
   url?: InputMaybe<Scalars['String']>;
   viewCount?: InputMaybe<Scalars['BigInt']>;
+  voteCount?: InputMaybe<Scalars['BigInt']>;
 };
 
 export type PostInsertResponse = {
@@ -397,9 +401,9 @@ export type PostOrderBy = {
   rankingScore?: InputMaybe<OrderByDirection>;
   title?: InputMaybe<OrderByDirection>;
   updatedAt?: InputMaybe<OrderByDirection>;
-  upvoteCount?: InputMaybe<OrderByDirection>;
   url?: InputMaybe<OrderByDirection>;
   viewCount?: InputMaybe<OrderByDirection>;
+  voteCount?: InputMaybe<OrderByDirection>;
 };
 
 export type PostUpdateInput = {
@@ -409,9 +413,9 @@ export type PostUpdateInput = {
   rankingScore?: InputMaybe<Scalars['Float']>;
   title?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  upvoteCount?: InputMaybe<Scalars['BigInt']>;
   url?: InputMaybe<Scalars['String']>;
   viewCount?: InputMaybe<Scalars['BigInt']>;
+  voteCount?: InputMaybe<Scalars['BigInt']>;
 };
 
 export type PostUpdateResponse = {
@@ -469,6 +473,8 @@ export type ProfileConnection = {
   __typename?: 'ProfileConnection';
   edges: Array<ProfileEdge>;
   pageInfo: PageInfo;
+  /** The total number of records matching the `filter` criteria */
+  totalCount: Scalars['Int'];
 };
 
 export type ProfileDeleteResponse = {
@@ -636,6 +642,8 @@ export type VoteConnection = {
   __typename?: 'VoteConnection';
   edges: Array<VoteEdge>;
   pageInfo: PageInfo;
+  /** The total number of records matching the `filter` criteria */
+  totalCount: Scalars['Int'];
 };
 
 export type VoteDeleteResponse = {
@@ -702,19 +710,136 @@ export type VoteUpdateResponse = {
   records: Array<Vote>;
 };
 
+export type PostCardFragment = { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, direction?: number | null } | null }> } | null };
+
+export type CreateVoteMutationVariables = Exact<{
+  input: VoteInsertInput;
+}>;
+
+
+export type CreateVoteMutation = { __typename?: 'Mutation', insertIntoVoteCollection?: { __typename?: 'VoteInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number }> } | null };
+
+export type DeleteVoteMutationVariables = Exact<{
+  filter: VoteFilter;
+}>;
+
+
+export type DeleteVoteMutation = { __typename?: 'Mutation', deleteFromVoteCollection: { __typename?: 'VoteDeleteResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number }> } };
+
 export type CreatePostMutationVariables = Exact<{
   input: PostInsertInput;
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', insertIntoPostCollection?: { __typename?: 'PostInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Post', id: any }> } | null };
+export type CreatePostMutation = { __typename?: 'Mutation', insertIntoPostCollection?: { __typename?: 'PostInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Post', id: number }> } | null };
 
-export type ListPostQueryVariables = Exact<{ [key: string]: never; }>;
+export type ListPostQueryVariables = Exact<{
+  voteFilter?: InputMaybe<VoteFilter>;
+}>;
 
 
-export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: any, createdAt?: any | null, title?: string | null, url?: string | null, upvoteCount?: any | null, commentCount?: any | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: any, username?: string | null } | null } | null }> } | null };
+export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, direction?: number | null } | null }> } | null } | null }> } | null };
 
+export const PostCardFragmentDoc = gql`
+    fragment PostCard on Post {
+  id
+  createdAt
+  title
+  url
+  voteCount
+  commentCount
+  rankingScore
+  poster {
+    id
+    username
+  }
+  voteCollection(filter: $voteFilter) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        direction
+      }
+    }
+  }
+}
+    `;
+export const CreateVoteDocument = gql`
+    mutation createVote($input: VoteInsertInput!) {
+  insertIntoVoteCollection(objects: [$input]) {
+    affectedCount
+    records {
+      id
+    }
+  }
+}
+    `;
+export type CreateVoteMutationFn = Apollo.MutationFunction<CreateVoteMutation, CreateVoteMutationVariables>;
 
+/**
+ * __useCreateVoteMutation__
+ *
+ * To run a mutation, you first call `useCreateVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVoteMutation, { data, loading, error }] = useCreateVoteMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateVoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateVoteMutation, CreateVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateVoteMutation, CreateVoteMutationVariables>(CreateVoteDocument, options);
+      }
+export type CreateVoteMutationHookResult = ReturnType<typeof useCreateVoteMutation>;
+export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>;
+export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMutation, CreateVoteMutationVariables>;
+export const DeleteVoteDocument = gql`
+    mutation deleteVote($filter: VoteFilter!) {
+  deleteFromVoteCollection(filter: $filter) {
+    affectedCount
+    records {
+      id
+    }
+  }
+}
+    `;
+export type DeleteVoteMutationFn = Apollo.MutationFunction<DeleteVoteMutation, DeleteVoteMutationVariables>;
+
+/**
+ * __useDeleteVoteMutation__
+ *
+ * To run a mutation, you first call `useDeleteVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteVoteMutation, { data, loading, error }] = useDeleteVoteMutation({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useDeleteVoteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteVoteMutation, DeleteVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteVoteMutation, DeleteVoteMutationVariables>(DeleteVoteDocument, options);
+      }
+export type DeleteVoteMutationHookResult = ReturnType<typeof useDeleteVoteMutation>;
+export type DeleteVoteMutationResult = Apollo.MutationResult<DeleteVoteMutation>;
+export type DeleteVoteMutationOptions = Apollo.BaseMutationOptions<DeleteVoteMutation, DeleteVoteMutationVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($input: PostInsertInput!) {
   insertIntoPostCollection(objects: [$input]) {
@@ -752,7 +877,7 @@ export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutati
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const ListPostDocument = gql`
-    query listPost {
+    query listPost($voteFilter: VoteFilter) {
   postCollection(
     orderBy: [{rankingScore: DescNullsLast}, {createdAt: DescNullsLast}]
     first: 30
@@ -764,22 +889,12 @@ export const ListPostDocument = gql`
     edges {
       cursor
       node {
-        id
-        createdAt
-        title
-        url
-        upvoteCount
-        commentCount
-        rankingScore
-        poster {
-          id
-          username
-        }
+        ...PostCard
       }
     }
   }
 }
-    `;
+    ${PostCardFragmentDoc}`;
 
 /**
  * __useListPostQuery__
@@ -793,6 +908,7 @@ export const ListPostDocument = gql`
  * @example
  * const { data, loading, error } = useListPostQuery({
  *   variables: {
+ *      voteFilter: // value for 'voteFilter'
  *   },
  * });
  */
