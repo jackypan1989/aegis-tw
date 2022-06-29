@@ -717,14 +717,14 @@ export type CreateVoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateVoteMutation = { __typename?: 'Mutation', insertIntoVoteCollection?: { __typename: 'VoteInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number, post?: { __typename?: 'Post', id: number, voteCount?: number | null } | null }> } | null };
+export type CreateVoteMutation = { __typename?: 'Mutation', insertIntoVoteCollection?: { __typename?: 'VoteInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number, post?: { __typename?: 'Post', id: number, voteCount?: number | null } | null }> } | null };
 
 export type DeleteVoteMutationVariables = Exact<{
   filter: VoteFilter;
 }>;
 
 
-export type DeleteVoteMutation = { __typename?: 'Mutation', deleteFromVoteCollection: { __typename: 'VoteDeleteResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number, post?: { __typename?: 'Post', id: number, voteCount?: number | null } | null }> } };
+export type DeleteVoteMutation = { __typename?: 'Mutation', deleteFromVoteCollection: { __typename?: 'VoteDeleteResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number, post?: { __typename?: 'Post', id: number, voteCount?: number | null } | null }> } };
 
 export type CreatePostMutationVariables = Exact<{
   input: PostInsertInput;
@@ -772,7 +772,6 @@ export const PostCardFragmentDoc = gql`
 export const CreateVoteDocument = gql`
     mutation createVote($input: VoteInsertInput!) {
   insertIntoVoteCollection(objects: [$input]) {
-    __typename
     affectedCount
     records {
       id
@@ -813,7 +812,6 @@ export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMut
 export const DeleteVoteDocument = gql`
     mutation deleteVote($filter: VoteFilter!) {
   deleteFromVoteCollection(filter: $filter) {
-    __typename
     affectedCount
     records {
       id

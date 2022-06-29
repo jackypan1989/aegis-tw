@@ -5,6 +5,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import { PostCardFragment, useCreateVoteMutation, useDeleteVoteMutation } from '../codegen/graphql'
+import { LIST_POST } from '../pages/post'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -41,7 +42,6 @@ export const POST_CARD = gql`
 export const CREATE_VOTE = gql`
   mutation createVote($input: VoteInsertInput!) {
     insertIntoVoteCollection(objects: [$input]) {
-      __typename
       affectedCount
       records {
         id
@@ -57,7 +57,6 @@ export const CREATE_VOTE = gql`
 export const DELETE_VOTE = gql`
   mutation deleteVote($filter: VoteFilter!) {
     deleteFromVoteCollection(filter: $filter) {
-      __typename
       affectedCount
       records {
         id
@@ -73,8 +72,33 @@ export const DELETE_VOTE = gql`
 const PostCard = (props: { post: PostCardFragment }) => {
   const { post } = props
   const { user } = useUser()
-  const [createVoteMutation, { loading: loading1, error: error1 }] = useCreateVoteMutation()
-  const [deleteVoteMutation, { loading: loading2, error: error2 }] = useDeleteVoteMutation()
+  const [createVoteMutation, { loading: loading1, error: error1 }] = useCreateVoteMutation({
+    refetchQueries: [
+      { 
+        query: LIST_POST,
+        variables: {
+          voteFilter: {
+            voterId: {
+              eq: user?.id
+            } 
+          }
+        }
+      }
+    ]
+  })
+  const [deleteVoteMutation, { loading: loading2, error: error2 }] = useDeleteVoteMutation({
+    refetchQueries: [
+      { 
+        query: LIST_POST,
+        variables: {
+          voteFilter: {
+            voterId: {
+              eq: user?.id
+            } 
+          }
+        } }
+    ]
+  })
   const isVoted = (post.voteCollection?.edges ?? []).filter(edge => edge.node?.voterId === user?.id).length > 0
 
   const onVote = async () => {

@@ -2,9 +2,11 @@ import { gql } from "@apollo/client"
 import { Box, Center, Flex, Spinner } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { useListPostQuery } from "../../codegen/graphql"
-import PostCard from "../../components/postCard"
+import PostCard, { POST_CARD } from "../../components/postCard"
 
 export const LIST_POST = gql`
+  ${POST_CARD}
+
   query listPost (
     $voteFilter: VoteFilter
   ) {
