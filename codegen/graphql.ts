@@ -710,21 +710,21 @@ export type VoteUpdateResponse = {
   records: Array<Vote>;
 };
 
-export type PostCardFragment = { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, direction?: number | null } | null }> } | null };
+export type PostCardFragment = { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null };
 
 export type CreateVoteMutationVariables = Exact<{
   input: VoteInsertInput;
 }>;
 
 
-export type CreateVoteMutation = { __typename?: 'Mutation', insertIntoVoteCollection?: { __typename?: 'VoteInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number }> } | null };
+export type CreateVoteMutation = { __typename?: 'Mutation', insertIntoVoteCollection?: { __typename: 'VoteInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number, post?: { __typename?: 'Post', id: number, voteCount?: number | null } | null }> } | null };
 
 export type DeleteVoteMutationVariables = Exact<{
   filter: VoteFilter;
 }>;
 
 
-export type DeleteVoteMutation = { __typename?: 'Mutation', deleteFromVoteCollection: { __typename?: 'VoteDeleteResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number }> } };
+export type DeleteVoteMutation = { __typename?: 'Mutation', deleteFromVoteCollection: { __typename: 'VoteDeleteResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number, post?: { __typename?: 'Post', id: number, voteCount?: number | null } | null }> } };
 
 export type CreatePostMutationVariables = Exact<{
   input: PostInsertInput;
@@ -738,7 +738,7 @@ export type ListPostQueryVariables = Exact<{
 }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, direction?: number | null } | null }> } | null } | null }> } | null };
+export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null } | null }> } | null };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -762,6 +762,7 @@ export const PostCardFragmentDoc = gql`
       cursor
       node {
         id
+        voterId
         direction
       }
     }
@@ -771,9 +772,14 @@ export const PostCardFragmentDoc = gql`
 export const CreateVoteDocument = gql`
     mutation createVote($input: VoteInsertInput!) {
   insertIntoVoteCollection(objects: [$input]) {
+    __typename
     affectedCount
     records {
       id
+      post {
+        id
+        voteCount
+      }
     }
   }
 }
@@ -807,9 +813,14 @@ export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMut
 export const DeleteVoteDocument = gql`
     mutation deleteVote($filter: VoteFilter!) {
   deleteFromVoteCollection(filter: $filter) {
+    __typename
     affectedCount
     records {
       id
+      post {
+        id
+        voteCount
+      }
     }
   }
 }

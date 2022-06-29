@@ -30,6 +30,7 @@ export const POST_CARD = gql`
         cursor
         node {
           id
+          voterId
           direction
         }
       }
@@ -40,9 +41,14 @@ export const POST_CARD = gql`
 export const CREATE_VOTE = gql`
   mutation createVote($input: VoteInsertInput!) {
     insertIntoVoteCollection(objects: [$input]) {
+      __typename
       affectedCount
       records {
         id
+        post {
+          id
+          voteCount
+        }
       }
     }
   }
@@ -51,9 +57,14 @@ export const CREATE_VOTE = gql`
 export const DELETE_VOTE = gql`
   mutation deleteVote($filter: VoteFilter!) {
     deleteFromVoteCollection(filter: $filter) {
+      __typename
       affectedCount
       records {
         id
+        post {
+          id
+          voteCount
+        }
       }
     }
   }
@@ -64,19 +75,10 @@ const PostCard = (props: { post: PostCardFragment }) => {
   const { user } = useUser()
   const [createVoteMutation, { loading: loading1, error: error1 }] = useCreateVoteMutation()
   const [deleteVoteMutation, { loading: loading2, error: error2 }] = useDeleteVoteMutation()
+  const isVoted = (post.voteCollection?.edges ?? []).filter(edge => edge.node?.voterId === user?.id).length > 0
 
   const onVote = async () => {
-    if (post.voteCollection?.edges.length === 0) {
-      await createVoteMutation({
-        variables: {
-          input: {
-            postId: post.id,
-            voterId: user?.id,
-            direction: 1
-          }
-        }
-      })
-    } else {
+    if (isVoted) {
       await deleteVoteMutation({
         variables: {
           filter: {
@@ -89,15 +91,25 @@ const PostCard = (props: { post: PostCardFragment }) => {
           }
         }
       })
+    } else {
+      await createVoteMutation({
+        variables: {
+          input: {
+            postId: post.id,
+            voterId: user?.id,
+            direction: 1
+          }
+        }
+      })
     } 
   }
 
-  return <Flex w='800px' bg='white' p='8px 16px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)' gap='20px'>
+  return <Flex w='600px' bg='white' p='8px 16px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)' gap='20px'>
     <Flex direction='column' w='32px' alignItems='center'>
-      <TriangleUpIcon m='8px'onClick={onVote}/>
+      <TriangleUpIcon m='8px' onClick={onVote} color={isVoted ? 'black' : 'gray.300'} />
       <Center>{post.voteCount}</Center>
     </Flex>
-    <Flex flex='1' pt='12px'>
+    <Flex flex='1'>
       <Flex flex='1' direction='column' gap='12px'>
         {post.url 
           ? <Link href={post.url} target='_new'>
