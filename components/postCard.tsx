@@ -72,7 +72,7 @@ export const DELETE_VOTE = gql`
 const PostCard = (props: { post: PostCardFragment }) => {
   const { post } = props
   const { user } = useUser()
-  const [createVoteMutation, { loading: loading1, error: error1 }] = useCreateVoteMutation({
+  const [createVoteMutation] = useCreateVoteMutation({
     refetchQueries: [
       { 
         query: LIST_POST,
@@ -86,7 +86,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
       }
     ]
   })
-  const [deleteVoteMutation, { loading: loading2, error: error2 }] = useDeleteVoteMutation({
+  const [deleteVoteMutation] = useDeleteVoteMutation({
     refetchQueries: [
       { 
         query: LIST_POST,

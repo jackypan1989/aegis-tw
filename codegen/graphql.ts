@@ -734,11 +734,12 @@ export type CreatePostMutationVariables = Exact<{
 export type CreatePostMutation = { __typename?: 'Mutation', insertIntoPostCollection?: { __typename?: 'PostInsertResponse', affectedCount: number, records: Array<{ __typename?: 'Post', id: number }> } | null };
 
 export type ListPostQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['Cursor']>;
   voteFilter?: InputMaybe<VoteFilter>;
 }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null } | null }> } | null };
+export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null } | null }> } | null };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -886,10 +887,11 @@ export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutati
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const ListPostDocument = gql`
-    query listPost($voteFilter: VoteFilter) {
+    query listPost($after: Cursor, $voteFilter: VoteFilter) {
   postCollection(
+    first: 1
+    after: $after
     orderBy: [{rankingScore: DescNullsLast}, {createdAt: DescNullsLast}]
-    first: 30
   ) {
     pageInfo {
       hasNextPage
@@ -901,6 +903,7 @@ export const ListPostDocument = gql`
         ...PostCard
       }
     }
+    totalCount
   }
 }
     ${PostCardFragmentDoc}`;
@@ -917,6 +920,7 @@ export const ListPostDocument = gql`
  * @example
  * const { data, loading, error } = useListPostQuery({
  *   variables: {
+ *      after: // value for 'after'
  *      voteFilter: // value for 'voteFilter'
  *   },
  * });

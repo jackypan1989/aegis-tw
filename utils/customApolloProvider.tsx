@@ -1,5 +1,6 @@
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
+import { relayStylePagination } from "@apollo/client/utilities"
 import { useUser } from "@supabase/auth-helpers-react"
 import { ReactNode } from "react"
 
@@ -20,9 +21,19 @@ export const CustomApolloProvider = (props: {children: ReactNode}) => {
     }
   })
 
+  const cache = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          postCollection: relayStylePagination()
+        }
+      }
+    }
+  })
+  
   const apolloClient = new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache()
+    cache: cache
   })
 
   return <ApolloProvider client={apolloClient}>

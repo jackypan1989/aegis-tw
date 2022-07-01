@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-import { Box, Center, Flex, Spinner } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { useListPostQuery } from "../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
@@ -8,11 +8,13 @@ export const LIST_POST = gql`
   ${POST_CARD}
 
   query listPost (
+    $after: Cursor
     $voteFilter: VoteFilter
   ) {
     postCollection(
+      first: 1,
+      after: $after,
       orderBy: [{ rankingScore: DescNullsLast }, { createdAt: DescNullsLast }]
-      first: 30
     ) {
       pageInfo {
         hasNextPage
@@ -24,13 +26,14 @@ export const LIST_POST = gql`
           ...PostCard
         }
       }
+      totalCount
     }
   }
 `
 
 const PostIndex = () => {
   const { user } = useUser()
-  const { data, loading, error } = useListPostQuery({
+  const { data, loading, error, fetchMore } = useListPostQuery({
     variables: {
       voteFilter: {
         voterId: {
@@ -39,15 +42,30 @@ const PostIndex = () => {
       }
     }
   })
-  
+
   if (loading) return <Center><Spinner /></Center>
   if (error) return <Center>{error.message}</Center>
 
+  const nodes = data?.postCollection?.edges.map(edge => edge.node) ?? []
+  const pageInfo = data?.postCollection?.pageInfo
+  
+  const onLoadMore = () => {
+    if (pageInfo?.hasNextPage) {
+      fetchMore({
+        variables: {
+          after: pageInfo.endCursor,
+        }
+      })
+    }
+  }
+
   return <Flex direction='column' alignItems='center' gap='8px'>
-    {data?.postCollection?.edges.map(edge => {
-      return edge.node && <PostCard key={edge.cursor} post={edge.node} />
+    {nodes.map(node => {
+      return node && <PostCard key={node?.id} post={node} />
     })}
-    <Box p='30px'>Pagination Placeholder</Box>
+    <Box p='30px'>{
+      <Button onClick={onLoadMore}>Load More</Button>
+    }</Box>
   </Flex>
 }
 
