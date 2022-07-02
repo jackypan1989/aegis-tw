@@ -889,7 +889,7 @@ export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMut
 export const ListPostDocument = gql`
     query listPost($after: Cursor, $voteFilter: VoteFilter) {
   postCollection(
-    first: 1
+    first: 30
     after: $after
     orderBy: [{rankingScore: DescNullsLast}, {createdAt: DescNullsLast}]
   ) {

@@ -5,7 +5,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import { PostCardFragment, useCreateVoteMutation, useDeleteVoteMutation } from '../codegen/graphql'
-import { LIST_POST } from '../pages/post'
+import { defaultUuid, LIST_POST } from '../pages/post'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -79,7 +79,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
         variables: {
           voteFilter: {
             voterId: {
-              eq: user?.id
+              eq: user?.id ?? defaultUuid
             } 
           }
         }
@@ -93,10 +93,11 @@ const PostCard = (props: { post: PostCardFragment }) => {
         variables: {
           voteFilter: {
             voterId: {
-              eq: user?.id
+              eq: user?.id ?? defaultUuid
             } 
           }
-        } }
+        } 
+      }
     ]
   })
   const isVoted = (post.voteCollection?.edges ?? []).filter(edge => edge.node?.voterId === user?.id).length > 0

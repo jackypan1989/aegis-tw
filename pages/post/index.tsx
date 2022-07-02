@@ -4,6 +4,8 @@ import { useUser } from "@supabase/auth-helpers-react"
 import { useListPostQuery } from "../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
 
+export const defaultUuid = "00000000-0000-0000-0000-000000000000"
+
 export const LIST_POST = gql`
   ${POST_CARD}
 
@@ -12,7 +14,7 @@ export const LIST_POST = gql`
     $voteFilter: VoteFilter
   ) {
     postCollection(
-      first: 1,
+      first: 30,
       after: $after,
       orderBy: [{ rankingScore: DescNullsLast }, { createdAt: DescNullsLast }]
     ) {
@@ -37,7 +39,7 @@ const PostIndex = () => {
     variables: {
       voteFilter: {
         voterId: {
-          eq: user?.id
+          eq: user?.id ?? defaultUuid
         } 
       }
     }
@@ -48,9 +50,10 @@ const PostIndex = () => {
 
   const nodes = data?.postCollection?.edges.map(edge => edge.node) ?? []
   const pageInfo = data?.postCollection?.pageInfo
+  const hasNextPage = pageInfo?.hasNextPage
   
   const onLoadMore = () => {
-    if (pageInfo?.hasNextPage) {
+    if (hasNextPage) {
       fetchMore({
         variables: {
           after: pageInfo.endCursor,
@@ -63,9 +66,9 @@ const PostIndex = () => {
     {nodes.map(node => {
       return node && <PostCard key={node?.id} post={node} />
     })}
-    <Box p='30px'>{
+    {hasNextPage && <Box p='30px'>
       <Button onClick={onLoadMore}>Load More</Button>
-    }</Box>
+    </Box>}
   </Flex>
 }
 
