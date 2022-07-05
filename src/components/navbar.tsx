@@ -1,20 +1,18 @@
-import { Flex, Heading } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import Link from "next/link"
 
 const Navbar = () => {
   const { user } = useUser() 
 
-  return <Flex bg='#5A57FF' fontSize='24px' color='white' p='24px 32px' alignItems='center' boxShadow='sm' position='sticky' gap='30px'>
-    <Link href='/'>
-      <Heading>Aegis</Heading>
-    </Link>
+  return <Flex w='100vw' h='48px' p='8px 16px' gap='12px' bg='#5A57FF' color='white' alignItems='center' position='sticky'>
+    <Link href='/'>Aegis</Link>
     <Link href='/post'>News</Link>
     <Link href='/job'>Job</Link>
     <Link href='/post/create'>Submit</Link>
     <Flex flex='1'/>
     <Link href='/auth/signIn'>
-      {user ? user.email : `Sign In`}
+      {user ? `Profile` : `Sign In`}
     </Link>
   </Flex>
 }

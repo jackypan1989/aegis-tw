@@ -157,36 +157,40 @@ const PostCard = (props: { post: PostCardFragment }) => {
     } 
   }
 
-  return <Flex w='600px' bg='white' p='8px 16px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)' gap='20px'>
-    <Flex direction='column' w='32px' alignItems='center'>
+  return <Flex w='100vw' p='8px' bg='white' gap='8px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'>
+    <Flex direction='column' w='30px' alignItems='center'>
       <TriangleUpIcon m='8px' onClick={onVote} color={isVoted ? 'black' : 'gray.300'} />
       <Center>{post.voteCount}</Center>
     </Flex>
     <Flex flex='1'>
       <Flex flex='1' direction='column' gap='12px'>
-        {post.url 
-          ? <Link href={post.url} target='_new' onClick={onView}>
-              <Box>
-                <Heading size='sm' display='inline'>{post.title}</Heading>
-                <Text display='inline' size='8' ml='1' color='gray'>{`(${new URL(post.url).hostname})`}</Text>
-              </Box>
-            </Link>
-          : <Box>
-              <Heading size='sm' display='inline'>{post.title}</Heading>
-            </Box>
-        }
+        <Flex>
+          <Box flex='1'>
+            {post.url 
+              ? <Link href={post.url} target='_new' onClick={onView}>
+                  <Box>
+                    <Heading size='sm' display='inline'>{post.title}</Heading>
+                    <Text display='inline' size='8' ml='1' color='gray'>{`(${new URL(post.url).hostname})`}</Text>
+                  </Box>
+                </Link>
+              : <Box>
+                  <Heading size='sm' display='inline'>{post.title}</Heading>
+                </Box>
+            }
+          </Box>
+          <Box justifyContent='flex-end'>
+            <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt ?? ''))}</Text>
+          </Box> 
+        </Flex>
         <Flex fontSize='sm' fontWeight='thin' gap='8px'>
           <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiMessageAdd}/>}>
-            {post.commentCount} Comments
+            {post.commentCount}
           </Button>
           <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiUser}/>}>
             {post.poster?.username}
           </Button>
         </Flex>
       </Flex>
-      <Flex w='100px' justifyContent='flex-end'>
-        <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt ?? ''))}</Text>
-      </Flex> 
     </Flex>
   </Flex>
 }

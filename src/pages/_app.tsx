@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CustomApolloProvider>
         <ChakraProvider>
           <Navbar />
-          <Box minH='1000px'>
+          <Box minH='571px'>
             <Component {...pageProps} />
           </Box>
           <Footer />
