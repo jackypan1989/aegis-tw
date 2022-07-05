@@ -1,14 +1,14 @@
 import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
-import { useListPostQuery } from "../../codegen/graphql"
+import { useListPostQuery } from "../../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
 
 export const defaultUuid = "00000000-0000-0000-0000-000000000000"
 
 export const LIST_POST = gql`
   ${POST_CARD}
-
+  
   query listPost (
     $after: Cursor
     $voteFilter: VoteFilter

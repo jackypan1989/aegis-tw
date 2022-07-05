@@ -6,7 +6,7 @@ import {
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
-import { PostInsertInput, useCreatePostMutation } from '../../codegen/graphql'
+import { PostInsertInput, useCreatePostMutation } from '../../../codegen/graphql'
 
 export const CREATE_POST = gql`
   mutation createPost($input: PostInsertInput!) {

@@ -30,9 +30,9 @@ type Comment {
   postId: BigInt
   updatedAt: Datetime
   content: String
-  commenter_id: UUID
+  commenterId: UUID
+  commenter: Profile
   post: Post
-  profile: Profile
 }
 
 type CommentConnection {
@@ -62,7 +62,7 @@ input CommentFilter {
   postId: BigIntFilter
   updatedAt: DatetimeFilter
   content: StringFilter
-  commenter_id: UUIDFilter
+  commenterId: UUIDFilter
 }
 
 input CommentInsertInput {
@@ -70,7 +70,7 @@ input CommentInsertInput {
   postId: BigInt
   updatedAt: Datetime
   content: String
-  commenter_id: UUID
+  commenterId: UUID
 }
 
 type CommentInsertResponse {
@@ -87,7 +87,7 @@ input CommentOrderBy {
   postId: OrderByDirection
   updatedAt: OrderByDirection
   content: OrderByDirection
-  commenter_id: OrderByDirection
+  commenterId: OrderByDirection
 }
 
 input CommentUpdateInput {
@@ -95,7 +95,7 @@ input CommentUpdateInput {
   postId: BigInt
   updatedAt: Datetime
   content: String
-  commenter_id: UUID
+  commenterId: UUID
 }
 
 type CommentUpdateResponse {

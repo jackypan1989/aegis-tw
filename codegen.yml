@@ -1,5 +1,5 @@
 overwrite: true
-schema: "graphql/schema.graphql"
+schema: "codegen/schema.graphql"
 documents: "**/*.tsx"
 generates:
   codegen/graphql.ts:
@@ -9,6 +9,11 @@ generates:
       - "typescript-react-apollo"
     config:
       scalars:
-        UUID: string
         BigInt: number
-        Date: Date
+        Cursor: string
+        Date: string
+        Datetime: string
+        JSON: string
+        Time: string
+        UUID: string
+  

@@ -31,7 +31,7 @@ const fetchGraphQLSchema = (url, options = {}) => {
       return JSON.stringify(schemaJSON, null, 2)
     })
 }
-const filePath = path.join(__dirname, "../graphql/", "schema.graphql")
+const filePath = path.join(__dirname, "codegen/", "schema.graphql")
 
 fetchGraphQLSchema(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/graphql/v1`, {
   readable: true,

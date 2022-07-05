@@ -14,11 +14,11 @@ export type Scalars = {
   Int: number;
   Float: number;
   BigInt: number;
-  Cursor: any;
-  Date: Date;
-  Datetime: any;
-  JSON: any;
-  Time: any;
+  Cursor: string;
+  Date: string;
+  Datetime: string;
+  JSON: string;
+  Time: string;
   UUID: string;
 };
 
@@ -44,13 +44,13 @@ export type BooleanFilter = {
 
 export type Comment = {
   __typename?: 'Comment';
-  commenter_id?: Maybe<Scalars['UUID']>;
+  commenter?: Maybe<Profile>;
+  commenterId?: Maybe<Scalars['UUID']>;
   content?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['Datetime']>;
   id: Scalars['BigInt'];
   post?: Maybe<Post>;
   postId?: Maybe<Scalars['BigInt']>;
-  profile?: Maybe<Profile>;
   updatedAt?: Maybe<Scalars['Datetime']>;
 };
 
@@ -77,7 +77,7 @@ export type CommentEdge = {
 };
 
 export type CommentFilter = {
-  commenter_id?: InputMaybe<UuidFilter>;
+  commenterId?: InputMaybe<UuidFilter>;
   content?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DatetimeFilter>;
   id?: InputMaybe<BigIntFilter>;
@@ -86,7 +86,7 @@ export type CommentFilter = {
 };
 
 export type CommentInsertInput = {
-  commenter_id?: InputMaybe<Scalars['UUID']>;
+  commenterId?: InputMaybe<Scalars['UUID']>;
   content?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   postId?: InputMaybe<Scalars['BigInt']>;
@@ -102,7 +102,7 @@ export type CommentInsertResponse = {
 };
 
 export type CommentOrderBy = {
-  commenter_id?: InputMaybe<OrderByDirection>;
+  commenterId?: InputMaybe<OrderByDirection>;
   content?: InputMaybe<OrderByDirection>;
   createdAt?: InputMaybe<OrderByDirection>;
   id?: InputMaybe<OrderByDirection>;
@@ -111,7 +111,7 @@ export type CommentOrderBy = {
 };
 
 export type CommentUpdateInput = {
-  commenter_id?: InputMaybe<Scalars['UUID']>;
+  commenterId?: InputMaybe<Scalars['UUID']>;
   content?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   postId?: InputMaybe<Scalars['BigInt']>;
@@ -710,7 +710,7 @@ export type VoteUpdateResponse = {
   records: Array<Vote>;
 };
 
-export type PostCardFragment = { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null };
+export type PostCardFragment = { __typename?: 'Post', id: number, createdAt?: string | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null };
 
 export type CreateVoteMutationVariables = Exact<{
   input: VoteInsertInput;
@@ -726,6 +726,14 @@ export type DeleteVoteMutationVariables = Exact<{
 
 export type DeleteVoteMutation = { __typename?: 'Mutation', deleteFromVoteCollection: { __typename?: 'VoteDeleteResponse', affectedCount: number, records: Array<{ __typename?: 'Vote', id: number, post?: { __typename?: 'Post', id: number, voteCount?: number | null } | null }> } };
 
+export type UpdatePostMutationVariables = Exact<{
+  filter: PostFilter;
+  set: PostUpdateInput;
+}>;
+
+
+export type UpdatePostMutation = { __typename?: 'Mutation', updatePostCollection: { __typename?: 'PostUpdateResponse', affectedCount: number, records: Array<{ __typename?: 'Post', id: number }> } };
+
 export type CreatePostMutationVariables = Exact<{
   input: PostInsertInput;
 }>;
@@ -739,7 +747,7 @@ export type ListPostQueryVariables = Exact<{
 }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: any | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null } | null }> } | null };
+export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: string | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null } | null }> } | null };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -850,6 +858,43 @@ export function useDeleteVoteMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteVoteMutationHookResult = ReturnType<typeof useDeleteVoteMutation>;
 export type DeleteVoteMutationResult = Apollo.MutationResult<DeleteVoteMutation>;
 export type DeleteVoteMutationOptions = Apollo.BaseMutationOptions<DeleteVoteMutation, DeleteVoteMutationVariables>;
+export const UpdatePostDocument = gql`
+    mutation updatePost($filter: PostFilter!, $set: PostUpdateInput!) {
+  updatePostCollection(filter: $filter, set: $set) {
+    affectedCount
+    records {
+      id
+    }
+  }
+}
+    `;
+export type UpdatePostMutationFn = Apollo.MutationFunction<UpdatePostMutation, UpdatePostMutationVariables>;
+
+/**
+ * __useUpdatePostMutation__
+ *
+ * To run a mutation, you first call `useUpdatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePostMutation, { data, loading, error }] = useUpdatePostMutation({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      set: // value for 'set'
+ *   },
+ * });
+ */
+export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePostMutation, UpdatePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePostMutation, UpdatePostMutationVariables>(UpdatePostDocument, options);
+      }
+export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
+export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
+export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($input: PostInsertInput!) {
   insertIntoPostCollection(objects: [$input]) {

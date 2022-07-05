@@ -4,7 +4,7 @@ import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
-import { PostCardFragment, useCreateVoteMutation, useDeleteVoteMutation } from '../codegen/graphql'
+import { PostCardFragment, useCreateVoteMutation, useDeleteVoteMutation } from '../../codegen/graphql'
 import { defaultUuid, LIST_POST } from '../pages/post'
 
 export const POST_CARD = gql`
@@ -69,6 +69,17 @@ export const DELETE_VOTE = gql`
   }
 `
 
+export const UPDATE_POST = gql`
+  mutation updatePost($filter: PostFilter!, $set: PostUpdateInput!) {
+    updatePostCollection(filter: $filter, set: $set) {
+      affectedCount
+      records {
+        id
+      }
+    }
+  }
+`
+
 const PostCard = (props: { post: PostCardFragment }) => {
   const { post } = props
   const { user } = useUser()
@@ -86,6 +97,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
       }
     ]
   })
+  
   const [deleteVoteMutation] = useDeleteVoteMutation({
     refetchQueries: [
       { 
@@ -100,7 +112,23 @@ const PostCard = (props: { post: PostCardFragment }) => {
       }
     ]
   })
+
   const isVoted = (post.voteCollection?.edges ?? []).filter(edge => edge.node?.voterId === user?.id).length > 0
+
+  const onView = async () => {
+    await deleteVoteMutation({
+      variables: {
+        filter: {
+          postId: {
+            eq: post.id,
+          },
+          voterId: {
+            eq: user?.id,
+          }
+        }
+      }
+    })
+  }
 
   const onVote = async () => {
     if (isVoted) {
@@ -137,7 +165,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
     <Flex flex='1'>
       <Flex flex='1' direction='column' gap='12px'>
         {post.url 
-          ? <Link href={post.url} target='_new'>
+          ? <Link href={post.url} target='_new' onClick={onView}>
               <Box>
                 <Heading size='sm' display='inline'>{post.title}</Heading>
                 <Text display='inline' size='8' ml='1' color='gray'>{`(${new URL(post.url).hostname})`}</Text>
@@ -157,7 +185,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
         </Flex>
       </Flex>
       <Flex w='100px' justifyContent='flex-end'>
-        <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt))}</Text>
+        <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt ?? ''))}</Text>
       </Flex> 
     </Flex>
   </Flex>
