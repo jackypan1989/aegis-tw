@@ -45,7 +45,7 @@ const PostCreate: NextPage = () => {
   }
 
   return (
-    <Box m='3'>
+    <Box p='3'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.title}>
           <FormLabel htmlFor='title'>Title</FormLabel>

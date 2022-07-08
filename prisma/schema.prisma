@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id          String      @id @db.Uuid
+  createdAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("updated_at")
+  
+  username    String?     @unique
+  avatarIUrl  String?     @map("avatar_url")
+  website     String?
+  
+  posts       Post[]
+  comments    Comment[]
+  votes       Vote[]
+
+  @@map("profiles")
+}
+
+model Post {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime? @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt     DateTime? @default(now()) @db.Timestamptz(6) @map("updated_at")
+  
+  posterId      String    @db.Uuid  @map("poster_id")
+  title         String?   @db.VarChar
+  url           String?   @db.VarChar
+  content       String?   @db.VarChar
+  commentCount  Int?      @default(0) @map("comment_count")
+  voteCount     Int?      @default(0) @map("vote_count")
+  viewCount     Int?      @default(0) @map("view_count")
+  ranking_core  Float?    @default(0) @db.Real @map("ranking_core")
+
+  profile       Profile   @relation(fields: [posterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  comments      Comment[]
+  votes         Vote[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime? @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt     DateTime? @default(now()) @db.Timestamptz(6) @map("updated_at")
+
+  postId        Int?      @map("post_id")
+  commenterId   String?   @db.Uuid @map("commenter_id")
+  content       String?   @db.VarChar
+  
+  post          Post?     @relation(fields: [postId], references: [id])
+  profile       Profile?  @relation(fields: [commenterId], references: [id])
+  
+  @@map("comments")
+}
+
+model Vote {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime? @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt     DateTime? @default(now()) @db.Timestamptz(6) @map("updated_at")
+
+  postId        Int?      @map("post_id")
+  voterId       String?   @db.Uuid @map("voter_id")
+  profile       Profile?  @relation(fields: [voterId], references: [id])
+  post          Post?     @relation(fields: [postId], references: [id])
+  
+  @@map("votes")
+}

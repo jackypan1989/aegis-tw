@@ -710,7 +710,7 @@ export type VoteUpdateResponse = {
   records: Array<Vote>;
 };
 
-export type PostCardFragment = { __typename?: 'Post', id: number, createdAt?: string | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null };
+export type PostCardFragment = { __typename?: 'Post', id: number, createdAt?: string | null, title?: string | null, url?: string | null, viewCount?: number | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null };
 
 export type CreateVoteMutationVariables = Exact<{
   input: VoteInsertInput;
@@ -732,7 +732,7 @@ export type UpdatePostMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePostMutation = { __typename?: 'Mutation', updatePostCollection: { __typename?: 'PostUpdateResponse', affectedCount: number, records: Array<{ __typename?: 'Post', id: number }> } };
+export type UpdatePostMutation = { __typename?: 'Mutation', updatePostCollection: { __typename?: 'PostUpdateResponse', affectedCount: number, records: Array<{ __typename?: 'Post', id: number, viewCount?: number | null }> } };
 
 export type CreatePostMutationVariables = Exact<{
   input: PostInsertInput;
@@ -747,7 +747,7 @@ export type ListPostQueryVariables = Exact<{
 }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: string | null, title?: string | null, url?: string | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null } | null }> } | null };
+export type ListPostQuery = { __typename?: 'Query', postCollection?: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'PostEdge', cursor: string, node?: { __typename?: 'Post', id: number, createdAt?: string | null, title?: string | null, url?: string | null, viewCount?: number | null, voteCount?: number | null, commentCount?: number | null, rankingScore?: number | null, poster?: { __typename?: 'Profile', id: string, username?: string | null } | null, voteCollection?: { __typename?: 'VoteConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, edges: Array<{ __typename?: 'VoteEdge', cursor: string, node?: { __typename?: 'Vote', id: number, voterId?: string | null, direction?: number | null } | null }> } | null } | null }> } | null };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -755,6 +755,7 @@ export const PostCardFragmentDoc = gql`
   createdAt
   title
   url
+  viewCount
   voteCount
   commentCount
   rankingScore
@@ -864,6 +865,7 @@ export const UpdatePostDocument = gql`
     affectedCount
     records {
       id
+      viewCount
     }
   }
 }
