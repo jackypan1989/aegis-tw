@@ -13,7 +13,7 @@ model Profile {
   updatedAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("updated_at")
   
   username    String?     @unique
-  avatarIUrl  String?     @map("avatar_url")
+  avatarUrl  String?     @map("avatar_url")
   website     String?
   
   posts       Post[]
@@ -35,9 +35,9 @@ model Post {
   commentCount  Int?      @default(0) @map("comment_count")
   voteCount     Int?      @default(0) @map("vote_count")
   viewCount     Int?      @default(0) @map("view_count")
-  ranking_core  Float?    @default(0) @db.Real @map("ranking_core")
+  rankingScore  Float?    @default(0) @db.Real @map("ranking_core")
 
-  profile       Profile   @relation(fields: [posterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  poster        Profile   @relation(fields: [posterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   comments      Comment[]
   votes         Vote[]
 
@@ -54,7 +54,7 @@ model Comment {
   content       String?   @db.VarChar
   
   post          Post?     @relation(fields: [postId], references: [id])
-  profile       Profile?  @relation(fields: [commenterId], references: [id])
+  commenter     Profile?  @relation(fields: [commenterId], references: [id])
   
   @@map("comments")
 }
@@ -66,7 +66,7 @@ model Vote {
 
   postId        Int?      @map("post_id")
   voterId       String?   @db.Uuid @map("voter_id")
-  profile       Profile?  @relation(fields: [voterId], references: [id])
+  voter         Profile?  @relation(fields: [voterId], references: [id])
   post          Post?     @relation(fields: [postId], references: [id])
   
   @@map("votes")

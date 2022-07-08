@@ -1,0 +1,125 @@
+scalar Date
+scalar Cursor
+
+enum OrderByDirection {
+  AscNullsFirst
+  AscNullsLast
+  DescNullsFirst
+  DescNullsLast
+}
+
+type Profile {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  username: String!
+  avatarUrl: String
+  website: String
+
+  # posts: [Post!]!
+  # comments: [Comment!]!
+  # votes: [Vote!]!
+}
+
+type Post {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  posterId: ID!
+  title: String!
+  url: String
+  content: String
+  commentCount: Int!
+  voteCount: Int!
+  viewCount: Int!
+  rankingScore: IntFilter
+
+  poster: Profile!
+  comments: [Comment!]!
+  votes: [Vote!]!
+}
+
+type Vote {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  postId: ID!
+  voterId: ID!
+
+  # post: Post!
+  # voter: Profile!
+}
+
+type Comment {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  postId: ID!
+  commenterId: ID!
+  content: String!
+
+  # post: Post!
+  # commenter: Profile!
+}
+
+# ===
+
+input PageCursorArg {
+  first: Int
+  after: Cursor
+  last: Int
+  before: Cursor
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  totalPageCount: Int
+}
+
+type PostEdge {
+  cursor: Cursor!
+  node: Post!
+}
+
+type PostConnection {
+  edges: [Post]
+}
+
+input AddPostMutationInput {
+  posterId: ID!
+  title: String!
+  url: String
+  content: String
+}
+
+input AddVoteMutationInput {
+  postId: ID!
+  voterId: ID!
+}
+
+input AddCommentMutationInput {
+  postId: ID!
+  commenterId: ID!
+  content: String!
+}
+
+input PostFilter {
+  title: String
+}
+
+input PostOrderBy {
+  createdAt: OrderByDirection
+  rankingScore: OrderByDirection
+}
+
+type Query {
+  posts(cursorArg: PageCursorArg, filter: PostFilter, orderBy: [PostOrderBy!]): PostConnection!
+}
+
+type Mutation {
+  addPost(input: AddPostMutationInput!): Post!
+  addVote(input: AddVoteMutationInput!): Vote!
+  addComment(input: AddCommentMutationInput!): Comment!
+}
+
