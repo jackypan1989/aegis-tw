@@ -6,7 +6,7 @@ import {
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
-import { useAddPostMutation } from '../../../codegen/graphql'
+import { useCreatePostMutation } from '../../../codegen/graphql'
 
 type FormValues = {
   title: string
@@ -14,8 +14,8 @@ type FormValues = {
 }
 
 export const ADD_POST = gql`
-  mutation addPost($input: AddPostMutationInput!) {
-    addPost(input: $input) {
+  mutation createPost($input: CreatePostMutationInput!) {
+    createPost(input: $input) {
       id
     }
   }
@@ -29,14 +29,14 @@ const PostCreate: NextPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>()
 
-  const [addPost, { loading, error }] = useAddPostMutation()
+  const [createPost, { loading, error }] = useCreatePostMutation()
 
   if (!user) return <Box>You need to login first</Box>
   if (loading) return <Box>Submitting...</Box>
   if (error) return <Box>Submission error! ${error.message}</Box>
 
   const onSubmit = async (value: FormValues) => {
-    await addPost({
+    await createPost({
       variables: {
         input: {
           posterId: user.id,

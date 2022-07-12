@@ -9,11 +9,12 @@ export const LIST_POST = gql`
   ${POST_CARD}
   
   query listPost (
-    $cursorArgs: CursorArgs!
+    $first: Int,
+    $after: Cursor,
   ) {
     posts(
-      cursorArgs: $cursorArgs
-      orderBy: [{ rankingScore: DescNullsLast }, { createdAt: DescNullsLast }]
+      first: $first,
+      after: $after
     ) {
       pageInfo {
         hasNextPage
@@ -32,9 +33,7 @@ export const LIST_POST = gql`
 const PostIndex = () => {
   const { data, loading, error, fetchMore } = useListPostQuery({
     variables: {
-      cursorArgs: {
-        first: 30
-      }
+      first: 1
     }
   })
 

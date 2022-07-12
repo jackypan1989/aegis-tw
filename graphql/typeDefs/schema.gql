@@ -34,7 +34,7 @@ type Post {
   viewCount: Int!
   rankingScore: Int!
 
-  poster: Profile!
+  poster: Profile
   comments: [Comment!]!
   votes: [Vote!]!
 }
@@ -62,18 +62,11 @@ type Comment {
   # commenter: Profile!
 }
 
-input CursorArgs {
-  first: Int
-  after: Cursor
-  last: Int
-  before: Cursor
-}
-
 type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: Cursor!
-  endCursor: Cursor!
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: Cursor
+  endCursor: Cursor
   totalPageCount: Int
 }
 
@@ -87,19 +80,19 @@ type PostConnection {
   pageInfo: PageInfo!
 }
 
-input AddPostMutationInput {
+input CreatePostMutationInput {
   posterId: ID!
   title: String!
   url: String
   content: String
 }
 
-input AddVoteMutationInput {
+input CreateVoteMutationInput {
   postId: ID!
   voterId: ID!
 }
 
-input AddCommentMutationInput {
+input CreateCommentMutationInput {
   postId: ID!
   commenterId: ID!
   content: String!
@@ -115,12 +108,17 @@ input PostOrderBy {
 }
 
 type Query {
-  posts(cursorArgs: CursorArgs, filter: PostFilter, orderBy: [PostOrderBy!]): PostConnection!
+  posts(
+    first: Int,
+    after: Cursor,
+    last: Int,
+    before: Cursor
+  ): PostConnection!
 }
 
 type Mutation {
-  addPost(input: AddPostMutationInput!): Post!
-  addVote(input: AddVoteMutationInput!): Vote!
-  addComment(input: AddCommentMutationInput!): Comment!
+  createPost(input: CreatePostMutationInput!): Post!
+  createVote(input: CreateVoteMutationInput!): Vote!
+  createComment(input: CreateCommentMutationInput!): Comment!
 }
 

@@ -1,5 +1,9 @@
-import { Prisma, PrismaClient, Profile } from "@prisma/client"
+import {
+  findManyCursorConnection
+} from '@devoxa/prisma-relay-cursor-connection'
+import { PrismaClient } from "@prisma/client"
 import { Resolvers } from "../../codegen/graphql"
+
 
 const prisma = new PrismaClient()
 
@@ -8,29 +12,21 @@ const resolvers: Resolvers = {
     poster: async (parent) => {
       return prisma.profile.findUnique({
         where: { id: parent.posterId }
-      }) as Prisma.Prisma__ProfileClient<Profile>
-    }
+      })
+    },
   },
   Query: {
     posts: async (_, args) => {
-      const { cursorArgs, filter, orderBy } = args
-      // const { first, after, last, before } = cursorArgs
-
-      const posts = await prisma.post.findMany({})
-
-      return {
-        edges: posts.map(post => ({ cursor: "", node: post })),
-        pageInfo: {
-          hasNextPage: false,
-          hasPreviousPage: false,
-          startCursor: "",
-          endCursor: ""
-        }
-      }
+      const result = await findManyCursorConnection(
+        (args) => prisma.post.findMany(args),
+        () => prisma.post.count(),
+        args
+      )
+      return result
     }
   },
   Mutation: {
-    addPost: async (_, args) => {
+    createPost: async (_, args) => {
       const { input } = args
       const post = await prisma.post.create({ 
         data: { 
@@ -42,7 +38,7 @@ const resolvers: Resolvers = {
       })
       return post
     },
-    addVote: async (_, args) => {
+    createVote: async (_, args) => {
       const { input } = args
       const vote = await prisma.vote.create({ 
         data: {
@@ -52,7 +48,7 @@ const resolvers: Resolvers = {
       })
       return vote
     },
-    addComment: async (_, args) => {
+    createComment: async (_, args) => {
       const { input } = args
       const comment = await prisma.comment.create({ 
         data: {

@@ -1,9 +1,9 @@
-import { Comment as CommentModel, Post as PostModel, Profile as ProfileModel, Vote as VoteModel } from '.prisma/client';
-import * as Apollo from '@apollo/client';
-import { gql } from '@apollo/client';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = undefined | T;
+import { Profile as ProfileModel, Post as PostModel, Vote as VoteModel, Comment as CommentModel } from '.prisma/client';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
+export type Maybe<T> = T | null | undefined;
+export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -18,25 +18,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Cursor: string;
-  Date: string;
-};
-
-export type AddCommentMutationInput = {
-  commenterId: Scalars['ID'];
-  content: Scalars['String'];
-  postId: Scalars['ID'];
-};
-
-export type AddPostMutationInput = {
-  content?: InputMaybe<Scalars['String']>;
-  posterId: Scalars['ID'];
-  title: Scalars['String'];
-  url?: InputMaybe<Scalars['String']>;
-};
-
-export type AddVoteMutationInput = {
-  postId: Scalars['ID'];
-  voterId: Scalars['ID'];
+  Date: Date;
 };
 
 export type Comment = {
@@ -49,33 +31,44 @@ export type Comment = {
   updatedAt: Scalars['Date'];
 };
 
-export type CursorArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+export type CreateCommentMutationInput = {
+  commenterId: Scalars['ID'];
+  content: Scalars['String'];
+  postId: Scalars['ID'];
+};
+
+export type CreatePostMutationInput = {
+  content?: InputMaybe<Scalars['String']>;
+  posterId: Scalars['ID'];
+  title: Scalars['String'];
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateVoteMutationInput = {
+  postId: Scalars['ID'];
+  voterId: Scalars['ID'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addComment: Comment;
-  addPost: Post;
-  addVote: Vote;
+  createComment: Comment;
+  createPost: Post;
+  createVote: Vote;
 };
 
 
-export type MutationAddCommentArgs = {
-  input: AddCommentMutationInput;
+export type MutationCreateCommentArgs = {
+  input: CreateCommentMutationInput;
 };
 
 
-export type MutationAddPostArgs = {
-  input: AddPostMutationInput;
+export type MutationCreatePostArgs = {
+  input: CreatePostMutationInput;
 };
 
 
-export type MutationAddVoteArgs = {
-  input: AddVoteMutationInput;
+export type MutationCreateVoteArgs = {
+  input: CreateVoteMutationInput;
 };
 
 export enum OrderByDirection {
@@ -87,10 +80,10 @@ export enum OrderByDirection {
 
 export type PageInfo = {
   __typename?: 'PageInfo';
-  endCursor: Scalars['Cursor'];
-  hasNextPage: Scalars['Boolean'];
-  hasPreviousPage: Scalars['Boolean'];
-  startCursor: Scalars['Cursor'];
+  endCursor?: Maybe<Scalars['Cursor']>;
+  hasNextPage?: Maybe<Scalars['Boolean']>;
+  hasPreviousPage?: Maybe<Scalars['Boolean']>;
+  startCursor?: Maybe<Scalars['Cursor']>;
   totalPageCount?: Maybe<Scalars['Int']>;
 };
 
@@ -101,7 +94,7 @@ export type Post = {
   content?: Maybe<Scalars['String']>;
   createdAt: Scalars['Date'];
   id: Scalars['ID'];
-  poster: Profile;
+  poster?: Maybe<Profile>;
   posterId: Scalars['ID'];
   rankingScore: Scalars['Int'];
   title: Scalars['String'];
@@ -150,9 +143,10 @@ export type Query = {
 
 
 export type QueryPostsArgs = {
-  cursorArgs?: InputMaybe<CursorArgs>;
-  filter?: InputMaybe<PostFilter>;
-  orderBy?: InputMaybe<Array<PostOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
 };
 
 export type Vote = {
@@ -164,21 +158,22 @@ export type Vote = {
   voterId: Scalars['ID'];
 };
 
-export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: string, title: string, url?: string | null, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, poster: { __typename?: 'Profile', id: string, username: string } };
+export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
 
-export type AddPostMutationVariables = Exact<{
-  input: AddPostMutationInput;
+export type CreatePostMutationVariables = Exact<{
+  input: CreatePostMutationInput;
 }>;
 
 
-export type AddPostMutation = { __typename?: 'Mutation', addPost: { __typename?: 'Post', id: string } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string } };
 
 export type ListPostQueryVariables = Exact<{
-  cursorArgs: CursorArgs;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
 }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor: string }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: string, title: string, url?: string | null, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, poster: { __typename?: 'Profile', id: string, username: string } } }> } };
+export type ListPostQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -196,45 +191,42 @@ export const PostCardFragmentDoc = gql`
   }
 }
     `;
-export const AddPostDocument = gql`
-    mutation addPost($input: AddPostMutationInput!) {
-  addPost(input: $input) {
+export const CreatePostDocument = gql`
+    mutation createPost($input: CreatePostMutationInput!) {
+  createPost(input: $input) {
     id
   }
 }
     `;
-export type AddPostMutationFn = Apollo.MutationFunction<AddPostMutation, AddPostMutationVariables>;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
 
 /**
- * __useAddPostMutation__
+ * __useCreatePostMutation__
  *
- * To run a mutation, you first call `useAddPostMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddPostMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [addPostMutation, { data, loading, error }] = useAddPostMutation({
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useAddPostMutation(baseOptions?: Apollo.MutationHookOptions<AddPostMutation, AddPostMutationVariables>) {
+export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddPostMutation, AddPostMutationVariables>(AddPostDocument, options);
+        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, options);
       }
-export type AddPostMutationHookResult = ReturnType<typeof useAddPostMutation>;
-export type AddPostMutationResult = Apollo.MutationResult<AddPostMutation>;
-export type AddPostMutationOptions = Apollo.BaseMutationOptions<AddPostMutation, AddPostMutationVariables>;
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const ListPostDocument = gql`
-    query listPost($cursorArgs: CursorArgs!) {
-  posts(
-    cursorArgs: $cursorArgs
-    orderBy: [{rankingScore: DescNullsLast}, {createdAt: DescNullsLast}]
-  ) {
+    query listPost($first: Int, $after: Cursor) {
+  posts(first: $first, after: $after) {
     pageInfo {
       hasNextPage
       endCursor
@@ -261,11 +253,12 @@ export const ListPostDocument = gql`
  * @example
  * const { data, loading, error } = useListPostQuery({
  *   variables: {
- *      cursorArgs: // value for 'cursorArgs'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
-export function useListPostQuery(baseOptions: Apollo.QueryHookOptions<ListPostQuery, ListPostQueryVariables>) {
+export function useListPostQuery(baseOptions?: Apollo.QueryHookOptions<ListPostQuery, ListPostQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ListPostQuery, ListPostQueryVariables>(ListPostDocument, options);
       }
@@ -345,13 +338,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AddCommentMutationInput: AddCommentMutationInput;
-  AddPostMutationInput: AddPostMutationInput;
-  AddVoteMutationInput: AddVoteMutationInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<CommentModel>;
+  CreateCommentMutationInput: CreateCommentMutationInput;
+  CreatePostMutationInput: CreatePostMutationInput;
+  CreateVoteMutationInput: CreateVoteMutationInput;
   Cursor: ResolverTypeWrapper<Scalars['Cursor']>;
-  CursorArgs: CursorArgs;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -371,13 +363,12 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AddCommentMutationInput: AddCommentMutationInput;
-  AddPostMutationInput: AddPostMutationInput;
-  AddVoteMutationInput: AddVoteMutationInput;
   Boolean: Scalars['Boolean'];
   Comment: CommentModel;
+  CreateCommentMutationInput: CreateCommentMutationInput;
+  CreatePostMutationInput: CreatePostMutationInput;
+  CreateVoteMutationInput: CreateVoteMutationInput;
   Cursor: Scalars['Cursor'];
-  CursorArgs: CursorArgs;
   Date: Scalars['Date'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
@@ -413,16 +404,16 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationAddCommentArgs, 'input'>>;
-  addPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationAddPostArgs, 'input'>>;
-  addVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationAddVoteArgs, 'input'>>;
+  createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
+  createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'input'>>;
+  createVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationCreateVoteArgs, 'input'>>;
 };
 
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
-  endCursor?: Resolver<ResolversTypes['Cursor'], ParentType, ContextType>;
-  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  hasPreviousPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  startCursor?: Resolver<ResolversTypes['Cursor'], ParentType, ContextType>;
+  endCursor?: Resolver<Maybe<ResolversTypes['Cursor']>, ParentType, ContextType>;
+  hasNextPage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  hasPreviousPage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  startCursor?: Resolver<Maybe<ResolversTypes['Cursor']>, ParentType, ContextType>;
   totalPageCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -433,7 +424,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  poster?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  poster?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   posterId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   rankingScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
