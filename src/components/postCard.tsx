@@ -5,7 +5,8 @@ import { supabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
-import { PostCardFragment } from '../../codegen/graphql'
+import { PostCardFragment, useCreateVoteMutation, useRemoveVoteMutation, useUpdatePostMutation } from '../../codegen/graphql'
+import { defaultUuid, LIST_POST } from '../pages/post'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -17,122 +18,87 @@ export const POST_CARD = gql`
     voteCount
     commentCount
     rankingScore
+    isVoted
     poster {
       id
       username
     }
-    # voteCollection (
-    #   filter: $voteFilter
-    # ) {
-    #   pageInfo {
-    #     hasNextPage
-    #     endCursor
-    #   }
-    #   edges {
-    #     cursor
-    #     node {
-    #       id
-    #       voterId
-    #       direction
-    #     }
-    #   }
-    # }
   }
 `
 
-// export const CREATE_VOTE = gql`
-//   mutation createVote($input: VoteInsertInput!) {
-//     insertIntoVoteCollection(objects: [$input]) {
-//       affectedCount
-//       records {
-//         id
-//         post {
-//           id
-//           voteCount
-//         }
-//       }
-//     }
-//   }
-// `
+export const CREATE_VOTE = gql`
+  mutation createVote($input: CreateVoteMutationInput!) {
+    createVote(input: $input) {
+      id
+      post {
+        id
+        isVoted
+      }
+    }
+  }
+`
 
-// export const DELETE_VOTE = gql`
-//   mutation deleteVote($filter: VoteFilter!) {
-//     deleteFromVoteCollection(filter: $filter) {
-//       affectedCount
-//       records {
-//         id
-//         post {
-//           id
-//           voteCount
-//         }
-//       }
-//     }
-//   }
-// `
+export const REMOVE_VOTE = gql`
+  mutation removeVote($filter: VoteFilter!) {
+    removeVote(filter: $filter) {
+      id
+      post {
+        id
+        isVoted
+      }
+    }
+  }
+`
 
-// export const UPDATE_POST = gql`
-//   mutation updatePost($filter: PostFilter!, $set: PostUpdateInput!) {
-//     updatePostCollection(filter: $filter, set: $set) {
-//       affectedCount
-//       records {
-//         id
-//         viewCount
-//       }
-//     }
-//   }
-// `
+export const UPDATE_POST = gql`
+  mutation updatePost($filter: PostFilter!, $input: UpdatePostMutationInput!) {
+    updatePost(filter: $filter, input: $input) {
+      id
+      viewCount
+    }
+  }
+`
 
 const PostCard = (props: { post: PostCardFragment }) => {
   const { post } = props
   const { user } = useUser()
 
-  // const [createVoteMutation] = useCreateVoteMutation({
-  //   refetchQueries: [
-  //     { 
-  //       query: LIST_POST,
-  //       variables: {
-  //         voteFilter: {
-  //           voterId: {
-  //             eq: user?.id ?? defaultUuid
-  //           } 
-  //         }
-  //       }
-  //     }
-  //   ]
-  // })
+  const [createVote] = useCreateVoteMutation({
+    refetchQueries: [
+      { 
+        query: LIST_POST,
+        variables: {
+          first: 30
+        }
+      }
+    ]
+  })
   
-  // const [deleteVoteMutation] = useDeleteVoteMutation({
-  //   refetchQueries: [
-  //     { 
-  //       query: LIST_POST,
-  //       variables: {
-  //         voteFilter: {
-  //           voterId: {
-  //             eq: user?.id ?? defaultUuid
-  //           } 
-  //         }
-  //       } 
-  //     }
-  //   ]
-  // })
+  const [removeVote] = useRemoveVoteMutation({
+    refetchQueries: [
+      { 
+        query: LIST_POST,
+        variables: {
+          first: 30
+        }
+      }
+    ]
+  })
 
-  // const [updatePostMutation] = useUpdatePostMutation({
-  //   refetchQueries: [
-  //     { 
-  //       query: LIST_POST,
-  //       variables: {
-  //         voteFilter: {
-  //           voterId: {
-  //             eq: user?.id ?? defaultUuid
-  //           } 
-  //         }
-  //       } 
-  //     }
-  //   ]
-  // })
-
-  // const isVoted = (post.voteCollection?.edges ?? []).filter(edge => edge.node?.voterId === user?.id).length > 0
-  const isVoted = true
+  const [updatePost] = useUpdatePostMutation({
+    refetchQueries: [
+      { 
+        query: LIST_POST,
+        variables: {
+          voteFilter: {
+            voterId: {
+              eq: user?.id ?? defaultUuid
+            } 
+          }
+        } 
+      }
+    ]
+  })
 
   const onView = async () => {
     const { data, error } = await supabaseClient
@@ -142,35 +108,32 @@ const PostCard = (props: { post: PostCardFragment }) => {
   }
 
   const onVote = async () => {
-    // if (isVoted) {
-    //   await deleteVoteMutation({
-    //     variables: {
-    //       filter: {
-    //         postId: {
-    //           eq: post.id,
-    //         },
-    //         voterId: {
-    //           eq: user?.id,
-    //         }
-    //       }
-    //     }
-    //   })
-    // } else {
-    //   await createVoteMutation({
-    //     variables: {
-    //       input: {
-    //         postId: post.id,
-    //         voterId: user?.id,
-    //         direction: 1
-    //       }
-    //     }
-    //   })
-    // } 
+    if (user) {
+      if (post.isVoted) {
+        await removeVote({
+          variables: {
+            filter: {
+              postId: post.id,
+              voterId: user.id
+            }
+          }
+        })
+      } else {
+        await createVote({
+          variables: {
+            input: {
+              postId: post.id,
+              voterId: user.id
+            }
+          }
+        })
+      } 
+    }
   }
 
   return <Flex w='100vw' p='8px' bg='white' gap='8px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'>
     <Flex direction='column' w='30px' alignItems='center'>
-      <TriangleUpIcon m='8px' onClick={onVote} color={isVoted ? 'black' : 'gray.300'} />
+      <TriangleUpIcon m='8px' onClick={onVote} color={post.isVoted ? 'black' : 'gray.300'} />
       <Center>{post.voteCount}</Center>
     </Flex>
     <Flex flex='1'>
@@ -190,7 +153,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
             }
           </Box>
           <Box justifyContent='flex-end'>
-            <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt ?? ''))}</Text>
+            <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt.toString()))}</Text>
           </Box> 
         </Flex>
         <Flex fontSize='sm' fontWeight='thin' gap='8px'>

@@ -36,7 +36,7 @@ type Post {
 
   poster: Profile
   comments: [Comment!]!
-  votes: [Vote!]!
+  isVoted: Boolean!
 }
 
 type Vote {
@@ -46,7 +46,7 @@ type Vote {
   postId: ID!
   voterId: ID!
 
-  # post: Post!
+  post: Post
   # voter: Profile!
 }
 
@@ -80,8 +80,24 @@ type PostConnection {
   pageInfo: PageInfo!
 }
 
+type VoteEdges {
+  cursor: Cursor!
+  node: Vote!
+}
+
+type VoteConnection {
+  edges: [VoteEdges!]!
+  pageInfo: PageInfo!
+}
+
 input CreatePostMutationInput {
   posterId: ID!
+  title: String!
+  url: String
+  content: String
+}
+
+input UpdatePostMutationInput {
   title: String!
   url: String
   content: String
@@ -102,6 +118,11 @@ input PostFilter {
   title: String
 }
 
+input VoteFilter {
+  postId: String
+  voterId: String
+}
+
 input PostOrderBy {
   createdAt: OrderByDirection
   rankingScore: OrderByDirection
@@ -118,7 +139,8 @@ type Query {
 
 type Mutation {
   createPost(input: CreatePostMutationInput!): Post!
+  updatePost(filter: PostFilter!, input: UpdatePostMutationInput!): Post!
   createVote(input: CreateVoteMutationInput!): Vote!
+  removeVote(filter: VoteFilter!): Vote!
   createComment(input: CreateCommentMutationInput!): Comment!
 }
-

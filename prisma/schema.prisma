@@ -35,7 +35,7 @@ model Post {
   commentCount  Int?      @default(0) @map("comment_count")
   voteCount     Int?      @default(0) @map("vote_count")
   viewCount     Int?      @default(0) @map("view_count")
-  rankingScore  Float?    @default(0) @db.Real @map("ranking_core")
+  rankingScore  Float?    @default(0) @db.Real @map("ranking_score")
 
   poster        Profile   @relation(fields: [posterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   comments      Comment[]
@@ -56,6 +56,7 @@ model Vote {
   voter         Profile   @relation(fields: [voterId], references: [id])
   
   @@map("votes")
+  @@unique([postId, voterId])
 }
 
 model Comment {

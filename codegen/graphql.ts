@@ -54,6 +54,8 @@ export type Mutation = {
   createComment: Comment;
   createPost: Post;
   createVote: Vote;
+  removeVote: Vote;
+  updatePost: Post;
 };
 
 
@@ -69,6 +71,17 @@ export type MutationCreatePostArgs = {
 
 export type MutationCreateVoteArgs = {
   input: CreateVoteMutationInput;
+};
+
+
+export type MutationRemoveVoteArgs = {
+  filter: VoteFilter;
+};
+
+
+export type MutationUpdatePostArgs = {
+  filter: PostFilter;
+  input: UpdatePostMutationInput;
 };
 
 export enum OrderByDirection {
@@ -94,6 +107,7 @@ export type Post = {
   content?: Maybe<Scalars['String']>;
   createdAt: Scalars['Date'];
   id: Scalars['ID'];
+  isVoted: Scalars['Boolean'];
   poster?: Maybe<Profile>;
   posterId: Scalars['ID'];
   rankingScore: Scalars['Int'];
@@ -102,7 +116,6 @@ export type Post = {
   url?: Maybe<Scalars['String']>;
   viewCount: Scalars['Int'];
   voteCount: Scalars['Int'];
-  votes: Array<Vote>;
 };
 
 export type PostConnection = {
@@ -149,16 +162,62 @@ export type QueryPostsArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
+export type UpdatePostMutationInput = {
+  content?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  url?: InputMaybe<Scalars['String']>;
+};
+
 export type Vote = {
   __typename?: 'Vote';
   createdAt: Scalars['Date'];
   id: Scalars['ID'];
+  post?: Maybe<Post>;
   postId: Scalars['ID'];
   updatedAt: Scalars['Date'];
   voterId: Scalars['ID'];
 };
 
-export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
+export type VoteConnection = {
+  __typename?: 'VoteConnection';
+  edges: Array<VoteEdges>;
+  pageInfo: PageInfo;
+};
+
+export type VoteEdges = {
+  __typename?: 'VoteEdges';
+  cursor: Scalars['Cursor'];
+  node: Vote;
+};
+
+export type VoteFilter = {
+  postId?: InputMaybe<Scalars['String']>;
+  voterId?: InputMaybe<Scalars['String']>;
+};
+
+export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
+
+export type CreateVoteMutationVariables = Exact<{
+  input: CreateVoteMutationInput;
+}>;
+
+
+export type CreateVoteMutation = { __typename?: 'Mutation', createVote: { __typename?: 'Vote', id: string, post?: { __typename?: 'Post', id: string, isVoted: boolean } | null | undefined } };
+
+export type RemoveVoteMutationVariables = Exact<{
+  filter: VoteFilter;
+}>;
+
+
+export type RemoveVoteMutation = { __typename?: 'Mutation', removeVote: { __typename?: 'Vote', id: string, post?: { __typename?: 'Post', id: string, isVoted: boolean } | null | undefined } };
+
+export type UpdatePostMutationVariables = Exact<{
+  filter: PostFilter;
+  input: UpdatePostMutationInput;
+}>;
+
+
+export type UpdatePostMutation = { __typename?: 'Mutation', updatePost: { __typename?: 'Post', id: string, viewCount: number } };
 
 export type CreatePostMutationVariables = Exact<{
   input: CreatePostMutationInput;
@@ -173,7 +232,7 @@ export type ListPostQueryVariables = Exact<{
 }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
+export type ListPostQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -185,12 +244,122 @@ export const PostCardFragmentDoc = gql`
   voteCount
   commentCount
   rankingScore
+  isVoted
   poster {
     id
     username
   }
 }
     `;
+export const CreateVoteDocument = gql`
+    mutation createVote($input: CreateVoteMutationInput!) {
+  createVote(input: $input) {
+    id
+    post {
+      id
+      isVoted
+    }
+  }
+}
+    `;
+export type CreateVoteMutationFn = Apollo.MutationFunction<CreateVoteMutation, CreateVoteMutationVariables>;
+
+/**
+ * __useCreateVoteMutation__
+ *
+ * To run a mutation, you first call `useCreateVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVoteMutation, { data, loading, error }] = useCreateVoteMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateVoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateVoteMutation, CreateVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateVoteMutation, CreateVoteMutationVariables>(CreateVoteDocument, options);
+      }
+export type CreateVoteMutationHookResult = ReturnType<typeof useCreateVoteMutation>;
+export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>;
+export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMutation, CreateVoteMutationVariables>;
+export const RemoveVoteDocument = gql`
+    mutation removeVote($filter: VoteFilter!) {
+  removeVote(filter: $filter) {
+    id
+    post {
+      id
+      isVoted
+    }
+  }
+}
+    `;
+export type RemoveVoteMutationFn = Apollo.MutationFunction<RemoveVoteMutation, RemoveVoteMutationVariables>;
+
+/**
+ * __useRemoveVoteMutation__
+ *
+ * To run a mutation, you first call `useRemoveVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeVoteMutation, { data, loading, error }] = useRemoveVoteMutation({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useRemoveVoteMutation(baseOptions?: Apollo.MutationHookOptions<RemoveVoteMutation, RemoveVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveVoteMutation, RemoveVoteMutationVariables>(RemoveVoteDocument, options);
+      }
+export type RemoveVoteMutationHookResult = ReturnType<typeof useRemoveVoteMutation>;
+export type RemoveVoteMutationResult = Apollo.MutationResult<RemoveVoteMutation>;
+export type RemoveVoteMutationOptions = Apollo.BaseMutationOptions<RemoveVoteMutation, RemoveVoteMutationVariables>;
+export const UpdatePostDocument = gql`
+    mutation updatePost($filter: PostFilter!, $input: UpdatePostMutationInput!) {
+  updatePost(filter: $filter, input: $input) {
+    id
+    viewCount
+  }
+}
+    `;
+export type UpdatePostMutationFn = Apollo.MutationFunction<UpdatePostMutation, UpdatePostMutationVariables>;
+
+/**
+ * __useUpdatePostMutation__
+ *
+ * To run a mutation, you first call `useUpdatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePostMutation, { data, loading, error }] = useUpdatePostMutation({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePostMutation, UpdatePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePostMutation, UpdatePostMutationVariables>(UpdatePostDocument, options);
+      }
+export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
+export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
+export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($input: CreatePostMutationInput!) {
   createPost(input: $input) {
@@ -358,7 +527,11 @@ export type ResolversTypes = {
   Profile: ResolverTypeWrapper<ProfileModel>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  UpdatePostMutationInput: UpdatePostMutationInput;
   Vote: ResolverTypeWrapper<VoteModel>;
+  VoteConnection: ResolverTypeWrapper<Omit<VoteConnection, 'edges'> & { edges: Array<ResolversTypes['VoteEdges']> }>;
+  VoteEdges: ResolverTypeWrapper<Omit<VoteEdges, 'node'> & { node: ResolversTypes['Vote'] }>;
+  VoteFilter: VoteFilter;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -382,7 +555,11 @@ export type ResolversParentTypes = {
   Profile: ProfileModel;
   Query: {};
   String: Scalars['String'];
+  UpdatePostMutationInput: UpdatePostMutationInput;
   Vote: VoteModel;
+  VoteConnection: Omit<VoteConnection, 'edges'> & { edges: Array<ResolversParentTypes['VoteEdges']> };
+  VoteEdges: Omit<VoteEdges, 'node'> & { node: ResolversParentTypes['Vote'] };
+  VoteFilter: VoteFilter;
 };
 
 export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
@@ -407,6 +584,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'input'>>;
   createVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationCreateVoteArgs, 'input'>>;
+  removeVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationRemoveVoteArgs, 'filter'>>;
+  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'filter' | 'input'>>;
 };
 
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
@@ -424,6 +603,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  isVoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   poster?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   posterId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   rankingScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -432,7 +612,6 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   viewCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   voteCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  votes?: Resolver<Array<ResolversTypes['Vote']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -465,9 +644,22 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type VoteResolvers<ContextType = any, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   voterId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VoteConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['VoteConnection'] = ResolversParentTypes['VoteConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['VoteEdges']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VoteEdgesResolvers<ContextType = any, ParentType extends ResolversParentTypes['VoteEdges'] = ResolversParentTypes['VoteEdges']> = {
+  cursor?: Resolver<ResolversTypes['Cursor'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Vote'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -483,5 +675,7 @@ export type Resolvers<ContextType = any> = {
   Profile?: ProfileResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Vote?: VoteResolvers<ContextType>;
+  VoteConnection?: VoteConnectionResolvers<ContextType>;
+  VoteEdges?: VoteEdgesResolvers<ContextType>;
 };
 

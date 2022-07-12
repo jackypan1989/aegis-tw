@@ -10,7 +10,7 @@ export const LIST_POST = gql`
   
   query listPost (
     $first: Int,
-    $after: Cursor,
+    $after: Cursor
   ) {
     posts(
       first: $first,
