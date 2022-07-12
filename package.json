@@ -3,11 +3,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "yarn codegen:prisma",
     "start": "next start",
     "lint": "next lint",
     "codegen": "graphql-codegen",
     "codegen:watch": "graphql-codegen --watch",
-    "codegen:sql": "node ./src/utils/mergeSql"
+    "codegen:sql": "node ./src/utils/mergeSql",
+    "codegen:prisma": "prisma generate"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint"
