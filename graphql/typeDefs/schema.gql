@@ -32,7 +32,7 @@ type Post {
   commentCount: Int!
   voteCount: Int!
   viewCount: Int!
-  rankingScore: IntFilter
+  rankingScore: Int!
 
   poster: Profile!
   comments: [Comment!]!
@@ -62,9 +62,7 @@ type Comment {
   # commenter: Profile!
 }
 
-# ===
-
-input PageCursorArg {
+input CursorArgs {
   first: Int
   after: Cursor
   last: Int
@@ -74,16 +72,19 @@ input PageCursorArg {
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
+  startCursor: Cursor!
+  endCursor: Cursor!
   totalPageCount: Int
 }
 
-type PostEdge {
+type PostEdges {
   cursor: Cursor!
   node: Post!
 }
 
 type PostConnection {
-  edges: [Post]
+  edges: [PostEdges!]!
+  pageInfo: PageInfo!
 }
 
 input AddPostMutationInput {
@@ -114,7 +115,7 @@ input PostOrderBy {
 }
 
 type Query {
-  posts(cursorArg: PageCursorArg, filter: PostFilter, orderBy: [PostOrderBy!]): PostConnection!
+  posts(cursorArgs: CursorArgs, filter: PostFilter, orderBy: [PostOrderBy!]): PostConnection!
 }
 
 type Mutation {

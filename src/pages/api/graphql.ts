@@ -1,38 +1,26 @@
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import { ApolloServer, gql } from "apollo-server-nextjs";
+import { loadFilesSync } from '@graphql-tools/load-files';
+import { createServer } from '@graphql-yoga/node';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-  type Query {
-    hello: String
+import { mergeTypeDefs } from '@graphql-tools/merge';
+import resolvers from '../../../graphql/resolvers/root';
+
+const typesArray = loadFilesSync('graphql/**/*.gql')
+// const resolversArray = loadFilesSync('graphql/**/*.ts', { extensions: ['ts']})
+
+export default createServer<{
+  req: NextApiRequest
+  res: NextApiResponse
+}>({ 
+  schema: {
+    typeDefs: mergeTypeDefs(typesArray),
+    resolvers: resolvers,
   }
-`;
+})
 
-// Provide resolver functions for your schema fields
-const resolvers = {
-  Query: {
-    hello: () => "Hello world!",
-  },
-};
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-
-  // By default, the GraphQL Playground interface and GraphQL introspection
-  // is disabled in "production" (i.e. when `process.env.NODE_ENV` is `production`).
-  //
-  // If you'd like to have GraphQL Playground and introspection enabled in production,
-  // install the Playground plugin and set the `introspection` option explicitly to `true`.
-  introspection: true,
-  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
-});
-
-export default server.createHandler();
-
-// Disable Next.js body parsing so that Apollo Server can access it entirely
 export const config = {
   api: {
+    // Disable body parsing (required for file uploads)
     bodyParser: false,
   },
-};
+}

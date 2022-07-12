@@ -5,8 +5,7 @@ import { supabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
-import { PostCardFragment, useCreateVoteMutation, useDeleteVoteMutation, useUpdatePostMutation } from '../../codegen/graphql'
-import { defaultUuid, LIST_POST } from '../pages/post'
+import { PostCardFragment } from '../../codegen/graphql'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -22,117 +21,118 @@ export const POST_CARD = gql`
       id
       username
     }
-    voteCollection (
-      filter: $voteFilter
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        cursor
-        node {
-          id
-          voterId
-          direction
-        }
-      }
-    }
+    # voteCollection (
+    #   filter: $voteFilter
+    # ) {
+    #   pageInfo {
+    #     hasNextPage
+    #     endCursor
+    #   }
+    #   edges {
+    #     cursor
+    #     node {
+    #       id
+    #       voterId
+    #       direction
+    #     }
+    #   }
+    # }
   }
 `
 
-export const CREATE_VOTE = gql`
-  mutation createVote($input: VoteInsertInput!) {
-    insertIntoVoteCollection(objects: [$input]) {
-      affectedCount
-      records {
-        id
-        post {
-          id
-          voteCount
-        }
-      }
-    }
-  }
-`
+// export const CREATE_VOTE = gql`
+//   mutation createVote($input: VoteInsertInput!) {
+//     insertIntoVoteCollection(objects: [$input]) {
+//       affectedCount
+//       records {
+//         id
+//         post {
+//           id
+//           voteCount
+//         }
+//       }
+//     }
+//   }
+// `
 
-export const DELETE_VOTE = gql`
-  mutation deleteVote($filter: VoteFilter!) {
-    deleteFromVoteCollection(filter: $filter) {
-      affectedCount
-      records {
-        id
-        post {
-          id
-          voteCount
-        }
-      }
-    }
-  }
-`
+// export const DELETE_VOTE = gql`
+//   mutation deleteVote($filter: VoteFilter!) {
+//     deleteFromVoteCollection(filter: $filter) {
+//       affectedCount
+//       records {
+//         id
+//         post {
+//           id
+//           voteCount
+//         }
+//       }
+//     }
+//   }
+// `
 
-export const UPDATE_POST = gql`
-  mutation updatePost($filter: PostFilter!, $set: PostUpdateInput!) {
-    updatePostCollection(filter: $filter, set: $set) {
-      affectedCount
-      records {
-        id
-        viewCount
-      }
-    }
-  }
-`
+// export const UPDATE_POST = gql`
+//   mutation updatePost($filter: PostFilter!, $set: PostUpdateInput!) {
+//     updatePostCollection(filter: $filter, set: $set) {
+//       affectedCount
+//       records {
+//         id
+//         viewCount
+//       }
+//     }
+//   }
+// `
 
 const PostCard = (props: { post: PostCardFragment }) => {
   const { post } = props
   const { user } = useUser()
 
-  const [createVoteMutation] = useCreateVoteMutation({
-    refetchQueries: [
-      { 
-        query: LIST_POST,
-        variables: {
-          voteFilter: {
-            voterId: {
-              eq: user?.id ?? defaultUuid
-            } 
-          }
-        }
-      }
-    ]
-  })
+  // const [createVoteMutation] = useCreateVoteMutation({
+  //   refetchQueries: [
+  //     { 
+  //       query: LIST_POST,
+  //       variables: {
+  //         voteFilter: {
+  //           voterId: {
+  //             eq: user?.id ?? defaultUuid
+  //           } 
+  //         }
+  //       }
+  //     }
+  //   ]
+  // })
   
-  const [deleteVoteMutation] = useDeleteVoteMutation({
-    refetchQueries: [
-      { 
-        query: LIST_POST,
-        variables: {
-          voteFilter: {
-            voterId: {
-              eq: user?.id ?? defaultUuid
-            } 
-          }
-        } 
-      }
-    ]
-  })
+  // const [deleteVoteMutation] = useDeleteVoteMutation({
+  //   refetchQueries: [
+  //     { 
+  //       query: LIST_POST,
+  //       variables: {
+  //         voteFilter: {
+  //           voterId: {
+  //             eq: user?.id ?? defaultUuid
+  //           } 
+  //         }
+  //       } 
+  //     }
+  //   ]
+  // })
 
-  const [updatePostMutation] = useUpdatePostMutation({
-    refetchQueries: [
-      { 
-        query: LIST_POST,
-        variables: {
-          voteFilter: {
-            voterId: {
-              eq: user?.id ?? defaultUuid
-            } 
-          }
-        } 
-      }
-    ]
-  })
+  // const [updatePostMutation] = useUpdatePostMutation({
+  //   refetchQueries: [
+  //     { 
+  //       query: LIST_POST,
+  //       variables: {
+  //         voteFilter: {
+  //           voterId: {
+  //             eq: user?.id ?? defaultUuid
+  //           } 
+  //         }
+  //       } 
+  //     }
+  //   ]
+  // })
 
-  const isVoted = (post.voteCollection?.edges ?? []).filter(edge => edge.node?.voterId === user?.id).length > 0
+  // const isVoted = (post.voteCollection?.edges ?? []).filter(edge => edge.node?.voterId === user?.id).length > 0
+  const isVoted = true
 
   const onView = async () => {
     const { data, error } = await supabaseClient
@@ -142,30 +142,30 @@ const PostCard = (props: { post: PostCardFragment }) => {
   }
 
   const onVote = async () => {
-    if (isVoted) {
-      await deleteVoteMutation({
-        variables: {
-          filter: {
-            postId: {
-              eq: post.id,
-            },
-            voterId: {
-              eq: user?.id,
-            }
-          }
-        }
-      })
-    } else {
-      await createVoteMutation({
-        variables: {
-          input: {
-            postId: post.id,
-            voterId: user?.id,
-            direction: 1
-          }
-        }
-      })
-    } 
+    // if (isVoted) {
+    //   await deleteVoteMutation({
+    //     variables: {
+    //       filter: {
+    //         postId: {
+    //           eq: post.id,
+    //         },
+    //         voterId: {
+    //           eq: user?.id,
+    //         }
+    //       }
+    //     }
+    //   })
+    // } else {
+    //   await createVoteMutation({
+    //     variables: {
+    //       input: {
+    //         postId: post.id,
+    //         voterId: user?.id,
+    //         direction: 1
+    //       }
+    //     }
+    //   })
+    // } 
   }
 
   return <Flex w='100vw' p='8px' bg='white' gap='8px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'>

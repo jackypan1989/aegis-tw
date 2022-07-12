@@ -6,15 +6,17 @@ import {
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
-import { PostInsertInput, useCreatePostMutation } from '../../../codegen/graphql'
+import { useAddPostMutation } from '../../../codegen/graphql'
 
-export const CREATE_POST = gql`
-  mutation createPost($input: PostInsertInput!) {
-    insertIntoPostCollection(objects: [$input]) {
-      affectedCount
-      records {
-        id
-      }
+type FormValues = {
+  title: string
+  url: string
+}
+
+export const ADD_POST = gql`
+  mutation addPost($input: AddPostMutationInput!) {
+    addPost(input: $input) {
+      id
     }
   }
 `
@@ -25,18 +27,19 @@ const PostCreate: NextPage = () => {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm()
+  } = useForm<FormValues>()
 
-  const [createPostMutation, { loading, error }] = useCreatePostMutation()
+  const [addPost, { loading, error }] = useAddPostMutation()
 
+  if (!user) return <Box>You need to login first</Box>
   if (loading) return <Box>Submitting...</Box>
   if (error) return <Box>Submission error! ${error.message}</Box>
 
-  const onSubmit = async (value: PostInsertInput) => {
-    await createPostMutation({
+  const onSubmit = async (value: FormValues) => {
+    await addPost({
       variables: {
         input: {
-          posterId: user?.id,
+          posterId: user.id,
           title: value.title,
           url: value.url
         }
@@ -47,7 +50,7 @@ const PostCreate: NextPage = () => {
   return (
     <Box p='3'>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.title}>
+        <FormControl isInvalid={!!errors.title}>
           <FormLabel htmlFor='title'>Title</FormLabel>
           <Input
             id='title'
@@ -61,7 +64,7 @@ const PostCreate: NextPage = () => {
             {errors.title && errors.title.message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={errors.url}>
+        <FormControl isInvalid={!!errors.url}>
           <FormLabel htmlFor='url'>Url</FormLabel>
           <Input
             id='url'

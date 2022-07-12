@@ -9,8 +9,8 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
     VOLATILE NOT LEAKPROOF SECURITY DEFINER
 AS $BODY$
 begin
-  insert into public.profiles (id, "avatarUrl", username)
-  values (new.id, 'https://www.gravatar.com/avatar/' || md5(new.email) || '?d=mp', split_part(new.email, '@', 1) || '-' || floor(random() * 10000));
+  insert into public.profiles (id, username)
+  values (new.id, split_part(new.email, '@', 1) || '-' || floor(random() * 10000));
   return new;
 end;
 $BODY$;

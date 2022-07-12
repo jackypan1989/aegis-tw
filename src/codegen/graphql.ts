@@ -1,7 +1,7 @@
-import { Comment as CommentModel, Post as PostModel, Profile as ProfileModel, Vote as VoteModel } from '.prisma/client';
-import * as Apollo from '@apollo/client';
-import { gql } from '@apollo/client';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { Profile as ProfileModel, Post as PostModel, Vote as VoteModel, Comment as CommentModel } from '.prisma/client';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = undefined | T;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };

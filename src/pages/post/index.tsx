@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
-import { useUser } from "@supabase/auth-helpers-react"
 import { useListPostQuery } from "../../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
 
@@ -10,12 +9,10 @@ export const LIST_POST = gql`
   ${POST_CARD}
   
   query listPost (
-    $after: Cursor
-    $voteFilter: VoteFilter
+    $cursorArgs: CursorArgs!
   ) {
-    postCollection(
-      first: 30,
-      after: $after,
+    posts(
+      cursorArgs: $cursorArgs
       orderBy: [{ rankingScore: DescNullsLast }, { createdAt: DescNullsLast }]
     ) {
       pageInfo {
@@ -28,19 +25,15 @@ export const LIST_POST = gql`
           ...PostCard
         }
       }
-      totalCount
     }
   }
 `
 
 const PostIndex = () => {
-  const { user } = useUser()
   const { data, loading, error, fetchMore } = useListPostQuery({
     variables: {
-      voteFilter: {
-        voterId: {
-          eq: user?.id ?? defaultUuid
-        } 
+      cursorArgs: {
+        first: 30
       }
     }
   })
@@ -48,8 +41,8 @@ const PostIndex = () => {
   if (loading) return <Center><Spinner /></Center>
   if (error) return <Center>{error.message}</Center>
 
-  const nodes = data?.postCollection?.edges.map(edge => edge.node) ?? []
-  const pageInfo = data?.postCollection?.pageInfo
+  const nodes = data?.posts?.edges.map(edge => edge.node) ?? []
+  const pageInfo = data?.posts?.pageInfo
   const hasNextPage = pageInfo?.hasNextPage
   
   const onLoadMore = () => {

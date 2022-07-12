@@ -1,13 +1,20 @@
 overwrite: true
-schema: "codegen/schema.graphql"
-documents: "**/*.tsx"
+schema: graphql/**/*.gql
+documents: src/**/*.tsx
 generates:
-  codegen/graphql.ts:
+  src/codegen/graphql.ts:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+      - typescript-resolvers
     config:
+      inputMaybeValue: undefined | T
+      mappers:
+        Profile: .prisma/client#Profile as ProfileModel
+        Post: .prisma/client#Post as PostModel
+        Vote: .prisma/client#Vote as VoteModel
+        Comment: .prisma/client#Comment as CommentModel
       scalars:
         BigInt: number
         Cursor: string
@@ -16,4 +23,3 @@ generates:
         JSON: string
         Time: string
         UUID: string
-  

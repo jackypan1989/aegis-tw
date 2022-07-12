@@ -13,7 +13,7 @@ model Profile {
   updatedAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("updated_at")
   
   username    String?     @unique
-  avatarUrl  String?     @map("avatar_url")
+  avatarUrl   String?     @map("avatar_url")
   website     String?
   
   posts       Post[]
@@ -24,9 +24,9 @@ model Profile {
 }
 
 model Post {
-  id            Int       @id @default(autoincrement())
-  createdAt     DateTime? @default(now()) @db.Timestamptz(6) @map("created_at")
-  updatedAt     DateTime? @default(now()) @db.Timestamptz(6) @map("updated_at")
+  id            String    @id @db.Uuid @default(dbgenerated("uuid_generate_v4()"))
+  createdAt     DateTime  @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt     DateTime  @default(now()) @db.Timestamptz(6) @map("updated_at")
   
   posterId      String    @db.Uuid  @map("poster_id")
   title         String?   @db.VarChar
@@ -44,30 +44,31 @@ model Post {
   @@map("posts")
 }
 
-model Comment {
-  id            Int       @id @default(autoincrement())
-  createdAt     DateTime? @default(now()) @db.Timestamptz(6) @map("created_at")
-  updatedAt     DateTime? @default(now()) @db.Timestamptz(6) @map("updated_at")
-
-  postId        Int?      @map("post_id")
-  commenterId   String?   @db.Uuid @map("commenter_id")
-  content       String?   @db.VarChar
-  
-  post          Post?     @relation(fields: [postId], references: [id])
-  commenter     Profile?  @relation(fields: [commenterId], references: [id])
-  
-  @@map("comments")
-}
-
 model Vote {
-  id            Int       @id @default(autoincrement())
-  createdAt     DateTime? @default(now()) @db.Timestamptz(6) @map("created_at")
-  updatedAt     DateTime? @default(now()) @db.Timestamptz(6) @map("updated_at")
+  id            String    @id @db.Uuid @default(dbgenerated("uuid_generate_v4()"))
+  createdAt     DateTime  @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt     DateTime  @default(now()) @db.Timestamptz(6) @map("updated_at")
 
-  postId        Int?      @map("post_id")
-  voterId       String?   @db.Uuid @map("voter_id")
-  voter         Profile?  @relation(fields: [voterId], references: [id])
-  post          Post?     @relation(fields: [postId], references: [id])
+  postId        String    @db.Uuid @map("post_id")
+  voterId       String    @db.Uuid @map("voter_id")
+  
+  post          Post      @relation(fields: [postId], references: [id])
+  voter         Profile   @relation(fields: [voterId], references: [id])
   
   @@map("votes")
+}
+
+model Comment {
+  id            String    @id @db.Uuid @default(dbgenerated("uuid_generate_v4()"))
+  createdAt     DateTime  @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt     DateTime  @default(now()) @db.Timestamptz(6) @map("updated_at")
+
+  postId        String    @db.Uuid @map("post_id")
+  commenterId   String    @db.Uuid @map("commenter_id")
+  content       String    @db.VarChar
+  
+  post          Post      @relation(fields: [postId], references: [id])
+  commenter     Profile   @relation(fields: [commenterId], references: [id])
+  
+  @@map("comments")
 }
