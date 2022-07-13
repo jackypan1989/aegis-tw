@@ -115,6 +115,7 @@ input CreateCommentMutationInput {
 }
 
 input PostFilter {
+  id: ID
   title: String
 }
 
@@ -140,6 +141,7 @@ type Query {
 type Mutation {
   createPost(input: CreatePostMutationInput!): Post!
   updatePost(filter: PostFilter!, input: UpdatePostMutationInput!): Post!
+  viewPost(filter: PostFilter!): Post!
   createVote(input: CreateVoteMutationInput!): Vote!
   removeVote(filter: VoteFilter!): Vote!
   createComment(input: CreateCommentMutationInput!): Comment!

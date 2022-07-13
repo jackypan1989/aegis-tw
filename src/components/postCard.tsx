@@ -1,12 +1,11 @@
 import { gql } from '@apollo/client'
 import { TriangleUpIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui/react'
-import { supabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
-import { PostCardFragment, useCreateVoteMutation, useRemoveVoteMutation, useUpdatePostMutation } from '../../codegen/graphql'
-import { defaultUuid, LIST_POST } from '../pages/post'
+import { PostCardFragment, useCreateVoteMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
+import { LIST_POST } from '../pages/post'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -50,9 +49,9 @@ export const REMOVE_VOTE = gql`
   }
 `
 
-export const UPDATE_POST = gql`
-  mutation updatePost($filter: PostFilter!, $input: UpdatePostMutationInput!) {
-    updatePost(filter: $filter, input: $input) {
+export const VIEW_POST = gql`
+  mutation viewPost($filter: PostFilter!) {
+    viewPost(filter: $filter) {
       id
       viewCount
     }
@@ -85,26 +84,25 @@ const PostCard = (props: { post: PostCardFragment }) => {
     ]
   })
 
-  const [updatePost] = useUpdatePostMutation({
+  const [viewPost] = useViewPostMutation({
     refetchQueries: [
       { 
         query: LIST_POST,
         variables: {
-          voteFilter: {
-            voterId: {
-              eq: user?.id ?? defaultUuid
-            } 
-          }
-        } 
+          first: 30
+        }
       }
     ]
   })
 
   const onView = async () => {
-    const { data, error } = await supabaseClient
-      .from('Post')
-      .update({ viewCount: (post.viewCount ?? 0) + 1 })
-      .match({ id: post.id })
+    await viewPost({
+      variables: {
+        filter: {
+          id: post.id
+        }
+      }
+    })
   }
 
   const onVote = async () => {

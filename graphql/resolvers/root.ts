@@ -1,17 +1,19 @@
 import {
   findManyCursorConnection
 } from '@devoxa/prisma-relay-cursor-connection'
-import { Post } from '@prisma/client'
 import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
 import { Context } from '../../src/pages/api/graphql'
 
-const getRankingScore = (post: Post, newVoteCount: number) => {
-  const { createdAt, viewCount } = post
+// https://felx.me/2021/08/29/improving-the-hacker-news-ranking-algorithm.html
+const getRankingScore = (
+  voteCount: number,
+  createdAt: Date,
+  viewCount: number,  
+) => {
   const ageHours = differenceInHours(Date.now(), createdAt)
-  // https://felx.me/2021/08/29/improving-the-hacker-news-ranking-algorithm.html
-  const rs =  Math.pow(newVoteCount, 0.8) / Math.pow(ageHours + 2, 1.8) / (viewCount + 1)
-  return rs
+  const rankingScore =  Math.pow(voteCount, 0.8) / Math.pow(ageHours + 2, 1.8) / (viewCount + 1)
+  return rankingScore
 }
 
 const resolvers: Resolvers<Context> = {  
@@ -66,14 +68,38 @@ const resolvers: Resolvers<Context> = {
       })
       return result
     },
+    viewPost: async (_, args, context) => {
+      const { filter } = args
+      const { id } = filter
+
+      // get the post
+      const post = await context.prisma.post.findUnique({
+        where: {
+          id: id
+        }
+      })
+      if (!post) throw Error('There is no post with this id.') 
+
+      const result = await context.prisma.post.update({
+        data: {
+          viewCount: post.viewCount + 1,
+          rankingScore: getRankingScore(post.voteCount, post.createdAt, post.viewCount + 1)
+        },
+        where: {
+          id
+        }
+      })
+      return result
+    },
     createVote: async (_, args, context) => {
       const { input } = args
-      
+      const { postId, voterId } = input
+
       // check if voted
       const count = await context.prisma.vote.count({
         where: {
-          postId: input.postId,
-          voterId: input.voterId
+          postId,
+          voterId
         }
       })
       if (count > 0) throw Error('You have already voted this post.')
@@ -81,32 +107,32 @@ const resolvers: Resolvers<Context> = {
       // get the post
       const post = await context.prisma.post.findUnique({
         where: {
-          id: input.postId,
+          id: postId
         }
       })
       if (!post) throw Error('There is no post with this id.') 
       
-      const [vote] = await context.prisma.$transaction([
+      const [result] = await context.prisma.$transaction([
         // create vote
         context.prisma.vote.create({ 
           data: {
-            postId: input.postId,
-            voterId: input.voterId
+            postId,
+            voterId,
           } 
         }),
         // update post
         context.prisma.post.update({
           data: {
             voteCount: post.voteCount + 1,
-            rankingScore: getRankingScore(post, post.voteCount + 1)
+            rankingScore: getRankingScore(post.voteCount + 1, post.createdAt, post.viewCount)
           },
           where: {
-            id: input.postId
+            id: postId
           }
         })
       ])
       
-      return vote
+      return result
     },
     removeVote: async (_, args, context) => {
       const { filter } = args
@@ -132,7 +158,7 @@ const resolvers: Resolvers<Context> = {
       })
       if (!post) throw Error('There is no post with this id.') 
       
-      const [vote] = await context.prisma.$transaction([
+      const [result] = await context.prisma.$transaction([
         // delete vote
         context.prisma.vote.delete({ 
           where: {
@@ -146,7 +172,7 @@ const resolvers: Resolvers<Context> = {
         context.prisma.post.update({
           data: {
             voteCount: post.voteCount - 1,
-            rankingScore: getRankingScore(post, post.voteCount - 1)
+            rankingScore: getRankingScore(post.voteCount - 1, post.createdAt, post.viewCount)
           },
           where: {
             id: postId
@@ -154,7 +180,7 @@ const resolvers: Resolvers<Context> = {
         })
       ])
       
-      return vote
+      return result
     },
     createComment: async (_, args, context) => {
       const { input } = args

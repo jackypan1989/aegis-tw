@@ -56,6 +56,7 @@ export type Mutation = {
   createVote: Vote;
   removeVote: Vote;
   updatePost: Post;
+  viewPost: Post;
 };
 
 
@@ -82,6 +83,11 @@ export type MutationRemoveVoteArgs = {
 export type MutationUpdatePostArgs = {
   filter: PostFilter;
   input: UpdatePostMutationInput;
+};
+
+
+export type MutationViewPostArgs = {
+  filter: PostFilter;
 };
 
 export enum OrderByDirection {
@@ -131,6 +137,7 @@ export type PostEdges = {
 };
 
 export type PostFilter = {
+  id?: InputMaybe<Scalars['ID']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
@@ -211,13 +218,12 @@ export type RemoveVoteMutationVariables = Exact<{
 
 export type RemoveVoteMutation = { __typename?: 'Mutation', removeVote: { __typename?: 'Vote', id: string, post?: { __typename?: 'Post', id: string, isVoted: boolean } | null | undefined } };
 
-export type UpdatePostMutationVariables = Exact<{
+export type ViewPostMutationVariables = Exact<{
   filter: PostFilter;
-  input: UpdatePostMutationInput;
 }>;
 
 
-export type UpdatePostMutation = { __typename?: 'Mutation', updatePost: { __typename?: 'Post', id: string, viewCount: number } };
+export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename?: 'Post', id: string, viewCount: number } };
 
 export type CreatePostMutationVariables = Exact<{
   input: CreatePostMutationInput;
@@ -325,41 +331,40 @@ export function useRemoveVoteMutation(baseOptions?: Apollo.MutationHookOptions<R
 export type RemoveVoteMutationHookResult = ReturnType<typeof useRemoveVoteMutation>;
 export type RemoveVoteMutationResult = Apollo.MutationResult<RemoveVoteMutation>;
 export type RemoveVoteMutationOptions = Apollo.BaseMutationOptions<RemoveVoteMutation, RemoveVoteMutationVariables>;
-export const UpdatePostDocument = gql`
-    mutation updatePost($filter: PostFilter!, $input: UpdatePostMutationInput!) {
-  updatePost(filter: $filter, input: $input) {
+export const ViewPostDocument = gql`
+    mutation viewPost($filter: PostFilter!) {
+  viewPost(filter: $filter) {
     id
     viewCount
   }
 }
     `;
-export type UpdatePostMutationFn = Apollo.MutationFunction<UpdatePostMutation, UpdatePostMutationVariables>;
+export type ViewPostMutationFn = Apollo.MutationFunction<ViewPostMutation, ViewPostMutationVariables>;
 
 /**
- * __useUpdatePostMutation__
+ * __useViewPostMutation__
  *
- * To run a mutation, you first call `useUpdatePostMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePostMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useViewPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useViewPostMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updatePostMutation, { data, loading, error }] = useUpdatePostMutation({
+ * const [viewPostMutation, { data, loading, error }] = useViewPostMutation({
  *   variables: {
  *      filter: // value for 'filter'
- *      input: // value for 'input'
  *   },
  * });
  */
-export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePostMutation, UpdatePostMutationVariables>) {
+export function useViewPostMutation(baseOptions?: Apollo.MutationHookOptions<ViewPostMutation, ViewPostMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePostMutation, UpdatePostMutationVariables>(UpdatePostDocument, options);
+        return Apollo.useMutation<ViewPostMutation, ViewPostMutationVariables>(ViewPostDocument, options);
       }
-export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
-export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
-export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
+export type ViewPostMutationHookResult = ReturnType<typeof useViewPostMutation>;
+export type ViewPostMutationResult = Apollo.MutationResult<ViewPostMutation>;
+export type ViewPostMutationOptions = Apollo.BaseMutationOptions<ViewPostMutation, ViewPostMutationVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($input: CreatePostMutationInput!) {
   createPost(input: $input) {
@@ -588,6 +593,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationCreateVoteArgs, 'input'>>;
   removeVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationRemoveVoteArgs, 'filter'>>;
   updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'filter' | 'input'>>;
+  viewPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationViewPostArgs, 'filter'>>;
 };
 
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
