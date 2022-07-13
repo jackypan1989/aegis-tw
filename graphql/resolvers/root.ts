@@ -42,9 +42,15 @@ const resolvers: Resolvers<Context> = {
   },
   Query: {
     posts: async (_, args, context) => {
+      const { filter } = args
+      const where = filter?.title 
+        ? { title: { contains: filter?.title } } 
+        : {}
+
       const result = await findManyCursorConnection(
         (findManyArgs) => context.prisma.post.findMany({
           ...findManyArgs,
+          where: where,
           orderBy: {
             rankingScore: 'desc'
           }

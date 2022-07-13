@@ -134,7 +134,8 @@ type Query {
     first: Int,
     after: Cursor,
     last: Int,
-    before: Cursor
+    before: Cursor,
+    filter: PostFilter
   ): PostConnection!
 }
 

@@ -1,41 +1,16 @@
-import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
 import { useListPostQuery } from "../../../codegen/graphql"
-import PostCard, { POST_CARD } from "../../components/postCard"
+import PostCard from "../../components/postCard"
 
 export const defaultUuid = "00000000-0000-0000-0000-000000000000"
 
-export const LIST_POST = gql`
-  ${POST_CARD}
-  
-  query listPost (
-    $first: Int,
-    $after: Cursor,
-    $filter: PostFilter
-  ) {
-    posts(
-      first: $first,
-      after: $after,
-      filter: $filter
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        cursor
-        node {
-          ...PostCard
-        }
-      }
-    }
-  }
-`
-
-const PostIndex = () => {
+const Job = () => {
   const { data, loading, error, fetchMore } = useListPostQuery({
     variables: {
-      first: 30
+      first: 30,
+      filter: {
+        title: '徵才'
+      }
     }
   })
 
@@ -50,7 +25,7 @@ const PostIndex = () => {
     if (hasNextPage) {
       fetchMore({
         variables: {
-          after: pageInfo.endCursor,
+          after: pageInfo.endCursor
         }
       })
     }
@@ -66,4 +41,4 @@ const PostIndex = () => {
   </Flex>
 }
 
-export default PostIndex
+export default Job

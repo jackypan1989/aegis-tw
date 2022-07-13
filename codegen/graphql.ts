@@ -165,6 +165,7 @@ export type Query = {
 export type QueryPostsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<PostFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
 };
@@ -235,6 +236,7 @@ export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __type
 export type ListPostQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<PostFilter>;
 }>;
 
 
@@ -399,8 +401,8 @@ export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutati
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const ListPostDocument = gql`
-    query listPost($first: Int, $after: Cursor) {
-  posts(first: $first, after: $after) {
+    query listPost($first: Int, $after: Cursor, $filter: PostFilter) {
+  posts(first: $first, after: $after, filter: $filter) {
     pageInfo {
       hasNextPage
       endCursor
@@ -429,6 +431,7 @@ export const ListPostDocument = gql`
  *   variables: {
  *      first: // value for 'first'
  *      after: // value for 'after'
+ *      filter: // value for 'filter'
  *   },
  * });
  */
