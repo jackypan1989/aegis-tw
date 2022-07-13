@@ -226,6 +226,15 @@ export type ViewPostMutationVariables = Exact<{
 
 export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename?: 'Post', id: string, viewCount: number } };
 
+export type ListPostOnlyJobQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<PostFilter>;
+}>;
+
+
+export type ListPostOnlyJobQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
+
 export type CreatePostMutationVariables = Exact<{
   input: CreatePostMutationInput;
 }>;
@@ -367,6 +376,52 @@ export function useViewPostMutation(baseOptions?: Apollo.MutationHookOptions<Vie
 export type ViewPostMutationHookResult = ReturnType<typeof useViewPostMutation>;
 export type ViewPostMutationResult = Apollo.MutationResult<ViewPostMutation>;
 export type ViewPostMutationOptions = Apollo.BaseMutationOptions<ViewPostMutation, ViewPostMutationVariables>;
+export const ListPostOnlyJobDocument = gql`
+    query listPostOnlyJob($first: Int, $after: Cursor, $filter: PostFilter) {
+  posts(first: $first, after: $after, filter: $filter) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        ...PostCard
+      }
+    }
+  }
+}
+    ${PostCardFragmentDoc}`;
+
+/**
+ * __useListPostOnlyJobQuery__
+ *
+ * To run a query within a React component, call `useListPostOnlyJobQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListPostOnlyJobQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListPostOnlyJobQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useListPostOnlyJobQuery(baseOptions?: Apollo.QueryHookOptions<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>(ListPostOnlyJobDocument, options);
+      }
+export function useListPostOnlyJobLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>(ListPostOnlyJobDocument, options);
+        }
+export type ListPostOnlyJobQueryHookResult = ReturnType<typeof useListPostOnlyJobQuery>;
+export type ListPostOnlyJobLazyQueryHookResult = ReturnType<typeof useListPostOnlyJobLazyQuery>;
+export type ListPostOnlyJobQueryResult = Apollo.QueryResult<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($input: CreatePostMutationInput!) {
   createPost(input: $input) {

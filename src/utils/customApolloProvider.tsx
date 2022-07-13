@@ -20,7 +20,8 @@ export const CustomApolloProvider = (props: {children: ReactNode}) => {
     typePolicies: {
       Query: {
         fields: {
-          posts: relayStylePagination()
+          listPost: relayStylePagination(),
+          listPostOnlyJob: relayStylePagination()
         }
       }
     }

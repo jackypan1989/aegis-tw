@@ -1,11 +1,39 @@
+import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
-import { useListPostQuery } from "../../../codegen/graphql"
-import PostCard from "../../components/postCard"
+import { useListPostOnlyJobQuery } from "../../../codegen/graphql"
+import PostCard, { POST_CARD } from "../../components/postCard"
 
 export const defaultUuid = "00000000-0000-0000-0000-000000000000"
 
+export const LIST_POST_ONLY_JOB = gql`
+  ${POST_CARD}
+  
+  query listPostOnlyJob (
+    $first: Int,
+    $after: Cursor,
+    $filter: PostFilter
+  ) {
+    posts(
+      first: $first,
+      after: $after,
+      filter: $filter
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          ...PostCard
+        }
+      }
+    }
+  }
+`
+
 const Job = () => {
-  const { data, loading, error, fetchMore } = useListPostQuery({
+  const { data, loading, error, fetchMore } = useListPostOnlyJobQuery({
     variables: {
       first: 30,
       filter: {
