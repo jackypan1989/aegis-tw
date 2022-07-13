@@ -1,8 +1,19 @@
 import {
   findManyCursorConnection
 } from '@devoxa/prisma-relay-cursor-connection'
+import { Post } from '@prisma/client'
+import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
 import { Context } from '../../src/pages/api/graphql'
+
+const getRankingScore = (post: Post, newVoteCount: number) => {
+  const { createdAt, viewCount } = post
+  const ageHours = differenceInHours(Date.now(), createdAt)
+  const rs =  Math.pow(newVoteCount, 0.8) / Math.pow(ageHours + 2, 1.8) / (viewCount + 1)
+
+  console.log(createdAt, viewCount, ageHours, newVoteCount, rs)
+  return rs
+}
 
 const resolvers: Resolvers<Context> = {  
   Post: {
@@ -53,13 +64,93 @@ const resolvers: Resolvers<Context> = {
     },
     createVote: async (_, args, context) => {
       const { input } = args
-      const result = await context.prisma.vote.create({ 
-        data: {
+      
+      // check if voted
+      const count = await context.prisma.vote.count({
+        where: {
           postId: input.postId,
           voterId: input.voterId
-        } 
+        }
       })
-      return result
+      if (count > 0) throw Error('You have already voted this post.')
+        
+      // get the post
+      const post = await context.prisma.post.findUnique({
+        where: {
+          id: input.postId,
+        }
+      })
+      if (!post) throw Error('There is no post with this id.') 
+      
+      const [vote] = await context.prisma.$transaction([
+        // create vote
+        context.prisma.vote.create({ 
+          data: {
+            postId: input.postId,
+            voterId: input.voterId
+          } 
+        }),
+        // update post
+        context.prisma.post.update({
+          data: {
+            voteCount: post.voteCount + 1,
+            rankingScore: getRankingScore(post, post.voteCount + 1)
+          },
+          where: {
+            id: input.postId
+          }
+        })
+      ])
+      
+      return vote
+    },
+    removeVote: async (_, args, context) => {
+      const { filter } = args
+      const { postId, voterId } = filter 
+
+      // check arguments
+      if (!postId || !voterId) throw Error('You need both postId and voteId.')
+
+      // check if voted
+      const count = await context.prisma.vote.count({
+        where: {
+          postId,
+          voterId
+        }
+      })
+      if (count === 0) throw Error('There is no vote for this id to remove.')
+        
+      // get the post
+      const post = await context.prisma.post.findUnique({
+        where: {
+          id: postId,
+        }
+      })
+      if (!post) throw Error('There is no post with this id.') 
+      
+      const [vote] = await context.prisma.$transaction([
+        // delete vote
+        context.prisma.vote.delete({ 
+          where: {
+            postId_voterId: {
+              postId,
+              voterId,
+            }
+          }
+        }),
+        // update post
+        context.prisma.post.update({
+          data: {
+            voteCount: post.voteCount - 1,
+            rankingScore: getRankingScore(post, post.voteCount - 1)
+          },
+          where: {
+            id: postId
+          }
+        })
+      ])
+      
+      return vote
     },
     createComment: async (_, args, context) => {
       const { input } = args
@@ -71,22 +162,6 @@ const resolvers: Resolvers<Context> = {
         } 
       })
       return result
-    },
-    removeVote: async (_, args, context) => {
-      const { filter } = args
-      if (filter.postId && filter.voterId) {
-        const result = await context.prisma.vote.delete({ 
-          where: { 
-            postId_voterId: {
-              postId: filter.postId,
-              voterId: filter.voterId
-            }
-          }
-        }) 
-        return result
-      } else {
-        throw Error('Argument Wrong!')
-      }
     }
   }
 }

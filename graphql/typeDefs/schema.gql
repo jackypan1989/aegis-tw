@@ -32,7 +32,7 @@ type Post {
   commentCount: Int!
   voteCount: Int!
   viewCount: Int!
-  rankingScore: Int!
+  rankingScore: Float!
 
   poster: Profile
   comments: [Comment!]!

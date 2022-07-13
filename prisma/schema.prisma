@@ -32,10 +32,10 @@ model Post {
   title         String?   @db.VarChar
   url           String?   @db.VarChar
   content       String?   @db.VarChar
-  commentCount  Int?      @default(0) @map("comment_count")
-  voteCount     Int?      @default(0) @map("vote_count")
-  viewCount     Int?      @default(0) @map("view_count")
-  rankingScore  Float?    @default(0) @db.Real @map("ranking_score")
+  commentCount  Int       @default(0) @map("comment_count")
+  voteCount     Int       @default(0) @map("vote_count")
+  viewCount     Int       @default(0) @map("view_count")
+  rankingScore  Float     @default(0) @db.Real @map("ranking_score")
 
   poster        Profile   @relation(fields: [posterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   comments      Comment[]

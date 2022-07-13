@@ -110,7 +110,7 @@ export type Post = {
   isVoted: Scalars['Boolean'];
   poster?: Maybe<Profile>;
   posterId: Scalars['ID'];
-  rankingScore: Scalars['Int'];
+  rankingScore: Scalars['Float'];
   title: Scalars['String'];
   updatedAt: Scalars['Date'];
   url?: Maybe<Scalars['String']>;
@@ -514,6 +514,7 @@ export type ResolversTypes = {
   CreateVoteMutationInput: CreateVoteMutationInput;
   Cursor: ResolverTypeWrapper<Scalars['Cursor']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -543,6 +544,7 @@ export type ResolversParentTypes = {
   CreateVoteMutationInput: CreateVoteMutationInput;
   Cursor: Scalars['Cursor'];
   Date: Scalars['Date'];
+  Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -606,7 +608,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   isVoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   poster?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   posterId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  rankingScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  rankingScore?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
