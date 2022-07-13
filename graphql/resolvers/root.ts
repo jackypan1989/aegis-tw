@@ -9,9 +9,8 @@ import { Context } from '../../src/pages/api/graphql'
 const getRankingScore = (post: Post, newVoteCount: number) => {
   const { createdAt, viewCount } = post
   const ageHours = differenceInHours(Date.now(), createdAt)
+  // https://felx.me/2021/08/29/improving-the-hacker-news-ranking-algorithm.html
   const rs =  Math.pow(newVoteCount, 0.8) / Math.pow(ageHours + 2, 1.8) / (viewCount + 1)
-
-  console.log(createdAt, viewCount, ageHours, newVoteCount, rs)
   return rs
 }
 
@@ -42,7 +41,12 @@ const resolvers: Resolvers<Context> = {
   Query: {
     posts: async (_, args, context) => {
       const result = await findManyCursorConnection(
-        (findManyArgs) => context.prisma.post.findMany(findManyArgs),
+        (findManyArgs) => context.prisma.post.findMany({
+          ...findManyArgs,
+          orderBy: {
+            rankingScore: 'desc'
+          }
+        }),
         () => context.prisma.post.count(),
         args
       )
