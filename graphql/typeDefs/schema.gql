@@ -13,6 +13,7 @@ type Profile {
   createdAt: Date!
   updatedAt: Date!
   username: String!
+  email: String!
   avatarUrl: String
   website: String
 

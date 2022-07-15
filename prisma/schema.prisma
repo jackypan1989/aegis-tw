@@ -13,6 +13,7 @@ model Profile {
   updatedAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("updated_at")
   
   username    String?     @unique
+  email       String?     @unique
   avatarUrl   String?     @map("avatar_url")
   website     String?
   

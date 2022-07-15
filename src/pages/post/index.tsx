@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
+import Link from "next/link"
 import { useListPostQuery } from "../../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
 
@@ -45,7 +46,7 @@ const PostIndex = () => {
   const nodes = data?.posts?.edges.map(edge => edge.node) ?? []
   const pageInfo = data?.posts?.pageInfo
   const hasNextPage = pageInfo?.hasNextPage
-  
+
   const onLoadMore = () => {
     if (hasNextPage) {
       fetchMore({
@@ -57,6 +58,10 @@ const PostIndex = () => {
   }
 
   return <Flex direction='column' alignItems='center' gap='8px'>
+    <Flex>
+      <Box>News</Box>
+      <Link href='/post/create'>Submit</Link>
+    </Flex>
     {nodes.map(node => {
       return node && <PostCard key={node?.id} post={node} refetchQuery={LIST_POST}/>
     })}

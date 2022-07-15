@@ -41,6 +41,15 @@ const resolvers: Resolvers<UserContext> = {
     },
   },
   Query: {
+    profile: async (_, args, context) => {
+      const { id } = args
+      const result = await context.prisma.profile.findUnique({
+        where: {
+          id: id
+        }
+      })
+      return result
+    },
     posts: async (_, args, context) => {
       const { filter } = args
       const where = filter?.title 

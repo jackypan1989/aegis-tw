@@ -189,8 +189,8 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
     VOLATILE NOT LEAKPROOF SECURITY DEFINER
 AS $BODY$
 begin
-  insert into public.profiles (id, username)
-  values (new.id, split_part(new.email, '@', 1) || '-' || floor(random() * 10000));
+  insert into public.profiles (id, username, email)
+  values (new.id, split_part(new.email, '@', 1), new.email);
   return new;
 end;
 $BODY$;
