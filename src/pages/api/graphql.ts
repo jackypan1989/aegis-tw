@@ -9,17 +9,19 @@ import resolvers from '../../../graphql/resolvers/root';
 import { prisma } from '../../utils/prismaClient';
 
 const typesArray = loadFilesSync('graphql/**/*.gql')
+console.log(typesArray)
 // const resolversArray = loadFilesSync('graphql/**/*.ts', { extensions: ['ts']})
+type ServerContext = {
+  req: NextApiRequest
+  res: NextApiResponse
+}
 
-export type Context = {
+export type UserContext = {
   user: User | null,
   prisma: PrismaClient
 }
 
-export default createServer<{
-  req: NextApiRequest
-  res: NextApiResponse
-}, Context>({ 
+export default createServer<ServerContext, UserContext>({ 
   schema: {
     typeDefs: mergeTypeDefs(typesArray),
     resolvers: resolvers,

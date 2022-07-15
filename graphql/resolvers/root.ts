@@ -3,7 +3,7 @@ import {
 } from '@devoxa/prisma-relay-cursor-connection'
 import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
-import { Context } from '../../src/pages/api/graphql'
+import { UserContext } from '../../src/pages/api/graphql'
 
 // https://felx.me/2021/08/29/improving-the-hacker-news-ranking-algorithm.html
 const getRankingScore = (
@@ -16,7 +16,7 @@ const getRankingScore = (
   return rankingScore
 }
 
-const resolvers: Resolvers<Context> = {  
+const resolvers: Resolvers<UserContext> = {  
   Post: {
     poster: async (post, args, context) => {
       return context.prisma.profile.findUnique({

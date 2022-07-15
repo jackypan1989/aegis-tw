@@ -1,11 +1,10 @@
-import { gql } from '@apollo/client'
+import { DocumentNode, gql } from '@apollo/client'
 import { TriangleUpIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import { PostCardFragment, useCreateVoteMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
-import { LIST_POST } from '../pages/post'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -58,14 +57,14 @@ export const VIEW_POST = gql`
   }
 `
 
-const PostCard = (props: { post: PostCardFragment }) => {
-  const { post } = props
+const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode }) => {
+  const { post, refetchQuery } = props
   const { user } = useUser()
 
   const [createVote] = useCreateVoteMutation({
     refetchQueries: [
       { 
-        query: LIST_POST,
+        query: refetchQuery,
         variables: {
           first: 30
         }
@@ -76,7 +75,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
   const [removeVote] = useRemoveVoteMutation({
     refetchQueries: [
       { 
-        query: LIST_POST,
+        query: refetchQuery,
         variables: {
           first: 30
         }
@@ -87,7 +86,7 @@ const PostCard = (props: { post: PostCardFragment }) => {
   const [viewPost] = useViewPostMutation({
     refetchQueries: [
       { 
-        query: LIST_POST,
+        query: refetchQuery,
         variables: {
           first: 30
         }

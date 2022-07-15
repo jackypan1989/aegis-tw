@@ -58,7 +58,7 @@ const PostIndex = () => {
 
   return <Flex direction='column' alignItems='center' gap='8px'>
     {nodes.map(node => {
-      return node && <PostCard key={node?.id} post={node} />
+      return node && <PostCard key={node?.id} post={node} refetchQuery={LIST_POST}/>
     })}
     {hasNextPage && <Box p='30px'>
       <Button onClick={onLoadMore}>Load More</Button>

@@ -11,9 +11,10 @@ const Navbar = () => {
     <Link href='/job'>Job</Link>
     <Link href='/post/create'>Submit</Link>
     <Flex flex='1'/>
-    <Link href='/auth/signIn'>
-      {user ? `Profile` : `Sign In`}
-    </Link>
+    {user
+      ?<Link href={`/profile/${user.id}`}>Profile</Link>
+      :<Link href='/auth/signIn'>Sign In</Link>
+    }
   </Flex>
 }
 

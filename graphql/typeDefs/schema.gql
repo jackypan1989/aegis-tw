@@ -130,6 +130,10 @@ input PostOrderBy {
 }
 
 type Query {
+  profile(
+    id: ID!
+  ): Profile
+
   posts(
     first: Int,
     after: Cursor,
