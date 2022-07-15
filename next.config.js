@@ -12,6 +12,11 @@ const nextConfig = {
   },
   webpack: (config) => {
     config.experiments = { topLevelAwait: true, layers: true }
+    config.module.rules.push({
+      test: /\.gql$/,
+      exclude: /node_modules/,
+      loader: '@graphql-tools/webpack-loader',
+    })
     return config
   }
 }

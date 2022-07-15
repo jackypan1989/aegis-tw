@@ -1575,6 +1575,13 @@
     "@graphql-tools/utils" "8.8.0"
     tslib "^2.4.0"
 
+"@graphql-tools/optimize@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/optimize/-/optimize-1.3.0.tgz#11ea27ac73e857d882ccfd7a3a981d8d6fb521e2"
+  integrity sha512-30QOWJoMJEt1De7tAFtWJ6VPrP6SLq+tSQrA3x+WMvCW3q2exq5wPDpvAXOakVKu0y8L2E+YkipC0hcQPBQdLg==
+  dependencies:
+    tslib "^2.4.0"
+
 "@graphql-tools/optimize@^1.0.1":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/optimize/-/optimize-1.2.0.tgz#292d0a269f95d04bc6d822c034569bb7e591fb26"
@@ -1698,6 +1705,20 @@
   resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.8.0.tgz#8332ff80a1da9204ccf514750dd6f5c5cccf17dc"
   integrity sha512-KJrtx05uSM/cPYFdTnGAS1doL5bftJLAiFCDMZ8Vkifztz3BFn3gpFiy/o4wDtM8s39G46mxmt2Km/RmeltfGw==
   dependencies:
+    tslib "^2.4.0"
+
+"@graphql-tools/webpack-loader-runtime@6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/webpack-loader-runtime/-/webpack-loader-runtime-6.4.0.tgz#da293395f7ba1832e118075e2e7d6a247ad92755"
+  integrity sha512-oLREyA3nHewHpm9oPkmcFkbyXyVOpLyGf092LfdEmEwVqBO1Els1bsmJVfjDqzr/DiIiSnKIqzfgmYjfYNMUGQ==
+
+"@graphql-tools/webpack-loader@6.7.0":
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/webpack-loader/-/webpack-loader-6.7.0.tgz#bb7f762bf889ec4f8842f3a4a798e13253f587d0"
+  integrity sha512-Us3hGWOPbzj0vf7XKY7oaLb1LhfRFS20sX/Id4u/CazBCFbRW+XJ5uWBHAAgnqwvhajbt/D6Jr3Ln+4SLFLPmw==
+  dependencies:
+    "@graphql-tools/optimize" "1.3.0"
+    "@graphql-tools/webpack-loader-runtime" "6.4.0"
     tslib "^2.4.0"
 
 "@graphql-tools/wrap@8.4.19":
