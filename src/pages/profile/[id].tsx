@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client"
-import { Box, Heading, Text } from "@chakra-ui/react"
+import { Box, Button, Heading, Text } from "@chakra-ui/react"
+import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import { useProfileQuery } from "../../../codegen/graphql"
@@ -31,16 +32,18 @@ const ProfileDetail = () => {
   if (loading) return <Box>Loading...</Box>
   
   const profile = data?.profile
-  
-  if (user?.id === profile?.id) {
-    return <Box>
+  console.log(data)
+
+  if (id === user?.id) {
+    return <Box p='30'>
       <Heading>My Profile</Heading>
       <Text>{profile?.id}</Text>
       <Text>{profile?.username}</Text>
       <Text>{profile?.email}</Text>
+      <Button onClick={() => supabaseClient.auth.signOut()}>Sign Out</Button>
     </Box>
   } else {
-    return <Box>
+    return <Box p='30'>
       <Heading>About {profile?.username}</Heading>
       <Text>{profile?.id}</Text>
       <Text>{profile?.username}</Text>

@@ -1,4 +1,4 @@
--- POLICY: Users can insert their own profile.
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";-- POLICY: Users can insert their own profile.
 
 -- DROP POLICY IF EXISTS "Users can insert their own profile." ON public.profile;
 
