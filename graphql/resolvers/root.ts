@@ -18,23 +18,24 @@ const getRankingScore = (
 
 const resolvers: Resolvers<UserContext> = {  
   Post: {
-    poster: async (post, args, context) => {
+    poster: async (post, _args, context) => {
       return context.prisma.profile.findUnique({
         where: { id: post.posterId }
       })
     },
-    isVoted: async (post, args, context) => {
+    isVoted: async (post, _args, context) => {
+      if (!context.user) return false
       const count = await context.prisma.vote.count({
         where: { 
           postId: post.id,
-          voterId: context.user?.id
+          voterId: context.user.id
         }
       })
       return count > 0
     },
   },
   Vote: {
-    post: async (vote, args, context) => {
+    post: async (vote, _args, context) => {
       return context.prisma.post.findUnique({
         where: { id: vote.postId }
       })

@@ -3,6 +3,7 @@ import { TriangleUpIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
+import NextLink from 'next/link'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import { PostCardFragment, useCreateVoteMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
 
@@ -155,9 +156,11 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
           <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiMessageAdd}/>}>
             {post.commentCount}
           </Button>
-          <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiUser}/>}>
-            {post.poster?.username}
-          </Button>
+          <NextLink href={`/profile/${post.poster?.id}`}>
+            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiUser}/>}>
+              {post.poster?.username}
+            </Button>
+          </NextLink>
         </Flex>
       </Flex>
     </Flex>
