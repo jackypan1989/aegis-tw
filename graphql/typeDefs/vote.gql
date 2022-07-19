@@ -1,0 +1,33 @@
+type Vote {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  postId: ID!
+  voterId: ID!
+
+  post: Post
+  # voter: Profile!
+}
+
+type VoteEdges {
+  cursor: Cursor!
+  node: Vote!
+}
+
+type VoteConnection {
+  edges: [VoteEdges!]!
+  pageInfo: PageInfo!
+}
+
+input CreateVoteMutationInput {
+  postId: ID!
+}
+
+input RemoveVoteMutationInput {
+  postId: ID!
+}
+
+type Mutation {
+  createVote(input: CreateVoteMutationInput!): Vote!
+  removeVote(input: RemoveVoteMutationInput!): Vote!
+}

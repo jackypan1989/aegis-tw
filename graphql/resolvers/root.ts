@@ -71,11 +71,12 @@ const resolvers: Resolvers<UserContext> = {
     }
   },
   Mutation: {
-    createPost: async (_, args, context) => {
-      const { input } = args
+    createPost: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must login.')
+
       const result = await context.prisma.post.create({ 
         data: { 
-          posterId: input.posterId,
+          posterId: context.user.id,
           title: input.title,
           url: input.url,
           content: input.content
@@ -83,9 +84,8 @@ const resolvers: Resolvers<UserContext> = {
       })
       return result
     },
-    viewPost: async (_, args, context) => {
-      const { filter } = args
-      const { id } = filter
+    viewPost: async (_, { input }, context) => {
+      const { id } = input
 
       // get the post
       const post = await context.prisma.post.findUnique({
@@ -106,15 +106,15 @@ const resolvers: Resolvers<UserContext> = {
       })
       return result
     },
-    createVote: async (_, args, context) => {
-      const { input } = args
-      const { postId, voterId } = input
+    createVote: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must login.')
+      const { postId } = input
 
       // check if voted
       const count = await context.prisma.vote.count({
         where: {
           postId,
-          voterId
+          voterId: context.user.id
         }
       })
       if (count > 0) throw Error('You have already voted this post.')
@@ -132,7 +132,7 @@ const resolvers: Resolvers<UserContext> = {
         context.prisma.vote.create({ 
           data: {
             postId,
-            voterId,
+            voterId: context.user.id,
           } 
         }),
         // update post
@@ -149,18 +149,15 @@ const resolvers: Resolvers<UserContext> = {
       
       return result
     },
-    removeVote: async (_, args, context) => {
-      const { filter } = args
-      const { postId, voterId } = filter 
-
-      // check arguments
-      if (!postId || !voterId) throw Error('You need both postId and voteId.')
+    removeVote: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must login.')
+      const { postId } = input 
 
       // check if voted
       const count = await context.prisma.vote.count({
         where: {
           postId,
-          voterId
+          voterId: context.user.id
         }
       })
       if (count === 0) throw Error('There is no vote for this id to remove.')
@@ -179,8 +176,8 @@ const resolvers: Resolvers<UserContext> = {
           where: {
             postId_voterId: {
               postId,
-              voterId,
-            }
+              voterId: context.user.id
+            },
           }
         }),
         // update post
@@ -197,12 +194,13 @@ const resolvers: Resolvers<UserContext> = {
       
       return result
     },
-    createComment: async (_, args, context) => {
-      const { input } = args
+    createComment: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must login.')
+
       const result = await context.prisma.comment.create({ 
         data: {
           postId: input.postId,
-          commenterId: input.commenterId,
+          commenterId: context.user.id,
           content: input.content
         } 
       })

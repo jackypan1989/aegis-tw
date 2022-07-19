@@ -1,0 +1,38 @@
+type Profile {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  username: String!
+  email: String!
+  avatarUrl: String
+  website: String
+
+  # posts: [Post!]!
+  # comments: [Comment!]!
+  # votes: [Vote!]!
+}
+
+type ProfileEdges {
+  cursor: Cursor!
+  node: Profile!
+}
+
+type ProfileConnection {
+  edges: [ProfileEdges!]!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  profile(id: ID!): Profile
+}
+
+input UpdateProfileMutationInput {
+  id: ID!
+  username: String!
+  avatarUrl: String
+  website: String
+}
+
+type Mutation {
+  updateProfile(input: UpdateProfileMutationInput!): Profile
+}

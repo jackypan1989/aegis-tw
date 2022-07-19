@@ -23,6 +23,7 @@ export type Scalars = {
 
 export type Comment = {
   __typename?: 'Comment';
+  commentId?: Maybe<Scalars['ID']>;
   commenterId: Scalars['ID'];
   content: Scalars['String'];
   createdAt: Scalars['Date'];
@@ -31,22 +32,32 @@ export type Comment = {
   updatedAt: Scalars['Date'];
 };
 
+export type CommentConnection = {
+  __typename?: 'CommentConnection';
+  edges: Array<CommentEdges>;
+  pageInfo: PageInfo;
+};
+
+export type CommentEdges = {
+  __typename?: 'CommentEdges';
+  cursor: Scalars['Cursor'];
+  node: Comment;
+};
+
 export type CreateCommentMutationInput = {
-  commenterId: Scalars['ID'];
+  commentId?: InputMaybe<Scalars['ID']>;
   content: Scalars['String'];
   postId: Scalars['ID'];
 };
 
 export type CreatePostMutationInput = {
   content?: InputMaybe<Scalars['String']>;
-  posterId: Scalars['ID'];
   title: Scalars['String'];
   url?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateVoteMutationInput = {
   postId: Scalars['ID'];
-  voterId: Scalars['ID'];
 };
 
 export type Mutation = {
@@ -54,8 +65,10 @@ export type Mutation = {
   createComment: Comment;
   createPost: Post;
   createVote: Vote;
+  removeComment: Comment;
+  removePost: Post;
   removeVote: Vote;
-  updatePost: Post;
+  updateProfile?: Maybe<Profile>;
   viewPost: Post;
 };
 
@@ -75,27 +88,29 @@ export type MutationCreateVoteArgs = {
 };
 
 
-export type MutationRemoveVoteArgs = {
-  filter: VoteFilter;
+export type MutationRemoveCommentArgs = {
+  input: RemoveCommentMutationInput;
 };
 
 
-export type MutationUpdatePostArgs = {
-  filter: PostFilter;
-  input: UpdatePostMutationInput;
+export type MutationRemovePostArgs = {
+  input: RemovePostMutationInput;
+};
+
+
+export type MutationRemoveVoteArgs = {
+  input: RemoveVoteMutationInput;
+};
+
+
+export type MutationUpdateProfileArgs = {
+  input: UpdateProfileMutationInput;
 };
 
 
 export type MutationViewPostArgs = {
-  filter: PostFilter;
+  input: ViewPostMutationInput;
 };
-
-export enum OrderByDirection {
-  AscNullsFirst = 'AscNullsFirst',
-  AscNullsLast = 'AscNullsLast',
-  DescNullsFirst = 'DescNullsFirst',
-  DescNullsLast = 'DescNullsLast'
-}
 
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -137,13 +152,7 @@ export type PostEdges = {
 };
 
 export type PostFilter = {
-  id?: InputMaybe<Scalars['ID']>;
-  title?: InputMaybe<Scalars['String']>;
-};
-
-export type PostOrderBy = {
-  createdAt?: InputMaybe<OrderByDirection>;
-  rankingScore?: InputMaybe<OrderByDirection>;
+  title: Scalars['String'];
 };
 
 export type Profile = {
@@ -155,6 +164,18 @@ export type Profile = {
   updatedAt: Scalars['Date'];
   username: Scalars['String'];
   website?: Maybe<Scalars['String']>;
+};
+
+export type ProfileConnection = {
+  __typename?: 'ProfileConnection';
+  edges: Array<ProfileEdges>;
+  pageInfo: PageInfo;
+};
+
+export type ProfileEdges = {
+  __typename?: 'ProfileEdges';
+  cursor: Scalars['Cursor'];
+  node: Profile;
 };
 
 export type Query = {
@@ -177,10 +198,27 @@ export type QueryProfileArgs = {
   id: Scalars['ID'];
 };
 
-export type UpdatePostMutationInput = {
-  content?: InputMaybe<Scalars['String']>;
-  title: Scalars['String'];
-  url?: InputMaybe<Scalars['String']>;
+export type RemoveCommentMutationInput = {
+  id: Scalars['ID'];
+};
+
+export type RemovePostMutationInput = {
+  id: Scalars['ID'];
+};
+
+export type RemoveVoteMutationInput = {
+  postId: Scalars['ID'];
+};
+
+export type UpdateProfileMutationInput = {
+  avatarUrl?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  username: Scalars['String'];
+  website?: InputMaybe<Scalars['String']>;
+};
+
+export type ViewPostMutationInput = {
+  id: Scalars['ID'];
 };
 
 export type Vote = {
@@ -205,11 +243,6 @@ export type VoteEdges = {
   node: Vote;
 };
 
-export type VoteFilter = {
-  postId?: InputMaybe<Scalars['String']>;
-  voterId?: InputMaybe<Scalars['String']>;
-};
-
 export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
 
 export type CreateVoteMutationVariables = Exact<{
@@ -220,14 +253,14 @@ export type CreateVoteMutationVariables = Exact<{
 export type CreateVoteMutation = { __typename?: 'Mutation', createVote: { __typename?: 'Vote', id: string, post?: { __typename?: 'Post', id: string, isVoted: boolean } | null | undefined } };
 
 export type RemoveVoteMutationVariables = Exact<{
-  filter: VoteFilter;
+  input: RemoveVoteMutationInput;
 }>;
 
 
 export type RemoveVoteMutation = { __typename?: 'Mutation', removeVote: { __typename?: 'Vote', id: string, post?: { __typename?: 'Post', id: string, isVoted: boolean } | null | undefined } };
 
 export type ViewPostMutationVariables = Exact<{
-  filter: PostFilter;
+  input: ViewPostMutationInput;
 }>;
 
 
@@ -264,6 +297,13 @@ export type ProfileQueryVariables = Exact<{
 
 
 export type ProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, username: string, email: string } | null | undefined };
+
+export type UpdateProfileMutationVariables = Exact<{
+  input: UpdateProfileMutationInput;
+}>;
+
+
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, username: string, email: string } | null | undefined };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -320,8 +360,8 @@ export type CreateVoteMutationHookResult = ReturnType<typeof useCreateVoteMutati
 export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>;
 export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMutation, CreateVoteMutationVariables>;
 export const RemoveVoteDocument = gql`
-    mutation removeVote($filter: VoteFilter!) {
-  removeVote(filter: $filter) {
+    mutation removeVote($input: RemoveVoteMutationInput!) {
+  removeVote(input: $input) {
     id
     post {
       id
@@ -345,7 +385,7 @@ export type RemoveVoteMutationFn = Apollo.MutationFunction<RemoveVoteMutation, R
  * @example
  * const [removeVoteMutation, { data, loading, error }] = useRemoveVoteMutation({
  *   variables: {
- *      filter: // value for 'filter'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -357,8 +397,8 @@ export type RemoveVoteMutationHookResult = ReturnType<typeof useRemoveVoteMutati
 export type RemoveVoteMutationResult = Apollo.MutationResult<RemoveVoteMutation>;
 export type RemoveVoteMutationOptions = Apollo.BaseMutationOptions<RemoveVoteMutation, RemoveVoteMutationVariables>;
 export const ViewPostDocument = gql`
-    mutation viewPost($filter: PostFilter!) {
-  viewPost(filter: $filter) {
+    mutation viewPost($input: ViewPostMutationInput!) {
+  viewPost(input: $input) {
     id
     viewCount
   }
@@ -379,7 +419,7 @@ export type ViewPostMutationFn = Apollo.MutationFunction<ViewPostMutation, ViewP
  * @example
  * const [viewPostMutation, { data, loading, error }] = useViewPostMutation({
  *   variables: {
- *      filter: // value for 'filter'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -552,6 +592,41 @@ export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pr
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export const UpdateProfileDocument = gql`
+    mutation updateProfile($input: UpdateProfileMutationInput!) {
+  updateProfile(input: $input) {
+    id
+    username
+    email
+  }
+}
+    `;
+export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
+
+/**
+ * __useUpdateProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
+      }
+export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
+export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
+export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -623,6 +698,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<CommentModel>;
+  CommentConnection: ResolverTypeWrapper<Omit<CommentConnection, 'edges'> & { edges: Array<ResolversTypes['CommentEdges']> }>;
+  CommentEdges: ResolverTypeWrapper<Omit<CommentEdges, 'node'> & { node: ResolversTypes['Comment'] }>;
   CreateCommentMutationInput: CreateCommentMutationInput;
   CreatePostMutationInput: CreatePostMutationInput;
   CreateVoteMutationInput: CreateVoteMutationInput;
@@ -632,27 +709,32 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
-  OrderByDirection: OrderByDirection;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Post: ResolverTypeWrapper<PostModel>;
   PostConnection: ResolverTypeWrapper<Omit<PostConnection, 'edges'> & { edges: Array<ResolversTypes['PostEdges']> }>;
   PostEdges: ResolverTypeWrapper<Omit<PostEdges, 'node'> & { node: ResolversTypes['Post'] }>;
   PostFilter: PostFilter;
-  PostOrderBy: PostOrderBy;
   Profile: ResolverTypeWrapper<ProfileModel>;
+  ProfileConnection: ResolverTypeWrapper<Omit<ProfileConnection, 'edges'> & { edges: Array<ResolversTypes['ProfileEdges']> }>;
+  ProfileEdges: ResolverTypeWrapper<Omit<ProfileEdges, 'node'> & { node: ResolversTypes['Profile'] }>;
   Query: ResolverTypeWrapper<{}>;
+  RemoveCommentMutationInput: RemoveCommentMutationInput;
+  RemovePostMutationInput: RemovePostMutationInput;
+  RemoveVoteMutationInput: RemoveVoteMutationInput;
   String: ResolverTypeWrapper<Scalars['String']>;
-  UpdatePostMutationInput: UpdatePostMutationInput;
+  UpdateProfileMutationInput: UpdateProfileMutationInput;
+  ViewPostMutationInput: ViewPostMutationInput;
   Vote: ResolverTypeWrapper<VoteModel>;
   VoteConnection: ResolverTypeWrapper<Omit<VoteConnection, 'edges'> & { edges: Array<ResolversTypes['VoteEdges']> }>;
   VoteEdges: ResolverTypeWrapper<Omit<VoteEdges, 'node'> & { node: ResolversTypes['Vote'] }>;
-  VoteFilter: VoteFilter;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Comment: CommentModel;
+  CommentConnection: Omit<CommentConnection, 'edges'> & { edges: Array<ResolversParentTypes['CommentEdges']> };
+  CommentEdges: Omit<CommentEdges, 'node'> & { node: ResolversParentTypes['Comment'] };
   CreateCommentMutationInput: CreateCommentMutationInput;
   CreatePostMutationInput: CreatePostMutationInput;
   CreateVoteMutationInput: CreateVoteMutationInput;
@@ -667,24 +749,41 @@ export type ResolversParentTypes = {
   PostConnection: Omit<PostConnection, 'edges'> & { edges: Array<ResolversParentTypes['PostEdges']> };
   PostEdges: Omit<PostEdges, 'node'> & { node: ResolversParentTypes['Post'] };
   PostFilter: PostFilter;
-  PostOrderBy: PostOrderBy;
   Profile: ProfileModel;
+  ProfileConnection: Omit<ProfileConnection, 'edges'> & { edges: Array<ResolversParentTypes['ProfileEdges']> };
+  ProfileEdges: Omit<ProfileEdges, 'node'> & { node: ResolversParentTypes['Profile'] };
   Query: {};
+  RemoveCommentMutationInput: RemoveCommentMutationInput;
+  RemovePostMutationInput: RemovePostMutationInput;
+  RemoveVoteMutationInput: RemoveVoteMutationInput;
   String: Scalars['String'];
-  UpdatePostMutationInput: UpdatePostMutationInput;
+  UpdateProfileMutationInput: UpdateProfileMutationInput;
+  ViewPostMutationInput: ViewPostMutationInput;
   Vote: VoteModel;
   VoteConnection: Omit<VoteConnection, 'edges'> & { edges: Array<ResolversParentTypes['VoteEdges']> };
   VoteEdges: Omit<VoteEdges, 'node'> & { node: ResolversParentTypes['Vote'] };
-  VoteFilter: VoteFilter;
 };
 
 export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
+  commentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   commenterId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CommentConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommentConnection'] = ResolversParentTypes['CommentConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['CommentEdges']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CommentEdgesResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommentEdges'] = ResolversParentTypes['CommentEdges']> = {
+  cursor?: Resolver<ResolversTypes['Cursor'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Comment'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -700,9 +799,11 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'input'>>;
   createVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationCreateVoteArgs, 'input'>>;
-  removeVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationRemoveVoteArgs, 'filter'>>;
-  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'filter' | 'input'>>;
-  viewPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationViewPostArgs, 'filter'>>;
+  removeComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationRemoveCommentArgs, 'input'>>;
+  removePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationRemovePostArgs, 'input'>>;
+  removeVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationRemoveVoteArgs, 'input'>>;
+  updateProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
+  viewPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationViewPostArgs, 'input'>>;
 };
 
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
@@ -755,6 +856,18 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ProfileConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProfileConnection'] = ResolversParentTypes['ProfileConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['ProfileEdges']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProfileEdgesResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProfileEdges'] = ResolversParentTypes['ProfileEdges']> = {
+  cursor?: Resolver<ResolversTypes['Cursor'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   posts?: Resolver<ResolversTypes['PostConnection'], ParentType, ContextType, Partial<QueryPostsArgs>>;
   profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'id'>>;
@@ -784,6 +897,8 @@ export type VoteEdgesResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type Resolvers<ContextType = any> = {
   Comment?: CommentResolvers<ContextType>;
+  CommentConnection?: CommentConnectionResolvers<ContextType>;
+  CommentEdges?: CommentEdgesResolvers<ContextType>;
   Cursor?: GraphQLScalarType;
   Date?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
@@ -792,6 +907,8 @@ export type Resolvers<ContextType = any> = {
   PostConnection?: PostConnectionResolvers<ContextType>;
   PostEdges?: PostEdgesResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
+  ProfileConnection?: ProfileConnectionResolvers<ContextType>;
+  ProfileEdges?: ProfileEdgesResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Vote?: VoteResolvers<ContextType>;
   VoteConnection?: VoteConnectionResolvers<ContextType>;

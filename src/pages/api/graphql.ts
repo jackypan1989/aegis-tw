@@ -6,7 +6,7 @@ import { supabaseClient, User } from '@supabase/auth-helpers-nextjs';
 import resolvers from '../../../graphql/resolvers/root';
 import { prisma } from '../../utils/prismaClient';
 
-import typeDef from '../../../graphql/typeDefs/schema.gql';
+import typeDefs from '../../../graphql/typeDefs';
 
 type ServerContext = {
   req: NextApiRequest
@@ -20,7 +20,7 @@ export type UserContext = {
 
 export default createServer<ServerContext, UserContext>({ 
   schema: {
-    typeDefs: [typeDef],
+    typeDefs: typeDefs,
     resolvers: resolvers,
   },
   context: async ({ req, res }) => {

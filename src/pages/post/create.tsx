@@ -5,6 +5,7 @@ import {
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { useCreatePostMutation } from '../../../codegen/graphql'
 
@@ -22,6 +23,7 @@ export const ADD_POST = gql`
 `
 
 const PostCreate: NextPage = () => {
+  const router = useRouter()
   const { user } = useUser()
   const {
     handleSubmit,
@@ -45,6 +47,7 @@ const PostCreate: NextPage = () => {
         }
       }
     })
+    router.push('/post')
   }
 
   return (

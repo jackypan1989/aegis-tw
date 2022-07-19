@@ -1,0 +1,61 @@
+type Post {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  posterId: ID!
+  title: String!
+  url: String
+  content: String
+  commentCount: Int!
+  voteCount: Int!
+  viewCount: Int!
+  rankingScore: Float!
+
+  poster: Profile
+  comments: [Comment!]!
+  isVoted: Boolean!
+}
+
+type PostEdges {
+  cursor: Cursor!
+  node: Post!
+}
+
+type PostConnection {
+  edges: [PostEdges!]!
+  pageInfo: PageInfo!
+}
+
+input PostFilter {
+  title: String!
+}
+
+type Query {
+  posts(
+    first: Int,
+    after: Cursor,
+    last: Int,
+    before: Cursor,
+    filter: PostFilter
+  ): PostConnection!
+}
+
+input CreatePostMutationInput {
+  title: String!
+  url: String
+  content: String
+}
+
+input RemovePostMutationInput {
+  id: ID!
+}
+
+input ViewPostMutationInput {
+  id: ID!
+}
+
+type Mutation {
+  createPost(input: CreatePostMutationInput!): Post!
+  removePost(input: RemovePostMutationInput!): Post!
+  viewPost(input: ViewPostMutationInput!): Post!
+}

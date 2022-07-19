@@ -1,0 +1,39 @@
+type Comment {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  
+  postId: ID!
+  commenterId: ID!
+  # only nested comment
+  commentId: ID
+  content: String!
+
+  # post: Post!
+  # commenter: Profile!
+}
+
+type CommentEdges {
+  cursor: Cursor!
+  node: Comment!
+}
+
+type CommentConnection {
+  edges: [CommentEdges!]!
+  pageInfo: PageInfo!
+}
+
+input CreateCommentMutationInput {
+  postId: ID!
+  commentId: ID
+  content: String!
+}
+
+input RemoveCommentMutationInput {
+  id: ID!
+}
+
+type Mutation {
+  createComment(input: CreateCommentMutationInput!): Comment!
+  removeComment(input: RemoveCommentMutationInput!): Comment!
+}

@@ -37,8 +37,8 @@ export const CREATE_VOTE = gql`
 `
 
 export const REMOVE_VOTE = gql`
-  mutation removeVote($filter: VoteFilter!) {
-    removeVote(filter: $filter) {
+  mutation removeVote($input: RemoveVoteMutationInput!) {
+    removeVote(input: $input) {
       id
       post {
         id
@@ -49,8 +49,8 @@ export const REMOVE_VOTE = gql`
 `
 
 export const VIEW_POST = gql`
-  mutation viewPost($filter: PostFilter!) {
-    viewPost(filter: $filter) {
+  mutation viewPost($input: ViewPostMutationInput!) {
+    viewPost(input: $input) {
       id
       viewCount
     }
@@ -97,7 +97,7 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
   const onView = async () => {
     await viewPost({
       variables: {
-        filter: {
+        input: {
           id: post.id
         }
       }
@@ -109,9 +109,8 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
       if (post.isVoted) {
         await removeVote({
           variables: {
-            filter: {
-              postId: post.id,
-              voterId: user.id
+            input: {
+              postId: post.id
             }
           }
         })
@@ -119,8 +118,7 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
         await createVote({
           variables: {
             input: {
-              postId: post.id,
-              voterId: user.id
+              postId: post.id
             }
           }
         })
