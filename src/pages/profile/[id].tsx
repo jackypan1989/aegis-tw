@@ -4,10 +4,10 @@ import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
-import { useProfileQuery } from "../../../codegen/graphql"
+import { useGetProfileQuery } from "../../../codegen/graphql"
 
 export const GET_PROFILE = gql`
-  query profile($id: ID!) {
+  query getProfile($id: ID!) {
     profile(id: $id) {
       id
       username
@@ -39,7 +39,7 @@ const ProfileDetail = () => {
     register,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>()
-  const { data, loading } = useProfileQuery({
+  const { data, loading } = useGetProfileQuery({
     variables: {
       id: id
     }

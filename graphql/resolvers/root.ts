@@ -58,6 +58,15 @@ const resolvers: Resolvers<UserContext> = {
       })
       return result
     },
+    post: async (_, args, context) => {
+      const { id } = args
+      const result = await context.prisma.post.findUnique({
+        where: {
+          id: id
+        }
+      })
+      return result
+    },
     posts: async (_, args, context) => {
       const { filter } = args
       const where = filter?.title 
@@ -177,6 +186,18 @@ const resolvers: Resolvers<UserContext> = {
         })
       ])
       
+      return result
+    },
+    removePost: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must login.')
+      const { id } = input 
+
+      const result = await context.prisma.post.delete({ 
+        where: {
+          id
+        }
+      })
+
       return result
     },
     removeVote: async (_, { input }, context) => {

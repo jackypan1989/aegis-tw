@@ -38,7 +38,7 @@ model Post {
   viewCount     Int       @default(0) @map("view_count")
   rankingScore  Float     @default(0) @db.Real @map("ranking_score")
 
-  poster        Profile   @relation(fields: [posterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  poster        Profile   @relation(fields: [posterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   comments      Comment[]
   votes         Vote[]
 
@@ -53,8 +53,8 @@ model Vote {
   postId        String    @db.Uuid @map("post_id")
   voterId       String    @db.Uuid @map("voter_id")
   
-  post          Post      @relation(fields: [postId], references: [id])
-  voter         Profile   @relation(fields: [voterId], references: [id])
+  post          Post      @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  voter         Profile   @relation(fields: [voterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   
   @@map("votes")
   @@unique([postId, voterId])
@@ -69,8 +69,8 @@ model Comment {
   commenterId   String    @db.Uuid @map("commenter_id")
   content       String    @db.VarChar
   
-  post          Post      @relation(fields: [postId], references: [id])
-  commenter     Profile   @relation(fields: [commenterId], references: [id])
+  post          Post      @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  commenter     Profile   @relation(fields: [commenterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   
   @@map("comments")
 }

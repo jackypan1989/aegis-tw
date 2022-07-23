@@ -31,6 +31,8 @@ input PostFilter {
 }
 
 type Query {
+  post(id: ID!): Post
+
   posts(
     first: Int,
     after: Cursor,

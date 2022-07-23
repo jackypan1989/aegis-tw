@@ -1,12 +1,12 @@
 import { DocumentNode, gql } from '@apollo/client'
-import { TriangleUpIcon } from '@chakra-ui/icons'
+import { DeleteIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
-import { PostCardFragment, useCreateVoteMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
-import CommentList from './commentList'
+import { PostCardFragment, useCreateVoteMutation, useRemovePostMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -22,6 +22,14 @@ export const POST_CARD = gql`
     poster {
       id
       username
+    }
+  }
+`
+
+export const REMOVE_POST = gql`
+  mutation removePost($input: RemovePostMutationInput!) {
+    removePost(input: $input) {
+      id
     }
   }
 `
@@ -61,6 +69,7 @@ export const VIEW_POST = gql`
 
 const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode }) => {
   const { post, refetchQuery } = props
+  const router = useRouter()
   const { user } = useUser()
 
   const [createVote] = useCreateVoteMutation({
@@ -96,6 +105,14 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
     ]
   })
 
+  const [removePost] = useRemovePostMutation({
+    variables: {
+      input: {
+        id: post.id
+      }
+    }
+  })
+
   const onView = async () => {
     await viewPost({
       variables: {
@@ -128,6 +145,11 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
     }
   }
 
+  const onRemove = async () => {
+    await removePost()
+    router.push('/post')
+  }
+
   return <Flex direction='column'>
     <Flex w='100vw' p='8px' bg='white' gap='8px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'>
       <Flex direction='column' w='30px' alignItems='center'>
@@ -135,8 +157,8 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
         <Center>{post.voteCount}</Center>
       </Flex>
       <Flex flex='1'>
-        <Flex flex='1' direction='column' gap='12px'>
-          <Flex>
+        <Flex flex='1' direction='column' gap='8px'>
+          <Flex gap='4px'>
             <Box flex='1'>
               {post.url 
                 ? <Link href={post.url} target='_new' onClick={onView}>
@@ -154,20 +176,22 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
               <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt.toString()))}</Text>
             </Box> 
           </Flex>
-          <Flex fontSize='sm' fontWeight='thin' gap='8px'>
-            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiMessageAdd}/>}>
+          <Flex fontSize='sm' fontWeight='thin' gap='8px' alignItems='center'>
+            <NextLink href={`/post/${post.id}`}>
+              <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiMessageAdd}/>}>
               {post.commentCount}
             </Button>
+            </NextLink>
             <NextLink href={`/profile/${post.poster?.id}`}>
               <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiUser}/>}>
                 {post.poster?.username}
               </Button>
             </NextLink>
+            <Icon onClick={onRemove} as={DeleteIcon}></Icon>
           </Flex>
         </Flex>
       </Flex>
     </Flex>
-    <CommentList postId={post.id}/>
   </Flex>
 }
 

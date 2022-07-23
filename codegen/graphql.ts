@@ -187,6 +187,7 @@ export type ProfileEdges = {
 export type Query = {
   __typename?: 'Query';
   comments?: Maybe<CommentConnection>;
+  post?: Maybe<Post>;
   posts: PostConnection;
   profile?: Maybe<Profile>;
 };
@@ -198,6 +199,11 @@ export type QueryCommentsArgs = {
   filter?: InputMaybe<CommentFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryPostArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -284,6 +290,13 @@ export type RemoveCommentMutation = { __typename?: 'Mutation', removeComment: { 
 
 export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
 
+export type RemovePostMutationVariables = Exact<{
+  input: RemovePostMutationInput;
+}>;
+
+
+export type RemovePostMutation = { __typename?: 'Mutation', removePost: { __typename?: 'Post', id: string } };
+
 export type CreateVoteMutationVariables = Exact<{
   input: CreateVoteMutationInput;
 }>;
@@ -314,6 +327,13 @@ export type ListPostOnlyJobQueryVariables = Exact<{
 
 export type ListPostOnlyJobQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
 
+export type GetPostQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetPostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } | null | undefined };
+
 export type CreatePostMutationVariables = Exact<{
   input: CreatePostMutationInput;
 }>;
@@ -330,12 +350,12 @@ export type ListPostQueryVariables = Exact<{
 
 export type ListPostQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
 
-export type ProfileQueryVariables = Exact<{
+export type GetProfileQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, username: string, email: string } | null | undefined };
+export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, username: string, email: string } | null | undefined };
 
 export type UpdateProfileMutationVariables = Exact<{
   input: UpdateProfileMutationInput;
@@ -491,6 +511,39 @@ export function useRemoveCommentMutation(baseOptions?: Apollo.MutationHookOption
 export type RemoveCommentMutationHookResult = ReturnType<typeof useRemoveCommentMutation>;
 export type RemoveCommentMutationResult = Apollo.MutationResult<RemoveCommentMutation>;
 export type RemoveCommentMutationOptions = Apollo.BaseMutationOptions<RemoveCommentMutation, RemoveCommentMutationVariables>;
+export const RemovePostDocument = gql`
+    mutation removePost($input: RemovePostMutationInput!) {
+  removePost(input: $input) {
+    id
+  }
+}
+    `;
+export type RemovePostMutationFn = Apollo.MutationFunction<RemovePostMutation, RemovePostMutationVariables>;
+
+/**
+ * __useRemovePostMutation__
+ *
+ * To run a mutation, you first call `useRemovePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemovePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removePostMutation, { data, loading, error }] = useRemovePostMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemovePostMutation(baseOptions?: Apollo.MutationHookOptions<RemovePostMutation, RemovePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemovePostMutation, RemovePostMutationVariables>(RemovePostDocument, options);
+      }
+export type RemovePostMutationHookResult = ReturnType<typeof useRemovePostMutation>;
+export type RemovePostMutationResult = Apollo.MutationResult<RemovePostMutation>;
+export type RemovePostMutationOptions = Apollo.BaseMutationOptions<RemovePostMutation, RemovePostMutationVariables>;
 export const CreateVoteDocument = gql`
     mutation createVote($input: CreateVoteMutationInput!) {
   createVote(input: $input) {
@@ -645,6 +698,41 @@ export function useListPostOnlyJobLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type ListPostOnlyJobQueryHookResult = ReturnType<typeof useListPostOnlyJobQuery>;
 export type ListPostOnlyJobLazyQueryHookResult = ReturnType<typeof useListPostOnlyJobLazyQuery>;
 export type ListPostOnlyJobQueryResult = Apollo.QueryResult<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>;
+export const GetPostDocument = gql`
+    query getPost($id: ID!) {
+  post(id: $id) {
+    ...PostCard
+  }
+}
+    ${PostCardFragmentDoc}`;
+
+/**
+ * __useGetPostQuery__
+ *
+ * To run a query within a React component, call `useGetPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPostQuery(baseOptions: Apollo.QueryHookOptions<GetPostQuery, GetPostQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPostQuery, GetPostQueryVariables>(GetPostDocument, options);
+      }
+export function useGetPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPostQuery, GetPostQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPostQuery, GetPostQueryVariables>(GetPostDocument, options);
+        }
+export type GetPostQueryHookResult = ReturnType<typeof useGetPostQuery>;
+export type GetPostLazyQueryHookResult = ReturnType<typeof useGetPostLazyQuery>;
+export type GetPostQueryResult = Apollo.QueryResult<GetPostQuery, GetPostQueryVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($input: CreatePostMutationInput!) {
   createPost(input: $input) {
@@ -724,8 +812,8 @@ export function useListPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<L
 export type ListPostQueryHookResult = ReturnType<typeof useListPostQuery>;
 export type ListPostLazyQueryHookResult = ReturnType<typeof useListPostLazyQuery>;
 export type ListPostQueryResult = Apollo.QueryResult<ListPostQuery, ListPostQueryVariables>;
-export const ProfileDocument = gql`
-    query profile($id: ID!) {
+export const GetProfileDocument = gql`
+    query getProfile($id: ID!) {
   profile(id: $id) {
     id
     username
@@ -735,32 +823,32 @@ export const ProfileDocument = gql`
     `;
 
 /**
- * __useProfileQuery__
+ * __useGetProfileQuery__
  *
- * To run a query within a React component, call `useProfileQuery` and pass it any options that fit your needs.
- * When your component renders, `useProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useProfileQuery({
+ * const { data, loading, error } = useGetProfileQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+export function useGetProfileQuery(baseOptions: Apollo.QueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+        return Apollo.useQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
       }
-export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+export function useGetProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+          return Apollo.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
         }
-export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
-export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
-export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export type GetProfileQueryHookResult = ReturnType<typeof useGetProfileQuery>;
+export type GetProfileLazyQueryHookResult = ReturnType<typeof useGetProfileLazyQuery>;
+export type GetProfileQueryResult = Apollo.QueryResult<GetProfileQuery, GetProfileQueryVariables>;
 export const UpdateProfileDocument = gql`
     mutation updateProfile($input: UpdateProfileMutationInput!) {
   updateProfile(input: $input) {
@@ -1043,6 +1131,7 @@ export type ProfileEdgesResolvers<ContextType = any, ParentType extends Resolver
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   comments?: Resolver<Maybe<ResolversTypes['CommentConnection']>, ParentType, ContextType, Partial<QueryCommentsArgs>>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
   posts?: Resolver<ResolversTypes['PostConnection'], ParentType, ContextType, Partial<QueryPostsArgs>>;
   profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'id'>>;
 };

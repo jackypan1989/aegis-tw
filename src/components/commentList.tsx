@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client"
-import { Box, Button, Flex, FormControl, Input, InputGroup, InputRightElement, Spacer, Text } from "@chakra-ui/react"
+import { DeleteIcon } from "@chakra-ui/icons"
+import { Box, Button, Flex, FormControl, Heading, Icon, Input, InputGroup, InputRightElement, Spacer, Text } from "@chakra-ui/react"
+import { useUser } from "@supabase/auth-helpers-react"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import { useForm } from "react-hook-form"
 import { useCommentsQuery, useCreateCommentMutation, useRemoveCommentMutation } from "../../codegen/graphql"
@@ -68,10 +70,12 @@ type FormValues = {
 }
 
 const CommentList = ({ postId }: { postId: string}) => {
+  const { user } = useUser()
+
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<FormValues>()
 
@@ -114,21 +118,23 @@ const CommentList = ({ postId }: { postId: string}) => {
   const comments = data?.comments?.edges.map(edge => edge.node) ?? []
 
   return <Box p='12px'>
-    {comments.map(comment => {
-      return <Flex key={comment.id} direction='column'>
-        <Flex>
-          <Text fontWeight='bold'>{comment.commenter?.username}</Text>
-          <Spacer />
-          <Text>{formatDistanceToNowStrict(parseISO(comment.createdAt.toString()))}</Text>
+    <Heading size='md'>Comments</Heading>
+    <Flex gap='4px' direction='column'>
+      {comments.map(comment => {
+        return <Flex key={comment.id} direction='column' gap='4px'>
+          <Flex>
+            <Text fontWeight='bold'>{comment.commenter?.username}</Text>
+            <Spacer />
+            <Text>{formatDistanceToNowStrict(parseISO(comment.createdAt.toString()))}</Text>
+          </Flex>
+          {comment.commenter?.id === user?.id && <Flex>
+            <Text>{comment.content}</Text>
+            <Spacer />
+            <Icon onClick={() => onRemove(comment.id)} as={DeleteIcon}></Icon>
+          </Flex>}
         </Flex>
-        <Flex>
-          <Text>{comment.content}</Text>
-          <Spacer />
-          <Text onClick={() => onRemove(comment.id)}>Remove</Text>
-        </Flex>
-        
-      </Flex>
-    })}
+      })}
+    </Flex>
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={!!errors.content}>
         <InputGroup size='md'>
@@ -140,7 +146,7 @@ const CommentList = ({ postId }: { postId: string}) => {
             })}
           />
           <InputRightElement width='4.5rem'>
-            <Button h='1.75rem' size='sm' type='submit'>
+            <Button h='1.75rem' size='xs' type='submit'>
               Submit
             </Button>
           </InputRightElement>
