@@ -6,6 +6,7 @@ import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import NextLink from 'next/link'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import { PostCardFragment, useCreateVoteMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
+import CommentList from './commentList'
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -127,43 +128,46 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
     }
   }
 
-  return <Flex w='100vw' p='8px' bg='white' gap='8px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'>
-    <Flex direction='column' w='30px' alignItems='center'>
-      <TriangleUpIcon m='8px' onClick={onVote} color={post.isVoted ? 'black' : 'gray.300'} />
-      <Center>{post.voteCount}</Center>
-    </Flex>
-    <Flex flex='1'>
-      <Flex flex='1' direction='column' gap='12px'>
-        <Flex>
-          <Box flex='1'>
-            {post.url 
-              ? <Link href={post.url} target='_new' onClick={onView}>
-                  <Box>
+  return <Flex direction='column'>
+    <Flex w='100vw' p='8px' bg='white' gap='8px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'>
+      <Flex direction='column' w='30px' alignItems='center'>
+        <TriangleUpIcon m='8px' onClick={onVote} color={post.isVoted ? 'black' : 'gray.300'} />
+        <Center>{post.voteCount}</Center>
+      </Flex>
+      <Flex flex='1'>
+        <Flex flex='1' direction='column' gap='12px'>
+          <Flex>
+            <Box flex='1'>
+              {post.url 
+                ? <Link href={post.url} target='_new' onClick={onView}>
+                    <Box>
+                      <Heading size='sm' display='inline'>{post.title}</Heading>
+                      <Text display='inline' size='8' ml='1' color='gray'>{`(${new URL(post.url).hostname})`}</Text>
+                    </Box>
+                  </Link>
+                : <Box>
                     <Heading size='sm' display='inline'>{post.title}</Heading>
-                    <Text display='inline' size='8' ml='1' color='gray'>{`(${new URL(post.url).hostname})`}</Text>
                   </Box>
-                </Link>
-              : <Box>
-                  <Heading size='sm' display='inline'>{post.title}</Heading>
-                </Box>
-            }
-          </Box>
-          <Box justifyContent='flex-end'>
-            <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt.toString()))}</Text>
-          </Box> 
-        </Flex>
-        <Flex fontSize='sm' fontWeight='thin' gap='8px'>
-          <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiMessageAdd}/>}>
-            {post.commentCount}
-          </Button>
-          <NextLink href={`/profile/${post.poster?.id}`}>
-            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiUser}/>}>
-              {post.poster?.username}
+              }
+            </Box>
+            <Box justifyContent='flex-end'>
+              <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt.toString()))}</Text>
+            </Box> 
+          </Flex>
+          <Flex fontSize='sm' fontWeight='thin' gap='8px'>
+            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiMessageAdd}/>}>
+              {post.commentCount}
             </Button>
-          </NextLink>
+            <NextLink href={`/profile/${post.poster?.id}`}>
+              <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiUser}/>}>
+                {post.poster?.username}
+              </Button>
+            </NextLink>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
+    <CommentList postId={post.id}/>
   </Flex>
 }
 

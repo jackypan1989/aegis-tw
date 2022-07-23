@@ -41,7 +41,6 @@ const PostCreate: NextPage = () => {
     await createPost({
       variables: {
         input: {
-          posterId: user.id,
           title: value.title,
           url: value.url
         }

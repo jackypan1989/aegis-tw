@@ -9,8 +9,8 @@ type Comment {
   commentId: ID
   content: String!
 
-  # post: Post!
-  # commenter: Profile!
+  post: Post
+  commenter: Profile
 }
 
 type CommentEdges {
@@ -21,6 +21,20 @@ type CommentEdges {
 type CommentConnection {
   edges: [CommentEdges!]!
   pageInfo: PageInfo!
+}
+
+input CommentFilter {
+  postId: ID
+}
+
+type Query {
+  comments(
+    first: Int,
+    after: Cursor,
+    last: Int,
+    before: Cursor,
+    filter: CommentFilter
+  ): CommentConnection
 }
 
 input CreateCommentMutationInput {

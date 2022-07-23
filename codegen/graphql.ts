@@ -24,10 +24,12 @@ export type Scalars = {
 export type Comment = {
   __typename?: 'Comment';
   commentId?: Maybe<Scalars['ID']>;
+  commenter?: Maybe<Profile>;
   commenterId: Scalars['ID'];
   content: Scalars['String'];
   createdAt: Scalars['Date'];
   id: Scalars['ID'];
+  post?: Maybe<Post>;
   postId: Scalars['ID'];
   updatedAt: Scalars['Date'];
 };
@@ -42,6 +44,10 @@ export type CommentEdges = {
   __typename?: 'CommentEdges';
   cursor: Scalars['Cursor'];
   node: Comment;
+};
+
+export type CommentFilter = {
+  postId?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateCommentMutationInput = {
@@ -180,8 +186,18 @@ export type ProfileEdges = {
 
 export type Query = {
   __typename?: 'Query';
+  comments?: Maybe<CommentConnection>;
   posts: PostConnection;
   profile?: Maybe<Profile>;
+};
+
+
+export type QueryCommentsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<CommentFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -242,6 +258,29 @@ export type VoteEdges = {
   cursor: Scalars['Cursor'];
   node: Vote;
 };
+
+export type CommentsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<CommentFilter>;
+}>;
+
+
+export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'CommentEdges', cursor: string, node: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } | null | undefined };
+
+export type CreateCommentMutationVariables = Exact<{
+  input: CreateCommentMutationInput;
+}>;
+
+
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string } | null | undefined } };
+
+export type RemoveCommentMutationVariables = Exact<{
+  input: RemoveCommentMutationInput;
+}>;
+
+
+export type RemoveCommentMutation = { __typename?: 'Mutation', removeComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string } | null | undefined } };
 
 export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
 
@@ -322,6 +361,136 @@ export const PostCardFragmentDoc = gql`
   }
 }
     `;
+export const CommentsDocument = gql`
+    query comments($first: Int, $after: Cursor, $filter: CommentFilter) {
+  comments(first: $first, after: $after, filter: $filter) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        createdAt
+        content
+        commenter {
+          id
+          username
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useCommentsQuery__
+ *
+ * To run a query within a React component, call `useCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useCommentsQuery(baseOptions?: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, options);
+      }
+export function useCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, options);
+        }
+export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
+export type CommentsLazyQueryHookResult = ReturnType<typeof useCommentsLazyQuery>;
+export type CommentsQueryResult = Apollo.QueryResult<CommentsQuery, CommentsQueryVariables>;
+export const CreateCommentDocument = gql`
+    mutation createComment($input: CreateCommentMutationInput!) {
+  createComment(input: $input) {
+    id
+    createdAt
+    content
+    commenter {
+      id
+      username
+    }
+  }
+}
+    `;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, options);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
+export const RemoveCommentDocument = gql`
+    mutation removeComment($input: RemoveCommentMutationInput!) {
+  removeComment(input: $input) {
+    id
+    createdAt
+    content
+    commenter {
+      id
+      username
+    }
+  }
+}
+    `;
+export type RemoveCommentMutationFn = Apollo.MutationFunction<RemoveCommentMutation, RemoveCommentMutationVariables>;
+
+/**
+ * __useRemoveCommentMutation__
+ *
+ * To run a mutation, you first call `useRemoveCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeCommentMutation, { data, loading, error }] = useRemoveCommentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveCommentMutation(baseOptions?: Apollo.MutationHookOptions<RemoveCommentMutation, RemoveCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveCommentMutation, RemoveCommentMutationVariables>(RemoveCommentDocument, options);
+      }
+export type RemoveCommentMutationHookResult = ReturnType<typeof useRemoveCommentMutation>;
+export type RemoveCommentMutationResult = Apollo.MutationResult<RemoveCommentMutation>;
+export type RemoveCommentMutationOptions = Apollo.BaseMutationOptions<RemoveCommentMutation, RemoveCommentMutationVariables>;
 export const CreateVoteDocument = gql`
     mutation createVote($input: CreateVoteMutationInput!) {
   createVote(input: $input) {
@@ -700,6 +869,7 @@ export type ResolversTypes = {
   Comment: ResolverTypeWrapper<CommentModel>;
   CommentConnection: ResolverTypeWrapper<Omit<CommentConnection, 'edges'> & { edges: Array<ResolversTypes['CommentEdges']> }>;
   CommentEdges: ResolverTypeWrapper<Omit<CommentEdges, 'node'> & { node: ResolversTypes['Comment'] }>;
+  CommentFilter: CommentFilter;
   CreateCommentMutationInput: CreateCommentMutationInput;
   CreatePostMutationInput: CreatePostMutationInput;
   CreateVoteMutationInput: CreateVoteMutationInput;
@@ -735,6 +905,7 @@ export type ResolversParentTypes = {
   Comment: CommentModel;
   CommentConnection: Omit<CommentConnection, 'edges'> & { edges: Array<ResolversParentTypes['CommentEdges']> };
   CommentEdges: Omit<CommentEdges, 'node'> & { node: ResolversParentTypes['Comment'] };
+  CommentFilter: CommentFilter;
   CreateCommentMutationInput: CreateCommentMutationInput;
   CreatePostMutationInput: CreatePostMutationInput;
   CreateVoteMutationInput: CreateVoteMutationInput;
@@ -766,10 +937,12 @@ export type ResolversParentTypes = {
 
 export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
   commentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  commenter?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   commenterId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -869,6 +1042,7 @@ export type ProfileEdgesResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  comments?: Resolver<Maybe<ResolversTypes['CommentConnection']>, ParentType, ContextType, Partial<QueryCommentsArgs>>;
   posts?: Resolver<ResolversTypes['PostConnection'], ParentType, ContextType, Partial<QueryPostsArgs>>;
   profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'id'>>;
 };

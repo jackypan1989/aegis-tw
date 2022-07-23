@@ -32,12 +32,19 @@ const resolvers: Resolvers<UserContext> = {
         }
       })
       return count > 0
-    },
+    }
   },
   Vote: {
     post: async (vote, _args, context) => {
       return context.prisma.post.findUnique({
         where: { id: vote.postId }
+      })
+    },
+  },
+  Comment: {
+    commenter: async (comment, _args, context) => {
+      return context.prisma.profile.findUnique({
+        where: { id: comment.commenterId}
       })
     },
   },
@@ -66,6 +73,24 @@ const resolvers: Resolvers<UserContext> = {
           }
         }),
         () => context.prisma.post.count(),
+        args
+      )
+      return result
+    },
+    comments: async (_, args, context) => {
+      const { filter } = args
+
+      const result = await findManyCursorConnection(
+        (findManyArgs) => context.prisma.comment.findMany({
+          ...findManyArgs,
+          where: {
+            postId: filter?.postId
+          },
+          orderBy: {
+            createdAt: 'desc'
+          }
+        }),
+        () => context.prisma.comment.count(),
         args
       )
       return result
@@ -139,8 +164,12 @@ const resolvers: Resolvers<UserContext> = {
         // update post
         context.prisma.post.update({
           data: {
-            voteCount: post.voteCount + 1,
-            rankingScore: getRankingScore(post.voteCount + 1, post.createdAt, post.viewCount)
+            voteCount: {
+              increment: 1
+            },
+            rankingScore: {
+              set: getRankingScore(post.voteCount + 1, post.createdAt, post.viewCount)
+            }
           },
           where: {
             id: postId
@@ -172,7 +201,7 @@ const resolvers: Resolvers<UserContext> = {
       if (!post) throw Error('There is no post with this id.') 
       
       const [result] = await context.prisma.$transaction([
-        // delete vote
+        // remove vote
         context.prisma.vote.delete({ 
           where: {
             postId_voterId: {
@@ -184,8 +213,12 @@ const resolvers: Resolvers<UserContext> = {
         // update post
         context.prisma.post.update({
           data: {
-            voteCount: post.voteCount - 1,
-            rankingScore: getRankingScore(post.voteCount - 1, post.createdAt, post.viewCount)
+            voteCount: {
+              decrement: 1
+            },
+            rankingScore: {
+              set: getRankingScore(post.voteCount - 1, post.createdAt, post.viewCount)
+            }
           },
           where: {
             id: postId
@@ -197,14 +230,64 @@ const resolvers: Resolvers<UserContext> = {
     },
     createComment: async (_, { input }, context) => {
       if (!context.user) throw Error('You must login.')
+      const { postId, content } = input 
+      
+      const [result] = await context.prisma.$transaction([
+        // create comment
+        context.prisma.comment.create({ 
+          data: {
+            postId,
+            commenterId: context.user.id,
+            content,
+          } 
+        }),
+        // update post
+        context.prisma.post.update({
+          data: {
+            commentCount: {
+              increment: 1
+            },
+          },
+          where: {
+            id: postId
+          }
+        })
+      ])
 
-      const result = await context.prisma.comment.create({ 
-        data: {
-          postId: input.postId,
-          commenterId: context.user.id,
-          content: input.content
-        } 
+      return result
+    },
+    removeComment: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must login.')
+      const { id } = input 
+
+      // check if comment exist
+      const comment = await context.prisma.comment.findUnique({
+        where: {
+          id
+        }
       })
+      if (!comment) throw Error('There is no comment for this id to remove.')
+              
+      const [result] = await context.prisma.$transaction([
+        // remove comment
+        context.prisma.comment.delete({ 
+          where: {
+            id
+          }
+        }),
+        // update post
+        context.prisma.post.update({
+          data: {
+            commentCount: {
+              decrement: 1
+            },
+          },
+          where: {
+            id: comment.postId 
+          }
+        })
+      ])
+
       return result
     }
   }
