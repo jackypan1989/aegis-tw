@@ -6,6 +6,7 @@ import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
+import URI from 'urijs'
 import { PostCardFragment, useCreateVoteMutation, useRemovePostMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
 
 export const POST_CARD = gql`
@@ -164,7 +165,7 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
                 ? <Link href={post.url} target='_new' onClick={onView}>
                     <Box>
                       <Heading size='sm' display='inline'>{post.title}</Heading>
-                      <Text display='inline' size='8' ml='1' color='gray'>{`(${new URL(post.url).hostname})`}</Text>
+                      <Text display='inline' size='8' ml='1' color='gray'>{`(${new URI(post.url).domain()})`}</Text>
                     </Box>
                   </Link>
                 : <Box>
@@ -187,7 +188,7 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
                 {post.poster?.username}
               </Button>
             </NextLink>
-            <Icon onClick={onRemove} as={DeleteIcon}></Icon>
+            {post.poster?.id === user?.id && <Icon onClick={onRemove} as={DeleteIcon}></Icon>}
           </Flex>
         </Flex>
       </Flex>

@@ -135,24 +135,27 @@ const CommentList = ({ postId }: { postId: string}) => {
         </Flex>
       })}
     </Flex>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isInvalid={!!errors.content}>
-        <InputGroup size='md'>
-          <Input
-            id='content'
-            placeholder='content'
-            {...register('content', {
-              required: 'This is required'
-            })}
-          />
-          <InputRightElement width='4.5rem'>
-            <Button h='1.75rem' size='xs' type='submit'>
-              Submit
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
-    </form>
+    {user 
+      ? <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl isInvalid={!!errors.content}>
+          <InputGroup size='md'>
+            <Input
+              id='content'
+              placeholder='content'
+              {...register('content', {
+                required: 'This is required'
+              })}
+            />
+            <InputRightElement width='4.5rem'>
+              <Button h='1.75rem' size='xs' type='submit'>
+                Submit
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+      </form>
+      : 'You need to login to comment.'
+    }
   </Box>
 }
 
