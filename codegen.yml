@@ -16,6 +16,9 @@ generates:
         Comment: .prisma/client#Comment as CommentModel
       inputMaybeValue: T | undefined
       maybeValue: "T | null | undefined"
+      enumValues:
+        Role: .prisma/client#Role
+        Market: .prisma/client#Market
       scalars:
         BigInt: number
         Cursor: string

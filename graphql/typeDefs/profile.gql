@@ -68,13 +68,28 @@ type ProfileConnection {
   pageInfo: PageInfo!
 }
 
+input ProfileFilter {
+  roles: [Role!]
+  markets: [Market!]
+}
+
 type Query {
   profile(id: ID!): Profile
+
+  profiles(
+    first: Int,
+    after: Cursor,
+    last: Int,
+    before: Cursor,
+    filter: ProfileFilter
+  ): ProfileConnection!
 }
 
 input UpdateProfileMutationInput {
   id: ID!
   username: String
+  roles: [Role!]!
+  markets: [Market!]!
   avatarUrl: String
   website: String
   linkedin: String

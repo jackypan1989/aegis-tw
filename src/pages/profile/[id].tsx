@@ -4,8 +4,9 @@ import { Market, Role } from "@prisma/client"
 import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { useGetProfileQuery } from "../../../codegen/graphql"
+import { useGetProfileQuery, useUpdateProfileMutation } from "../../../codegen/graphql"
 
 export const GET_PROFILE = gql`
   query getProfile($id: ID!) {
@@ -45,8 +46,8 @@ export const UPDATE_PROFILE = gql`
 
 type FormValues = {
   username: string
-  roles: string[]
-  markets: string[]
+  roles: Role[]
+  markets: Market[]
   avatarUrl: string
   website: string
   linkedin: string
@@ -63,6 +64,7 @@ const ProfileDetail = () => {
     handleSubmit,
     register,
     control,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>()
   const { data, loading } = useGetProfileQuery({
@@ -70,13 +72,39 @@ const ProfileDetail = () => {
       id: id
     }
   })
+  const [updateProfile] = useUpdateProfileMutation()
 
   const profile = data?.profile
+
+  useEffect(() => {
+    const defaultValues: FormValues = {
+      username: profile?.username ?? '',
+      roles: profile?.roles ?? [],
+      markets: profile?.markets ?? [],
+      avatarUrl: profile?.avatarUrl ?? '',
+      website: profile?.website ?? '',
+      linkedin: profile?.linkedin ?? '',
+      facebook: profile?.facebook ?? '',
+      twitter: profile?.twitter ?? '',
+      github: profile?.github ?? ''
+    };
+
+    reset({ ...defaultValues });
+  }, [profile, reset])
 
   if (loading) return <Box>Loading...</Box>
   
   const onSubmit = async (value: FormValues) => {
-    console.log(value)
+    if (profile) {
+      await updateProfile({
+        variables: {
+          input: {
+            id: profile.id,
+            ...value
+          }
+        }
+      })
+    }
   }
 
   if (id === user?.id) {

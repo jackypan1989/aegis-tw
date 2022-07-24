@@ -1,3 +1,5 @@
+import { Role } from '.prisma/client';
+import { Market } from '.prisma/client';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { Profile as ProfileModel, Post as PostModel, Vote as VoteModel, Comment as CommentModel } from '.prisma/client';
 import { gql } from '@apollo/client';
@@ -8,6 +10,7 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type EnumResolverSignature<T, AllowedValues = any> = { [key in keyof T]?: AllowedValues };
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
@@ -65,6 +68,8 @@ export type CreatePostMutationInput = {
 export type CreateVoteMutationInput = {
   postId: Scalars['ID'];
 };
+
+export { Market };
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -166,7 +171,13 @@ export type Profile = {
   avatarUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['Date'];
   email: Scalars['String'];
+  facebook?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  linkedin?: Maybe<Scalars['String']>;
+  markets: Array<Market>;
+  roles: Array<Role>;
+  twitter?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Date'];
   username: Scalars['String'];
   website?: Maybe<Scalars['String']>;
@@ -184,12 +195,18 @@ export type ProfileEdges = {
   node: Profile;
 };
 
+export type ProfileFilter = {
+  markets?: InputMaybe<Array<Market>>;
+  roles?: InputMaybe<Array<Role>>;
+};
+
 export type Query = {
   __typename?: 'Query';
   comments?: Maybe<CommentConnection>;
   post?: Maybe<Post>;
   posts: PostConnection;
   profile?: Maybe<Profile>;
+  profiles: ProfileConnection;
 };
 
 
@@ -220,6 +237,15 @@ export type QueryProfileArgs = {
   id: Scalars['ID'];
 };
 
+
+export type QueryProfilesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<ProfileFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+};
+
 export type RemoveCommentMutationInput = {
   id: Scalars['ID'];
 };
@@ -232,10 +258,18 @@ export type RemoveVoteMutationInput = {
   postId: Scalars['ID'];
 };
 
+export { Role };
+
 export type UpdateProfileMutationInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
+  facebook?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  username: Scalars['String'];
+  linkedin?: InputMaybe<Scalars['String']>;
+  markets: Array<Market>;
+  roles: Array<Role>;
+  twitter?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['String']>;
 };
 
@@ -318,6 +352,17 @@ export type ViewPostMutationVariables = Exact<{
 
 export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename?: 'Post', id: string, viewCount: number } };
 
+export type ProfileCardFragment = { __typename?: 'Profile', id: string, username: string, email: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
+
+export type ListProfileQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<ProfileFilter>;
+}>;
+
+
+export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, username: string, email: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
+
 export type ListPostOnlyJobQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['Cursor']>;
@@ -355,14 +400,14 @@ export type GetProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, username: string, email: string } | null | undefined };
+export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, username: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export type UpdateProfileMutationVariables = Exact<{
   input: UpdateProfileMutationInput;
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, username: string, email: string } | null | undefined };
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -379,6 +424,21 @@ export const PostCardFragmentDoc = gql`
     id
     username
   }
+}
+    `;
+export const ProfileCardFragmentDoc = gql`
+    fragment ProfileCard on Profile {
+  id
+  username
+  email
+  roles
+  markets
+  avatarUrl
+  website
+  linkedin
+  facebook
+  twitter
+  github
 }
     `;
 export const CommentsDocument = gql`
@@ -652,6 +712,52 @@ export function useViewPostMutation(baseOptions?: Apollo.MutationHookOptions<Vie
 export type ViewPostMutationHookResult = ReturnType<typeof useViewPostMutation>;
 export type ViewPostMutationResult = Apollo.MutationResult<ViewPostMutation>;
 export type ViewPostMutationOptions = Apollo.BaseMutationOptions<ViewPostMutation, ViewPostMutationVariables>;
+export const ListProfileDocument = gql`
+    query listProfile($first: Int, $after: Cursor, $filter: ProfileFilter) {
+  profiles(first: $first, after: $after, filter: $filter) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        ...ProfileCard
+      }
+    }
+  }
+}
+    ${ProfileCardFragmentDoc}`;
+
+/**
+ * __useListProfileQuery__
+ *
+ * To run a query within a React component, call `useListProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListProfileQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useListProfileQuery(baseOptions?: Apollo.QueryHookOptions<ListProfileQuery, ListProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListProfileQuery, ListProfileQueryVariables>(ListProfileDocument, options);
+      }
+export function useListProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListProfileQuery, ListProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListProfileQuery, ListProfileQueryVariables>(ListProfileDocument, options);
+        }
+export type ListProfileQueryHookResult = ReturnType<typeof useListProfileQuery>;
+export type ListProfileLazyQueryHookResult = ReturnType<typeof useListProfileLazyQuery>;
+export type ListProfileQueryResult = Apollo.QueryResult<ListProfileQuery, ListProfileQueryVariables>;
 export const ListPostOnlyJobDocument = gql`
     query listPostOnlyJob($first: Int, $after: Cursor, $filter: PostFilter) {
   posts(first: $first, after: $after, filter: $filter) {
@@ -816,8 +922,16 @@ export const GetProfileDocument = gql`
     query getProfile($id: ID!) {
   profile(id: $id) {
     id
-    username
     email
+    username
+    roles
+    markets
+    avatarUrl
+    website
+    linkedin
+    facebook
+    twitter
+    github
   }
 }
     `;
@@ -853,8 +967,16 @@ export const UpdateProfileDocument = gql`
     mutation updateProfile($input: UpdateProfileMutationInput!) {
   updateProfile(input: $input) {
     id
-    username
     email
+    username
+    roles
+    markets
+    avatarUrl
+    website
+    linkedin
+    facebook
+    twitter
+    github
   }
 }
     `;
@@ -966,6 +1088,7 @@ export type ResolversTypes = {
   Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  Market: Market;
   Mutation: ResolverTypeWrapper<{}>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Post: ResolverTypeWrapper<PostModel>;
@@ -975,10 +1098,12 @@ export type ResolversTypes = {
   Profile: ResolverTypeWrapper<ProfileModel>;
   ProfileConnection: ResolverTypeWrapper<Omit<ProfileConnection, 'edges'> & { edges: Array<ResolversTypes['ProfileEdges']> }>;
   ProfileEdges: ResolverTypeWrapper<Omit<ProfileEdges, 'node'> & { node: ResolversTypes['Profile'] }>;
+  ProfileFilter: ProfileFilter;
   Query: ResolverTypeWrapper<{}>;
   RemoveCommentMutationInput: RemoveCommentMutationInput;
   RemovePostMutationInput: RemovePostMutationInput;
   RemoveVoteMutationInput: RemoveVoteMutationInput;
+  Role: Role;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateProfileMutationInput: UpdateProfileMutationInput;
   ViewPostMutationInput: ViewPostMutationInput;
@@ -1011,6 +1136,7 @@ export type ResolversParentTypes = {
   Profile: ProfileModel;
   ProfileConnection: Omit<ProfileConnection, 'edges'> & { edges: Array<ResolversParentTypes['ProfileEdges']> };
   ProfileEdges: Omit<ProfileEdges, 'node'> & { node: ResolversParentTypes['Profile'] };
+  ProfileFilter: ProfileFilter;
   Query: {};
   RemoveCommentMutationInput: RemoveCommentMutationInput;
   RemovePostMutationInput: RemovePostMutationInput;
@@ -1055,6 +1181,8 @@ export interface CursorScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
+
+export type MarketResolvers = EnumResolverSignature<{ AD_TECH?: any, AI?: any, ANALYTICS?: any, COMSUMER?: any, CRYPTO?: any, DATABASES?: any, DEVELOPER_TOOL?: any, EDUCATION?: any, E_COMMERCE?: any, FASHION?: any, FINANCE?: any, FITNESS?: any, FOOD?: any, GAMES?: any, HEALTH_CARE?: any, HUMAN_RESOURCE?: any, LOGISTICS?: any, MEDIA?: any, PRODUCTIVITY?: any, REAL_ESTATE?: any, SECURITY?: any, SOCIAL_MEDIA?: any, TRAVEL?: any, VIRTUAL_REALITY?: any, WEARABLES?: any }, ResolversTypes['Market']>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
@@ -1110,7 +1238,13 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   avatarUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  facebook?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  linkedin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  markets?: Resolver<Array<ResolversTypes['Market']>, ParentType, ContextType>;
+  roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>;
+  twitter?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1134,7 +1268,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
   posts?: Resolver<ResolversTypes['PostConnection'], ParentType, ContextType, Partial<QueryPostsArgs>>;
   profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'id'>>;
+  profiles?: Resolver<ResolversTypes['ProfileConnection'], ParentType, ContextType, Partial<QueryProfilesArgs>>;
 };
+
+export type RoleResolvers = EnumResolverSignature<{ ANGEL_INVESTOR?: any, DESIGNER?: any, ENGINEERING?: any, FOUNDER?: any, MARKETING?: any, OPERATIONS?: any, PRODUCT?: any, SALES?: any, VENTURE_CAPITAL?: any }, ResolversTypes['Role']>;
 
 export type VoteResolvers<ContextType = any, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -1164,6 +1301,7 @@ export type Resolvers<ContextType = any> = {
   CommentEdges?: CommentEdgesResolvers<ContextType>;
   Cursor?: GraphQLScalarType;
   Date?: GraphQLScalarType;
+  Market?: MarketResolvers;
   Mutation?: MutationResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
@@ -1173,6 +1311,7 @@ export type Resolvers<ContextType = any> = {
   ProfileConnection?: ProfileConnectionResolvers<ContextType>;
   ProfileEdges?: ProfileEdgesResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Role?: RoleResolvers;
   Vote?: VoteResolvers<ContextType>;
   VoteConnection?: VoteConnectionResolvers<ContextType>;
   VoteEdges?: VoteEdgesResolvers<ContextType>;
