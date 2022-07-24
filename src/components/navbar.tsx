@@ -1,4 +1,4 @@
-import { Avatar, Flex, Link } from "@chakra-ui/react"
+import { Avatar, Flex, Link, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import NextLink from "next/link"
 
@@ -9,7 +9,7 @@ const Navbar = () => {
     <NextLink href='/post'>News</NextLink>
     <NextLink href='/job'>Jobs</NextLink>
     <NextLink href='/community'>Community</NextLink>
-    <Flex flex='1'/>
+    <Spacer />
     <NextLink href='/post/create'>Submit</NextLink>
     {user
       ?<NextLink href={`/profile/${user.id}`}>

@@ -7,6 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ENGINEERING
+  DESIGNER
+  PRODUCT
+  OPERATIONS
+  SALES
+  MARKETING
+  FOUNDER
+  ANGEL_INVESTOR
+  VENTURE_CAPITAL
+}
+
+enum Market {
+  SOCIAL_MEDIA
+  MEDIA
+  HEALTH_CARE
+  GAMES
+  CRYPTO
+  LOGISTICS
+  HUMAN_RESOURCE
+  ANALYTICS
+  EDUCATION
+  SECURITY
+  FASHION
+  FITNESS
+  FOOD
+  REAL_ESTATE
+  E_COMM
+  TRAVEL
+  AD_TECH
+  AI
+  DEVELOPER_TOOL
+  PRODUCTIVITY
+  WEARABLES
+  VIRTUAL_REALITY
+  COMSUMER
+  DATABASES
+  FINANCE
+}
+
 model Profile {
   id          String      @id @db.Uuid
   createdAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("created_at")
@@ -16,7 +56,14 @@ model Profile {
   email       String      @unique @db.VarChar
   avatarUrl   String?     @map("avatar_url")
   website     String?
-  
+  linkedin    String?
+  facebook    String?
+  twitter     String?
+  github      String?
+
+  roles       Role[]
+  markets     Market[]
+
   posts       Post[]
   comments    Comment[]
   votes       Vote[]

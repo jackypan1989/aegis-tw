@@ -1,11 +1,57 @@
+enum Role {
+  ENGINEERING
+  DESIGNER
+  PRODUCT
+  OPERATIONS
+  SALES
+  MARKETING
+  FOUNDER
+  ANGEL_INVESTOR
+  VENTURE_CAPITAL
+}
+
+enum Market {
+  SOCIAL_MEDIA
+  MEDIA
+  HEALTH_CARE
+  GAMES
+  CRYPTO
+  LOGISTICS
+  HUMAN_RESOURCE
+  ANALYTICS
+  EDUCATION
+  SECURITY
+  FASHION
+  FITNESS
+  FOOD
+  REAL_ESTATE
+  E_COMM
+  AD_TECH
+  AI
+  DEVELOPER_TOOL
+  PRODUCTIVITY
+  WEARABLES
+  VIRTUAL_REALITY
+  COMSUMER
+  DATABASES
+  FINANCE
+  TRAVEL
+}
+
 type Profile {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
   username: String!
   email: String!
+  roles: [Role!]!
+  markets: [Market!]!
   avatarUrl: String
   website: String
+  linkedin: String
+  facebook: String
+  twitter: String
+  github: String
 
   # posts: [Post!]!
   # comments: [Comment!]!
@@ -28,9 +74,13 @@ type Query {
 
 input UpdateProfileMutationInput {
   id: ID!
-  username: String!
+  username: String
   avatarUrl: String
   website: String
+  linkedin: String
+  facebook: String
+  twitter: String
+  github: String
 }
 
 type Mutation {
