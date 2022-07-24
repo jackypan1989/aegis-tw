@@ -34,7 +34,7 @@ enum Market {
   FITNESS
   FOOD
   REAL_ESTATE
-  E_COMM
+  E_COMMERCE
   TRAVEL
   AD_TECH
   AI

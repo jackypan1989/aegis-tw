@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import {
   Box, Button, FormControl, FormErrorMessage,
-  FormLabel, Input
+  FormLabel, Heading, Input
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
@@ -51,22 +51,9 @@ const PostCreate: NextPage = () => {
 
   return (
     <Box p='3'>
+      <Heading size='md'>Create Post</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={!!errors.title}>
-          <FormLabel htmlFor='title'>Title</FormLabel>
-          <Input
-            id='title'
-            placeholder='title'
-            {...register('title', {
-              required: 'This is required',
-              minLength: { value: 4, message: 'Minimum length should be 4' },
-            })}
-          />
-          <FormErrorMessage>
-            {errors.title && errors.title.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={!!errors.url}>
+        <FormControl mt='4' isInvalid={!!errors.url}>
           <FormLabel htmlFor='url'>Url</FormLabel>
           <Input
             id='url'
@@ -79,6 +66,20 @@ const PostCreate: NextPage = () => {
           />
           <FormErrorMessage>
             {errors.url && errors.url.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl mt='4' isInvalid={!!errors.title}>
+          <FormLabel htmlFor='title'>Title</FormLabel>
+          <Input
+            id='title'
+            placeholder='title'
+            {...register('title', {
+              required: 'This is required',
+              minLength: { value: 4, message: 'Minimum length should be 4' },
+            })}
+          />
+          <FormErrorMessage>
+            {errors.title && errors.title.message}
           </FormErrorMessage>
         </FormControl>
         <Button mt={4} isLoading={isSubmitting} type='submit'>

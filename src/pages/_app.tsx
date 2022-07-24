@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <CustomApolloProvider>
           <ChakraProvider>
             <Navbar />
-            <Box minH='calc(100vh - 96px)'>
+            <Box m={{ lg: '0 auto'}} width={{ lg: '800px' }} minH='calc(100vh - 96px)'>
               <Component {...pageProps} />
             </Box>
             <Footer />

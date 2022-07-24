@@ -1,9 +1,10 @@
 import { gql } from "@apollo/client"
-import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Text } from "@chakra-ui/react"
+import { Box, Button, Checkbox, CheckboxGroup, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Text, Wrap, WrapItem } from "@chakra-ui/react"
+import { Market, Role } from "@prisma/client"
 import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { useGetProfileQuery } from "../../../codegen/graphql"
 
 export const GET_PROFILE = gql`
@@ -44,6 +45,8 @@ export const UPDATE_PROFILE = gql`
 
 type FormValues = {
   username: string
+  roles: string[]
+  markets: string[]
   avatarUrl: string
   website: string
   linkedin: string
@@ -59,6 +62,7 @@ const ProfileDetail = () => {
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>()
   const { data, loading } = useGetProfileQuery({
@@ -78,7 +82,7 @@ const ProfileDetail = () => {
   if (id === user?.id) {
     return <Box p='30'>
       <Flex>
-        <Heading size='md'>My Profile</Heading>
+        <Heading size='lg'>My Profile</Heading>
         <Spacer />
         <Button size='sm' onClick={() => supabaseClient.auth.signOut()}>Sign Out</Button>
       </Flex>
@@ -100,6 +104,42 @@ const ProfileDetail = () => {
           <FormErrorMessage>
             {errors.username && errors.username.message}
           </FormErrorMessage>
+        </FormControl>
+        <FormControl mt='4'>
+          <FormLabel htmlFor='roles'>Roles</FormLabel>
+          <Controller
+            name='roles'
+            control={control}
+            render={({ field }) => (
+              <CheckboxGroup {...field}>
+                <Wrap spacing='12px'>
+                  {Object.values(Role).map(role => {
+                    return <WrapItem key={role}>
+                      <Checkbox value={role}>{role}</Checkbox>
+                    </WrapItem>
+                  })}
+                </Wrap>
+              </CheckboxGroup>
+            )}
+          />
+        </FormControl>
+        <FormControl mt='4'>
+          <FormLabel htmlFor='markets'>Markets</FormLabel>
+          <Controller
+            name='markets'
+            control={control}
+            render={({ field }) => (
+              <CheckboxGroup {...field}>
+                <Wrap spacing='12px'>
+                  {Object.values(Market).map(market => {
+                    return <WrapItem key={market}>
+                      <Checkbox value={market}>{market}</Checkbox>
+                    </WrapItem>
+                  })}
+                </Wrap>
+              </CheckboxGroup>
+            )}
+          />
         </FormControl>
         <FormControl mt='4'>
           <FormLabel htmlFor='website'>Website</FormLabel>
