@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 import { DeleteIcon } from "@chakra-ui/icons"
-import { Box, Button, Flex, FormControl, Heading, Icon, Input, InputGroup, InputRightElement, Spacer, Text } from "@chakra-ui/react"
+import { Button, Center, Flex, FormControl, Heading, Icon, Input, InputGroup, InputRightElement, Spacer, Spinner, Text } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import { useForm } from "react-hook-form"
@@ -79,7 +79,7 @@ const CommentList = ({ postId }: { postId: string}) => {
     reset,
   } = useForm<FormValues>()
 
-  const { data, refetch } = useCommentsQuery({
+  const { data, loading, refetch } = useCommentsQuery({
     variables: {
       first: 100,
       filter: {
@@ -114,11 +114,12 @@ const CommentList = ({ postId }: { postId: string}) => {
     })
     await refetch()
   }
-
+  
   const comments = data?.comments?.edges.map(edge => edge.node) ?? []
 
-  return <Box p='12px'>
+  return <Flex p='12px' gap='4px' direction='column'>
     <Heading size='md'>Comments</Heading>
+    {loading && <Center><Spinner size='lg'/></Center>}
     <Flex gap='4px' direction='column'>
       {comments.map(comment => {
         return <Flex key={comment.id} direction='column' gap='4px'>
@@ -156,7 +157,7 @@ const CommentList = ({ postId }: { postId: string}) => {
       </form>
       : 'You need to login to comment.'
     }
-  </Box>
+  </Flex>
 }
 
 export default CommentList

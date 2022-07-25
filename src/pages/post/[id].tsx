@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-import { Box } from "@chakra-ui/react"
+import { Box, Center, Spinner } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { useGetPostQuery } from "../../../codegen/graphql"
 import CommentList from "../../components/commentList"
@@ -27,8 +27,8 @@ const PostDetail = () => {
 
   const post = data?.post
 
-  if (loading) return <Box>Loading ...</Box>
-  if (!post) return <Box>Can not find any post.</Box>
+  if (loading) return <Center h='80vh'><Spinner size='lg'/></Center>
+  if (!post) return <Center h='80vh'>Can not find any post.</Center>
 
   return <Box bg='white'>
     <PostCard key={post?.id} post={post} refetchQuery={GET_POST} />

@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-import { Box, Button, Checkbox, CheckboxGroup, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Text, Wrap, WrapItem } from "@chakra-ui/react"
+import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Spinner, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { Market, Role } from "@prisma/client"
 import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
@@ -92,7 +92,7 @@ const ProfileDetail = () => {
     reset({ ...defaultValues });
   }, [profile, reset])
 
-  if (loading) return <Box>Loading...</Box>
+  if (loading) return <Center h='80vh'><Spinner size='lg'/></Center>
   
   const onSubmit = async (value: FormValues) => {
     if (profile) {

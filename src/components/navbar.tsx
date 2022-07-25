@@ -5,7 +5,7 @@ import NextLink from "next/link"
 const Navbar = () => {
   const { user } = useUser() 
 
-  return <Flex w='100vw' h='48px' p='8px 16px' gap='12px' fontWeight='medium' bg='#5A57FF' color='white' alignItems='center' position='sticky'>
+  return <Flex w='100vw' h='48px' p='8px 12px' gap='8px' fontWeight='medium' bg='#5A57FF' color='white' alignItems='center' position='sticky'>
     <NextLink href='/post'>News</NextLink>
     <NextLink href='/job'>Jobs</NextLink>
     <NextLink href='/community'>Community</NextLink>

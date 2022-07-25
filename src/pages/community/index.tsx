@@ -37,8 +37,8 @@ const Community = () => {
     }
   })
 
-  if (loading) return <Center><Spinner /></Center>
-  if (error) return <Center>{error.message}</Center>
+  if (loading) return <Center h='80vh'><Spinner size='lg'/></Center>
+  if (error) return <Center h='80vh'>{error.message}</Center>
 
   const nodes = data?.profiles.edges.map(edge => edge.node) ?? []
   const pageInfo = data?.profiles?.pageInfo
