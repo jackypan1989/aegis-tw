@@ -82,8 +82,14 @@ const resolvers: Resolvers<UserContext> = {
     },
     posts: async (_, args, context) => {
       const { filter } = args
-      const where = filter?.title 
-        ? { title: { contains: filter?.title } } 
+
+      const where = filter?.onlyJobs
+        ? { 
+          OR: [
+            { title: { contains: '徵才' }},
+            { title: { contains: 'Job' }}
+          ]
+        } 
         : {}
 
       const result = await findManyCursorConnection(

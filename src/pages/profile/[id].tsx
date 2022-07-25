@@ -7,45 +7,31 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useGetProfileQuery, useUpdateProfileMutation } from "../../../codegen/graphql"
+import ProfileCard, { PROFILE_CARD } from "../../components/profileCard"
 
 export const GET_PROFILE = gql`
+  ${PROFILE_CARD}
+
   query getProfile($id: ID!) {
     profile(id: $id) {
-      id
-      email
-      username
-      roles
-      markets
-      avatarUrl
-      website
-      linkedin
-      facebook
-      twitter
-      github
+      ...ProfileCard
     }
   }
 `
 
 export const UPDATE_PROFILE = gql`
+  ${PROFILE_CARD}
+
   mutation updateProfile($input: UpdateProfileMutationInput!) {
     updateProfile(input: $input) {
-      id
-      email
-      username
-      roles
-      markets
-      avatarUrl
-      website
-      linkedin
-      facebook
-      twitter
-      github
+      ...ProfileCard
     }
   }
 `
 
 type FormValues = {
   username: string
+  fullname: string
   roles: Role[]
   markets: Market[]
   avatarUrl: string
@@ -79,6 +65,7 @@ const ProfileDetail = () => {
   useEffect(() => {
     const defaultValues: FormValues = {
       username: profile?.username ?? '',
+      fullname: profile?.fullname ?? '',
       roles: profile?.roles ?? [],
       markets: profile?.markets ?? [],
       avatarUrl: profile?.avatarUrl ?? '',
@@ -93,6 +80,7 @@ const ProfileDetail = () => {
   }, [profile, reset])
 
   if (loading) return <Center h='80vh'><Spinner size='lg'/></Center>
+  if (!profile) return <Center h='80vh'>Can not find this user.</Center>
   
   const onSubmit = async (value: FormValues) => {
     if (profile) {
@@ -110,7 +98,7 @@ const ProfileDetail = () => {
   if (id === user?.id) {
     return <Box p='30'>
       <Flex>
-        <Heading size='lg'>My Profile</Heading>
+        <Heading size='lg'>{profile?.fullname || profile?.username || profile?.email}</Heading>
         <Spacer />
         <Button size='sm' onClick={() => supabaseClient.auth.signOut()}>Sign Out</Button>
       </Flex>
@@ -131,6 +119,19 @@ const ProfileDetail = () => {
           />
           <FormErrorMessage>
             {errors.username && errors.username.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl mt='4' isInvalid={!!errors.fullname}>
+          <FormLabel htmlFor='fullname'>Fullname</FormLabel>
+          <Input
+            id='fullname'
+            placeholder='fullname'
+            {...register('fullname', {
+              required: 'This is required',
+            })}
+          />
+          <FormErrorMessage>
+            {errors.fullname && errors.fullname.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl mt='4'>
@@ -216,12 +217,7 @@ const ProfileDetail = () => {
       
     </Box>
   } else {
-    return <Box p='30'>
-      <Heading>About {profile?.username}</Heading>
-      <Text>{profile?.id}</Text>
-      <Text>{profile?.username}</Text>
-      <Text>{profile?.email}</Text>
-    </Box>
+    return <ProfileCard profile={profile}></ProfileCard>
   }
 }
 

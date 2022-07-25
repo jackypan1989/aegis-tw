@@ -51,15 +51,15 @@ model Profile {
   id          String      @id @db.Uuid
   createdAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("created_at")
   updatedAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("updated_at")
-  
-  username    String      @unique @db.VarChar
   email       String      @unique @db.VarChar
-  avatarUrl   String?     @map("avatar_url")
-  website     String?
-  linkedin    String?
-  facebook    String?
-  twitter     String?
-  github      String?
+  username    String      @unique @db.VarChar
+  fullname    String?     @db.VarChar
+  avatarUrl   String?     @db.VarChar @map("avatar_url")
+  website     String?     @db.VarChar
+  linkedin    String?     @db.VarChar
+  facebook    String?     @db.VarChar
+  twitter     String?     @db.VarChar
+  github      String?     @db.VarChar
 
   roles       Role[]
   markets     Market[]

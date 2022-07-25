@@ -163,7 +163,7 @@ export type PostEdges = {
 };
 
 export type PostFilter = {
-  title: Scalars['String'];
+  onlyJobs: Scalars['Boolean'];
 };
 
 export type Profile = {
@@ -172,6 +172,7 @@ export type Profile = {
   createdAt: Scalars['Date'];
   email: Scalars['String'];
   facebook?: Maybe<Scalars['String']>;
+  fullname?: Maybe<Scalars['String']>;
   github?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   linkedin?: Maybe<Scalars['String']>;
@@ -263,6 +264,7 @@ export { Role };
 export type UpdateProfileMutationInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
   facebook?: InputMaybe<Scalars['String']>;
+  fullname?: InputMaybe<Scalars['String']>;
   github?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   linkedin?: InputMaybe<Scalars['String']>;
@@ -352,7 +354,7 @@ export type ViewPostMutationVariables = Exact<{
 
 export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename?: 'Post', id: string, viewCount: number } };
 
-export type ProfileCardFragment = { __typename?: 'Profile', id: string, username: string, email: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
+export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
 
 export type ListProfileQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -361,7 +363,7 @@ export type ListProfileQueryVariables = Exact<{
 }>;
 
 
-export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, username: string, email: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
+export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
 
 export type ListPostOnlyJobQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -400,14 +402,14 @@ export type GetProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, username: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
+export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export type UpdateProfileMutationVariables = Exact<{
   input: UpdateProfileMutationInput;
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -429,8 +431,9 @@ export const PostCardFragmentDoc = gql`
 export const ProfileCardFragmentDoc = gql`
     fragment ProfileCard on Profile {
   id
-  username
   email
+  username
+  fullname
   roles
   markets
   avatarUrl
@@ -921,20 +924,10 @@ export type ListPostQueryResult = Apollo.QueryResult<ListPostQuery, ListPostQuer
 export const GetProfileDocument = gql`
     query getProfile($id: ID!) {
   profile(id: $id) {
-    id
-    email
-    username
-    roles
-    markets
-    avatarUrl
-    website
-    linkedin
-    facebook
-    twitter
-    github
+    ...ProfileCard
   }
 }
-    `;
+    ${ProfileCardFragmentDoc}`;
 
 /**
  * __useGetProfileQuery__
@@ -966,20 +959,10 @@ export type GetProfileQueryResult = Apollo.QueryResult<GetProfileQuery, GetProfi
 export const UpdateProfileDocument = gql`
     mutation updateProfile($input: UpdateProfileMutationInput!) {
   updateProfile(input: $input) {
-    id
-    email
-    username
-    roles
-    markets
-    avatarUrl
-    website
-    linkedin
-    facebook
-    twitter
-    github
+    ...ProfileCard
   }
 }
-    `;
+    ${ProfileCardFragmentDoc}`;
 export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
 
 /**
@@ -1239,6 +1222,7 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   facebook?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fullname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   linkedin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

@@ -42,8 +42,9 @@ type Profile {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
-  username: String!
   email: String!
+  username: String!
+  fullname: String
   roles: [Role!]!
   markets: [Market!]!
   avatarUrl: String
@@ -88,6 +89,7 @@ type Query {
 input UpdateProfileMutationInput {
   id: ID!
   username: String
+  fullname: String
   roles: [Role!]!
   markets: [Market!]!
   avatarUrl: String

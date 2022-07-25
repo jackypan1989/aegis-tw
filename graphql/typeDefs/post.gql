@@ -27,7 +27,7 @@ type PostConnection {
 }
 
 input PostFilter {
-  title: String!
+  onlyJobs: Boolean!
 }
 
 type Query {

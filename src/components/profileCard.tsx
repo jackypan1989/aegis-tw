@@ -6,8 +6,9 @@ import { ProfileCardFragment } from "../../codegen/graphql"
 export const PROFILE_CARD = gql`
   fragment ProfileCard on Profile {
     id
-    username
     email
+    username
+    fullname
     roles
     markets
     avatarUrl
@@ -34,43 +35,43 @@ const ProfileCard = (props: { profile: ProfileCardFragment }) => {
     <Flex gap='12px'>
       <Avatar name={profile.username?.[0]} />
       <Flex direction='column'>
-        <Heading size='md'>{profile.username}</Heading>
-        <Text>{profile.email}</Text>
+        <Heading size='md'>{profile.fullname || profile.email}</Heading>
+        <Text>@{profile.username}</Text>
       </Flex>
     </Flex>
     <Flex direction='column' gap='8px'>
       <Wrap>{profile.roles.map(role => <WrapItem key={role}><Tag size='sm'>{role}</Tag></WrapItem>)}</Wrap>
       <Wrap>{profile.markets.map(market => <WrapItem key={market}><Tag size='sm'>{market}</Tag></WrapItem>)}</Wrap>
     </Flex>
-    <Wrap fontSize='28px'>
+    <Wrap>
       {profile.email && <WrapItem>
         <Link href={`mailto:${profile.email}`}>
-          <Icon as={AiOutlineMail}></Icon>
+          <Icon boxSize={6} as={AiOutlineMail}></Icon>
         </Link>
       </WrapItem>}
       {profile.website && <WrapItem>
         <Link href={profile.website} target='_new'>
-          <Icon as={AiOutlineLink}></Icon>
+          <Icon boxSize={6} as={AiOutlineLink}></Icon>
         </Link>
       </WrapItem>}
       {profile.linkedin && <WrapItem>
         <Link href={profile.linkedin} target='_new'>
-          <Icon as={AiFillLinkedin}></Icon>
+          <Icon boxSize={6} as={AiFillLinkedin}></Icon>
         </Link>
       </WrapItem>}
       {profile.facebook && <WrapItem>
         <Link href={profile.facebook} target='_new'>
-          <Icon as={AiFillFacebook}></Icon>
+          <Icon boxSize={6} as={AiFillFacebook}></Icon>
         </Link>
       </WrapItem>}
       {profile.twitter && <WrapItem>
         <Link href={profile.twitter} target='_new'>
-          <Icon as={AiFillTwitterSquare}></Icon>
+          <Icon boxSize={6} as={AiFillTwitterSquare}></Icon>
         </Link>
       </WrapItem>}
       {profile.github && <WrapItem>
         <Link href={profile.github} target='_new'>
-          <Icon as={AiFillGithub}></Icon>
+          <Icon boxSize={6} as={AiFillGithub}></Icon>
         </Link>
       </WrapItem>}
     </Wrap>
