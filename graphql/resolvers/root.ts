@@ -4,6 +4,7 @@ import {
 import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
 import { UserContext } from '../../src/pages/api/graphql'
+import dataloaders from '../dataLoader'
 
 // https://felx.me/2021/08/29/improving-the-hacker-news-ranking-algorithm.html
 const getRankingScore = (
@@ -18,10 +19,8 @@ const getRankingScore = (
 
 const resolvers: Resolvers<UserContext> = {  
   Post: {
-    poster: async (post, _args, context) => {
-      return context.prisma.profile.findUnique({
-        where: { id: post.posterId }
-      })
+    poster: (post) => {
+      return dataloaders.profileById.load(post.posterId)
     },
     isVoted: async (post, _args, context) => {
       if (!context.user) return false
@@ -35,17 +34,13 @@ const resolvers: Resolvers<UserContext> = {
     }
   },
   Vote: {
-    post: async (vote, _args, context) => {
-      return context.prisma.post.findUnique({
-        where: { id: vote.postId }
-      })
+    post: async (vote) => {
+      return dataloaders.postById.load(vote.postId)
     },
   },
   Comment: {
-    commenter: async (comment, _args, context) => {
-      return context.prisma.profile.findUnique({
-        where: { id: comment.commenterId}
-      })
+    commenter: async (comment) => {
+      return dataloaders.profileById.load(comment.postId)
     },
   },
   Query: {
@@ -96,6 +91,9 @@ const resolvers: Resolvers<UserContext> = {
         (findManyArgs) => context.prisma.post.findMany({
           ...findManyArgs,
           where: where,
+          include: {
+            poster: true
+          },
           orderBy: {
             rankingScore: 'desc'
           }

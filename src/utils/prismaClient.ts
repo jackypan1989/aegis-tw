@@ -6,10 +6,22 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-export const prisma =
+const prisma =
   global.prisma ||
   new PrismaClient({
     // log: ['query'],
   })
 
+// prisma.$use(async (params, next) => {
+//   const before = Date.now()
+//   const result = await next(params)
+//   const after = Date.now()
+//   console.log(`Query ${params.model}.${params.action} took ${after - before}ms`)
+//   return result
+// })
+
 if (process.env.NODE_ENV !== 'production') global.prisma = prisma
+
+export {
+  prisma
+}
