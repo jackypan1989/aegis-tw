@@ -90,6 +90,7 @@ model Post {
   votes         Vote[]
 
   @@map("posts")
+  @@index(rankingScore(sort: Desc))
 }
 
 model Vote {

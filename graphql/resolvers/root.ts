@@ -91,9 +91,6 @@ const resolvers: Resolvers<UserContext> = {
         (findManyArgs) => context.prisma.post.findMany({
           ...findManyArgs,
           where: where,
-          include: {
-            poster: true
-          },
           orderBy: {
             rankingScore: 'desc'
           }
