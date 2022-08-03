@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client"
-import { Box, Button, Center, Checkbox, CheckboxGroup, FormControl, FormLabel, Spinner, Wrap, WrapItem } from "@chakra-ui/react"
+import { SearchIcon } from "@chakra-ui/icons"
+import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormLabel, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Spinner, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react"
 import { Controller, useForm } from "react-hook-form"
 import { Market, Role, useListProfileQuery } from "../../../codegen/graphql"
 import ProfileCard, { PROFILE_CARD } from "../../components/profileCard"
@@ -36,15 +37,84 @@ type FormValues = {
   markets: Market[]
 }
 
-const Community = () => {
+const ProfileFilterModal = (props: any) => {
+  const { isOpen, onOpen, onClose, refetch } = props
   const {
     handleSubmit,
-    register,
     control,
-    reset,
-    formState: { errors, isSubmitting },
   } = useForm<FormValues>()
-  
+
+  const onSubmit = async (value: FormValues) => {
+    onClose()
+    await refetch({
+      filter: {
+        roles: value.roles,
+        markets: value.markets
+      }
+    })
+  }
+
+  return (
+    <>
+      <IconButton size='sm' onClick={onOpen} icon={<SearchIcon />} aria-label="filter"></IconButton>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalContent ml='4' mr='4'>
+            <ModalHeader>Profle Filter</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormControl>
+                <FormLabel htmlFor='roles'>Roles</FormLabel>
+                <Controller
+                  name='roles'
+                  control={control}
+                  render={({ field }) => (
+                    <CheckboxGroup {...field}>
+                      <Wrap spacing='12px'>
+                        {Object.values(Role).map(role => {
+                          return <WrapItem key={role}>
+                            <Checkbox value={role}>{role}</Checkbox>
+                          </WrapItem>
+                        })}
+                      </Wrap>
+                    </CheckboxGroup>
+                  )}
+                />
+              </FormControl>
+              <FormControl mt='4'>
+                <FormLabel htmlFor='markets'>Markets</FormLabel>
+                <Controller
+                  name='markets'
+                  control={control}
+                  render={({ field }) => (
+                    <CheckboxGroup {...field}>
+                      <Wrap spacing='12px'>
+                        {Object.values(Market).map(market => {
+                          return <WrapItem key={market}>
+                            <Checkbox value={market}>{market}</Checkbox>
+                          </WrapItem>
+                        })}
+                      </Wrap>
+                    </CheckboxGroup>
+                  )}
+                />
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme='blue' mr={3} type='submit'>
+                Search
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </form>
+      </Modal>
+    </>
+  )
+}
+
+const Community = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const { data, loading, error, fetchMore, refetch } = useListProfileQuery({
     variables: {
       first: 30
@@ -68,57 +138,13 @@ const Community = () => {
     }
   }
 
-  const onSubmit = async (value: FormValues) => {
-    await refetch({
-      filter: {
-        roles: value.roles,
-        markets: value.markets
-      }
-    })
-  }
-
   return <Box>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl mt='4'>
-        <FormLabel htmlFor='roles'>Roles</FormLabel>
-        <Controller
-          name='roles'
-          control={control}
-          render={({ field }) => (
-            <CheckboxGroup {...field}>
-              <Wrap spacing='12px'>
-                {Object.values(Role).map(role => {
-                  return <WrapItem key={role}>
-                    <Checkbox value={role}>{role}</Checkbox>
-                  </WrapItem>
-                })}
-              </Wrap>
-            </CheckboxGroup>
-          )}
-        />
-      </FormControl>
-      <FormControl mt='4'>
-        <FormLabel htmlFor='markets'>Markets</FormLabel>
-        <Controller
-          name='markets'
-          control={control}
-          render={({ field }) => (
-            <CheckboxGroup {...field}>
-              <Wrap spacing='12px'>
-                {Object.values(Market).map(market => {
-                  return <WrapItem key={market}>
-                    <Checkbox value={market}>{market}</Checkbox>
-                  </WrapItem>
-                })}
-              </Wrap>
-            </CheckboxGroup>
-          )}
-        />
-      </FormControl>
-      <Button mt={4} mb={4} isLoading={isSubmitting} type='submit'>
-        Search
-      </Button>
-    </form>
+    <Flex p='12px'>
+      <Heading size='lg'>Find out people</Heading>
+      <Spacer />
+      <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
+    </Flex>
+    {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
     {nodes.map(node => {
       return node && <ProfileCard key={node?.id} profile={node} />
     })}

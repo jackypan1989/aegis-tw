@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-import { Box, Button, Center, Flex, Spinner, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
 import { useListPostOnlyJobQuery } from "../../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
 
@@ -66,7 +66,6 @@ const Job = () => {
     {hasNextPage && <Box p='30px'>
       <Button onClick={onLoadMore}>Load More</Button>
     </Box>}
-    <Text>{`News title with "Job" or "徵才"`}</Text>
   </Flex>
 }
 

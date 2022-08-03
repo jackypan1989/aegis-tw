@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import {
   Box, Button, Center, FormControl, FormErrorMessage,
-  FormLabel, Heading, Input
+  FormLabel, Heading, Input, Text
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
@@ -51,7 +51,7 @@ const PostCreate: NextPage = () => {
 
   return (
     <Box p='3'>
-      <Heading size='md'>Create Post</Heading>
+      <Heading size='lg'>Create Post</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.url}>
           <FormLabel htmlFor='url'>Url</FormLabel>
@@ -74,14 +74,14 @@ const PostCreate: NextPage = () => {
             id='title'
             placeholder='title'
             {...register('title', {
-              required: 'This is required',
-              minLength: { value: 4, message: 'Minimum length should be 4' },
+              required: 'This is required'
             })}
           />
           <FormErrorMessage>
             {errors.title && errors.title.message}
           </FormErrorMessage>
         </FormControl>
+        <Text mt='4'>{`Title contains "Job" or "徵才" will be curated in Jobs tab.`}</Text>
         <Button mt={4} isLoading={isSubmitting} type='submit'>
           Submit
         </Button>
