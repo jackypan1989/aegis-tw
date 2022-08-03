@@ -35,13 +35,13 @@ const resolvers: Resolvers<UserContext> = {
     }
   },
   Vote: {
-    post: async (vote) => {
+    post: (vote) => {
       return dataloaders.postById.load(vote.postId)
     },
   },
   Comment: {
-    commenter: async (comment) => {
-      return dataloaders.profileById.load(comment.postId)
+    commenter: (comment) => {
+      return dataloaders.profileById.load(comment.commenterId)
     },
   },
   Query: {

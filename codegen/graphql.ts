@@ -308,21 +308,21 @@ export type CommentsQueryVariables = Exact<{
 }>;
 
 
-export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'CommentEdges', cursor: string, node: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } | null | undefined };
+export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'CommentEdges', cursor: string, node: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined } | null | undefined } }> } | null | undefined };
 
 export type CreateCommentMutationVariables = Exact<{
   input: CreateCommentMutationInput;
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string } | null | undefined } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined } | null | undefined } };
 
 export type RemoveCommentMutationVariables = Exact<{
   input: RemoveCommentMutationInput;
 }>;
 
 
-export type RemoveCommentMutation = { __typename?: 'Mutation', removeComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string } | null | undefined } };
+export type RemoveCommentMutation = { __typename?: 'Mutation', removeComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined } | null | undefined } };
 
 export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
 
@@ -460,6 +460,7 @@ export const CommentsDocument = gql`
         commenter {
           id
           username
+          fullname
         }
       }
     }
@@ -505,6 +506,7 @@ export const CreateCommentDocument = gql`
     commenter {
       id
       username
+      fullname
     }
   }
 }
@@ -544,6 +546,7 @@ export const RemoveCommentDocument = gql`
     commenter {
       id
       username
+      fullname
     }
   }
 }
