@@ -1,16 +1,21 @@
-import { Avatar, Flex, Link, Spacer } from "@chakra-ui/react"
+import { AddIcon } from "@chakra-ui/icons"
+import { Avatar, Flex, Icon, Link, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import NextLink from "next/link"
 
 const Navbar = () => {
   const { user } = useUser() 
 
-  return <Flex w='100vw' h='48px' p='8px 12px' gap='8px' fontWeight='medium' bg='#5A57FF' color='white' alignItems='center' position='sticky'>
+  return <Flex w='100vw' h='48px' p='8px 12px' gap='12px' fontWeight='medium' bg='#5A57FF' color='white' alignItems='center' position='sticky'>
     <NextLink href='/post'>News</NextLink>
     <NextLink href='/job'>Jobs</NextLink>
     <NextLink href='/community'>Community</NextLink>
     <Spacer />
-    <NextLink href='/post/create'>Submit</NextLink>
+    <NextLink href='/post/create'>
+      <Link display='block'>
+        <Icon as={AddIcon} mb='1'/>
+      </Link>
+    </NextLink>
     {user
       ?<NextLink href={`/profile/${user.id}`}>
         <Link>

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 import {
-  Box, Button, FormControl, FormErrorMessage,
+  Box, Button, Center, FormControl, FormErrorMessage,
   FormLabel, Heading, Input
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
@@ -33,7 +33,7 @@ const PostCreate: NextPage = () => {
 
   const [createPost, { loading, error }] = useCreatePostMutation()
 
-  if (!user) return <Box>You need to login first</Box>
+  if (!user) return <Center p='30px'>You need to sign in first ☝</Center>
   if (loading) return <Box>Submitting...</Box>
   if (error) return <Box>Submission error! ${error.message}</Box>
 
