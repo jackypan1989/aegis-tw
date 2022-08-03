@@ -43,7 +43,7 @@
     "react-dom": "18.1.0",
     "react-hook-form": "7.31.1",
     "react-icons": "4.4.0",
-    "undici": "5.5.1",
+    "undici": "5.8.1",
     "urijs": "1.19.11"
   },
   "devDependencies": {
