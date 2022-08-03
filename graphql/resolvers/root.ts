@@ -1,3 +1,4 @@
+import { Prisma } from '.prisma/client'
 import {
   findManyCursorConnection
 } from '@devoxa/prisma-relay-cursor-connection'
@@ -54,12 +55,16 @@ const resolvers: Resolvers<UserContext> = {
       return result
     },
     profiles: async (_, args, context) => {
-      const where = {}
+      const { filter } = args
+      const where: Prisma.ProfileWhereInput = {}
+
+      if (filter?.roles?.length ?? 0 > 0) where.roles = { hasSome: filter?.roles }
+      if (filter?.markets?.length ?? 0 > 0) where.markets = { hasSome: filter?.markets }
 
       const result = await findManyCursorConnection(
         (findManyArgs) => context.prisma.profile.findMany({
           ...findManyArgs,
-          where: where
+          where
         }),
         () => context.prisma.profile.count(),
         args
