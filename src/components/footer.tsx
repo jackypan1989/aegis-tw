@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react"
+import { Flex, Spacer } from "@chakra-ui/react"
 import Link from "next/link"
 
 const Footer = () => {
@@ -6,6 +6,8 @@ const Footer = () => {
     <Link href='/about'>About</Link>
     <Link href='/feedback'>Feedback</Link>
     <Link href='/privacy'>Privacy</Link>
+    <Spacer />
+    <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star" width='50' height='20'></iframe>
   </Flex>
 }
 
