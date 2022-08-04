@@ -67,3 +67,7 @@ const PostIndex = () => {
 }
 
 export default PostIndex
+
+export const config = {
+  runtime: 'experimental-edge'
+}
