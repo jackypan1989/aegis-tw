@@ -4,6 +4,7 @@ import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormLa
 import { Controller, useForm } from "react-hook-form"
 import { Market, Role, useListProfileQuery } from "../../../codegen/graphql"
 import ProfileCard, { PROFILE_CARD } from "../../components/profileCard"
+import { getEnumString } from "../../utils/getEnumString"
 
 export const LIST_PROFILE = gql` 
   ${PROFILE_CARD}
@@ -60,7 +61,7 @@ const ProfileFilterModal = (props: any) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalContent ml='4' mr='4'>
+          <ModalContent maxW='90vw' ml='4' mr='4'>
             <ModalHeader>Profle Filter</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
@@ -74,7 +75,7 @@ const ProfileFilterModal = (props: any) => {
                       <Wrap spacing='12px'>
                         {Object.values(Role).map(role => {
                           return <WrapItem key={role}>
-                            <Checkbox value={role}>{role}</Checkbox>
+                            <Checkbox value={role}>{getEnumString(role)}</Checkbox>
                           </WrapItem>
                         })}
                       </Wrap>
@@ -92,7 +93,7 @@ const ProfileFilterModal = (props: any) => {
                       <Wrap spacing='12px'>
                         {Object.values(Market).map(market => {
                           return <WrapItem key={market}>
-                            <Checkbox value={market}>{market}</Checkbox>
+                            <Checkbox value={market}>{getEnumString(market)}</Checkbox>
                           </WrapItem>
                         })}
                       </Wrap>
@@ -102,7 +103,7 @@ const ProfileFilterModal = (props: any) => {
               </FormControl>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme='blue' mr={3} type='submit'>
+              <Button colorScheme='blue' type='submit'>
                 Search
               </Button>
             </ModalFooter>
@@ -145,9 +146,11 @@ const Community = () => {
       <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
     </Flex>
     {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
-    {nodes.map(node => {
-      return node && <ProfileCard key={node?.id} profile={node} />
-    })}
+    <Flex direction='column' gap='3'>
+      {nodes.map(node => {
+        return node && <ProfileCard key={node?.id} profile={node} />
+      })}
+    </Flex>
     {hasNextPage && <Box p='30px'>
       <Button onClick={onLoadMore}>Load More</Button>
     </Box>}

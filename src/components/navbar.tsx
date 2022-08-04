@@ -6,7 +6,19 @@ import NextLink from "next/link"
 const Navbar = () => {
   const { user } = useUser() 
 
-  return <Flex w='100vw' h='48px' p='8px 12px' gap='12px' fontWeight='medium' bg='#5A57FF' color='white' alignItems='center' position='sticky'>
+  return <Flex 
+    w='100vw' 
+    h={{ base: '12', lg: '16' }} 
+    px={{ base: '3', lg: '16' }} 
+    py={{ base: '2', lg: '8' }} 
+    gap={{ base: '3', lg: '6' }} 
+    fontSize={{ base: 'md', lg: 'xl' }}
+    fontWeight='medium' 
+    bg='#5A57FF' 
+    color='white' 
+    alignItems='center' 
+    position='sticky'
+  >
     <NextLink href='/post'>News</NextLink>
     <NextLink href='/job'>Jobs</NextLink>
     <NextLink href='/community'>Community</NextLink>
@@ -17,7 +29,7 @@ const Navbar = () => {
       </Link>
     </NextLink>
     {user
-      ?<NextLink href={`/profile/${user.id}`}>
+      ?<NextLink href={`/profile/${user.id}`} passHref>
         <Link>
           <Avatar size='sm' name={user.email?.[0]}/>
         </Link>

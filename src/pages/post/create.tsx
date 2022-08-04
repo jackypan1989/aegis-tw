@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import {
   Box, Button, Center, FormControl, FormErrorMessage,
-  FormLabel, Heading, Input, Text
+  FormLabel, Heading, Input, Text, useToast
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
@@ -23,6 +23,7 @@ export const ADD_POST = gql`
 `
 
 const PostCreate: NextPage = () => {
+  const toast = useToast()
   const router = useRouter()
   const { user } = useUser()
   const {
@@ -45,6 +46,11 @@ const PostCreate: NextPage = () => {
           url: value.url
         }
       }
+    })
+    toast({
+      position: 'bottom-left',
+      status: 'success',
+      title: 'Successfully created post.'
     })
     router.push('/post')
   }

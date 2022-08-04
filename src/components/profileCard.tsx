@@ -2,6 +2,7 @@ import { gql } from "@apollo/client"
 import { Avatar, Flex, Heading, Icon, Link, Tag, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { AiFillFacebook, AiFillGithub, AiFillLinkedin, AiFillTwitterSquare, AiOutlineLink, AiOutlineMail } from 'react-icons/ai'
 import { ProfileCardFragment } from "../../codegen/graphql"
+import { getEnumString } from "../utils/getEnumString"
 
 export const PROFILE_CARD = gql`
   fragment ProfileCard on Profile {
@@ -40,8 +41,8 @@ const ProfileCard = (props: { profile: ProfileCardFragment }) => {
       </Flex>
     </Flex>
     <Flex direction='column' gap='8px'>
-      <Wrap>{profile.roles.map(role => <WrapItem key={role}><Tag size='sm'>{role}</Tag></WrapItem>)}</Wrap>
-      <Wrap>{profile.markets.map(market => <WrapItem key={market}><Tag size='sm'>{market}</Tag></WrapItem>)}</Wrap>
+      <Wrap>{profile.roles.map(role => <WrapItem key={role}><Tag size='sm'>{getEnumString(role)}</Tag></WrapItem>)}</Wrap>
+      <Wrap>{profile.markets.map(market => <WrapItem key={market}><Tag size='sm'>{getEnumString(market)}</Tag></WrapItem>)}</Wrap>
     </Flex>
     <Wrap>
       {profile.email && <WrapItem>

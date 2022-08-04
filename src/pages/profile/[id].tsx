@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Spinner, Text, Wrap, WrapItem } from "@chakra-ui/react"
+import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Spinner, Text, useToast, Wrap, WrapItem } from "@chakra-ui/react"
 import { Market, Role } from "@prisma/client"
 import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
@@ -8,6 +8,7 @@ import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useGetProfileQuery, useUpdateProfileMutation } from "../../../codegen/graphql"
 import ProfileCard, { PROFILE_CARD } from "../../components/profileCard"
+import { getEnumString } from "../../utils/getEnumString"
 
 export const GET_PROFILE = gql`
   ${PROFILE_CARD}
@@ -43,6 +44,7 @@ type FormValues = {
 }
 
 const ProfileDetail = () => {
+  const toast = useToast()
   const { user } = useUser()
   const router = useRouter()
   const id = router.query.id as string
@@ -92,6 +94,11 @@ const ProfileDetail = () => {
           }
         }
       })
+      toast({
+        position: 'bottom-left',
+        status: 'success',
+        title: 'Successfully updated profile.'
+      })
     }
   }
 
@@ -126,9 +133,7 @@ const ProfileDetail = () => {
           <Input
             id='fullname'
             placeholder='fullname'
-            {...register('fullname', {
-              required: 'This is required',
-            })}
+            {...register('fullname')}
           />
           <FormErrorMessage>
             {errors.fullname && errors.fullname.message}
@@ -144,7 +149,7 @@ const ProfileDetail = () => {
                 <Wrap spacing='12px'>
                   {Object.values(Role).map(role => {
                     return <WrapItem key={role}>
-                      <Checkbox value={role}>{role}</Checkbox>
+                      <Checkbox value={role}>{getEnumString(role)}</Checkbox>
                     </WrapItem>
                   })}
                 </Wrap>
@@ -162,7 +167,7 @@ const ProfileDetail = () => {
                 <Wrap spacing='12px'>
                   {Object.values(Market).map(market => {
                     return <WrapItem key={market}>
-                      <Checkbox value={market}>{market}</Checkbox>
+                      <Checkbox value={market}>{getEnumString(market)}</Checkbox>
                     </WrapItem>
                   })}
                 </Wrap>
