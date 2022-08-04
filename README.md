@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Aegis TW
 
-## Getting Started
+A community site for Taiwanese startups and ecosystem.
+Why [Aegis](https://aegis.tw/about)?
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Next.js and React.js (host by [Vercel](https://vercel.com/))
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Chakra UI
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- Graphql (by graphql-yoga & graphql-code-gen)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- Prisma (ORM)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- Typescript
 
-## Learn More
+- PostgreSQL (host by supabase)
 
-To learn more about Next.js, take a look at the following resources:
+- MDX.js for markdown page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Install locally
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Register supabase & create a project
 
-## Deploy on Vercel
+2. add env variables, NEXT_PUBLIC_SUPABASE_URL,
+NEXT_PUBLIC_SUPABASE_ANON_KEY, DATABASE_URL in .env file
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. run init script
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    ```javascript
+    // install packages
+    yarn
+
+    // generate prisma client
+    npx prisma generate
+
+    // generate gql type
+    yarn codegen
+
+    // run
+    yarn dev
+    ```
+
+## Contributors
+
+Founder: [Jacky Pan](https://twitter.com/jackypan1989)
+
+Designer: [Stacey Lee](https://www.linkedin.com/in/stacey-lee-84b07b15a)
+
+Welcome any PR or DM to make Taiwanese startups great 🚀🚀🚀
