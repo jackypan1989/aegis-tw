@@ -32,11 +32,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY, DATABASE_URL in .env file
     // install packages
     yarn
 
-    // generate prisma client
-    npx prisma generate
+    // generate merge sql, and use it to your sql instance
+    yarn codegen:sql
 
     // generate gql type
     yarn codegen
+
+    // generate prisma client
+    npx prisma generate
 
     // run
     yarn dev

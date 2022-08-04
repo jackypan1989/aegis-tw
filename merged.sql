@@ -190,7 +190,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 AS $BODY$
 begin
   insert into public.profiles (id, username, email)
-  values (new.id, split_part(new.email, '@', 1), new.email);
+  values (new.id, split_part(new.email, '@', 1) || '_' || left(md5(new.email), 5), new.email);
   return new;
 end;
 $BODY$;
