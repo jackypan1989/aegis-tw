@@ -60,4 +60,5 @@ type Mutation {
   createPost(input: CreatePostMutationInput!): Post!
   removePost(input: RemovePostMutationInput!): Post!
   viewPost(input: ViewPostMutationInput!): Post!
+  updateEveryPostRankingScore: Boolean!
 }

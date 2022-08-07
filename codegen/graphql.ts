@@ -79,6 +79,7 @@ export type Mutation = {
   removeComment: Comment;
   removePost: Post;
   removeVote: Vote;
+  updateEveryPostRankingScore: Scalars['Boolean'];
   updateProfile?: Maybe<Profile>;
   viewPost: Post;
 };
@@ -1177,6 +1178,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   removeComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationRemoveCommentArgs, 'input'>>;
   removePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationRemovePostArgs, 'input'>>;
   removeVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationRemoveVoteArgs, 'input'>>;
+  updateEveryPostRankingScore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   updateProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
   viewPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationViewPostArgs, 'input'>>;
 };

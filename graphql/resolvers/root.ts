@@ -14,7 +14,7 @@ const getRankingScore = (
   viewCount: number,  
 ) => {
   const ageHours = differenceInHours(Date.now(), createdAt)
-  const rankingScore =  Math.pow(voteCount, 0.8) / Math.pow(ageHours + 2, 1.8) / (viewCount + 1)
+  const rankingScore =  Math.pow(voteCount + 0.0001, 0.8) / Math.pow(ageHours + 2, 1.8) / (viewCount + 1) * 100000
   return rankingScore
 }
 
@@ -340,6 +340,28 @@ const resolvers: Resolvers<UserContext> = {
       ])
 
       return result
+    },
+    updateEveryPostRankingScore: async (_, args, context) => {
+      const posts = await context.prisma.post.findMany()
+
+      await Promise.all(posts.map(post => {
+        const rankingScore = getRankingScore(
+          post.voteCount,
+          post.createdAt,
+          post.viewCount,
+        )
+
+        return context.prisma.post.update({
+          where: {
+            id: post.id
+          },
+          data: {
+            rankingScore
+          }
+        })
+      }))
+
+      return true
     }
   }
 }
