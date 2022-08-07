@@ -23,12 +23,14 @@ export const PROFILE_CARD = gql`
 
 const ProfileCard = (props: { profile: ProfileCardFragment }) => {
   const { profile } = props
+  const hasRoles = profile.roles.length > 0
+  const hasMarkets = profile.markets.length > 0
 
   return <Flex 
     width='100%'
-    p='12px' 
     bg='white' 
-    gap='8px' 
+    p={{ base: '2', lg: '5' }} 
+    gap={{ base: '2', lg: '4' }}
     borderRadius='lg' 
     boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'
     direction='column'
@@ -40,10 +42,26 @@ const ProfileCard = (props: { profile: ProfileCardFragment }) => {
         <Text>@{profile.username}</Text>
       </Flex>
     </Flex>
-    <Flex direction='column' gap='8px'>
-      <Wrap>{profile.roles.map(role => <WrapItem key={role}><Tag size='sm'>{getEnumString(role)}</Tag></WrapItem>)}</Wrap>
-      <Wrap>{profile.markets.map(market => <WrapItem key={market}><Tag size='sm'>{getEnumString(market)}</Tag></WrapItem>)}</Wrap>
-    </Flex>
+    {hasRoles && hasMarkets && <Flex direction='column' gap='8px'>
+      {hasRoles && 
+        <Wrap>
+          {profile.roles.map(role => <WrapItem key={role}>
+            <Tag size='sm' colorScheme='blue'>
+              {getEnumString(role)}
+            </Tag>
+          </WrapItem>)}
+        </Wrap>
+      }
+      {hasMarkets && 
+        <Wrap>
+          {profile.markets.map(market => <WrapItem key={market}>
+            <Tag size='sm' colorScheme='purple'>
+              {getEnumString(market)}
+            </Tag>
+          </WrapItem>)}
+        </Wrap>
+      }
+    </Flex>}
     <Wrap>
       {profile.email && <WrapItem>
         <Link href={`mailto:${profile.email}`}>

@@ -151,13 +151,23 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
     router.push('/post')
   }
 
-  return <Flex width='100%' p='8px' bg='white' gap='8px' borderRadius='lg' boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'>
+  return <Flex 
+    width='100%'
+    bg='white' 
+    p={{ base: '2', lg: '5' }} 
+    gap={{ base: '2', lg: '4' }}
+    borderRadius={{ base: 'none', lg: 'lg' }}
+    boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'
+  >
     <Flex direction='column' w='30px' alignItems='center'>
       <TriangleUpIcon m='8px' onClick={onVote} color={post.isVoted ? 'black' : 'gray.300'} />
       <Center>{post.voteCount}</Center>
     </Flex>
     <Flex flex='1'>
-      <Flex flex='1' direction='column' gap='8px'>
+      <Flex flex='1' 
+        direction='column' 
+        gap={{ base: '2', lg: '4' }} 
+      >
         <Flex gap='4px'>
           <Box flex='1'>
             {post.url 
