@@ -138,11 +138,11 @@ const CommentList = ({ postId }: { postId: string}) => {
               <Spacer />
               <Text color='GrayText'>{formatDistanceToNowStrict(parseISO(comment.createdAt.toString()))}</Text>
             </Flex>
-            {comment.commenter?.id === user?.id && <Flex>
+            <Flex>
               <Text>{comment.content}</Text>
               <Spacer />
-              <Icon onClick={() => onRemove(comment.id)} as={DeleteIcon}></Icon>
-            </Flex>}
+              {comment.commenter?.id === user?.id && <Icon onClick={() => onRemove(comment.id)} as={DeleteIcon}></Icon>}
+            </Flex>
           </Flex>
         </Flex>
       })}
