@@ -144,7 +144,8 @@ const resolvers: Resolvers<UserContext> = {
           posterId: context.user.id,
           title: input.title,
           url: input.url,
-          content: input.content
+          content: input.content,
+          rankingScore: getRankingScore(0, new Date(), 0)
         }
       })
       return result
