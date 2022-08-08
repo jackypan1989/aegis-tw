@@ -69,13 +69,24 @@ export type CreateVoteMutationInput = {
   postId: Scalars['ID'];
 };
 
+export type GetUrlMetadataInput = {
+  url: Scalars['String'];
+};
+
 export { Market };
+
+export type Metadata = {
+  __typename?: 'Metadata';
+  title?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
   createComment: Comment;
   createPost: Post;
   createVote: Vote;
+  getUrlMetadata?: Maybe<Metadata>;
   removeComment: Comment;
   removePost: Post;
   removeVote: Vote;
@@ -97,6 +108,11 @@ export type MutationCreatePostArgs = {
 
 export type MutationCreateVoteArgs = {
   input: CreateVoteMutationInput;
+};
+
+
+export type MutationGetUrlMetadataArgs = {
+  input: GetUrlMetadataInput;
 };
 
 
@@ -388,6 +404,13 @@ export type CreatePostMutationVariables = Exact<{
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string } };
+
+export type GetUrlMetadataMutationVariables = Exact<{
+  input: GetUrlMetadataInput;
+}>;
+
+
+export type GetUrlMetadataMutation = { __typename?: 'Mutation', getUrlMetadata?: { __typename?: 'Metadata', url: string, title?: string | null | undefined } | null | undefined };
 
 export type ListPostQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -879,6 +902,40 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const GetUrlMetadataDocument = gql`
+    mutation getUrlMetadata($input: GetUrlMetadataInput!) {
+  getUrlMetadata(input: $input) {
+    url
+    title
+  }
+}
+    `;
+export type GetUrlMetadataMutationFn = Apollo.MutationFunction<GetUrlMetadataMutation, GetUrlMetadataMutationVariables>;
+
+/**
+ * __useGetUrlMetadataMutation__
+ *
+ * To run a mutation, you first call `useGetUrlMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetUrlMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getUrlMetadataMutation, { data, loading, error }] = useGetUrlMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetUrlMetadataMutation(baseOptions?: Apollo.MutationHookOptions<GetUrlMetadataMutation, GetUrlMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GetUrlMetadataMutation, GetUrlMetadataMutationVariables>(GetUrlMetadataDocument, options);
+      }
+export type GetUrlMetadataMutationHookResult = ReturnType<typeof useGetUrlMetadataMutation>;
+export type GetUrlMetadataMutationResult = Apollo.MutationResult<GetUrlMetadataMutation>;
+export type GetUrlMetadataMutationOptions = Apollo.BaseMutationOptions<GetUrlMetadataMutation, GetUrlMetadataMutationVariables>;
 export const ListPostDocument = gql`
     query listPost($first: Int, $after: Cursor, $filter: PostFilter) {
   posts(first: $first, after: $after, filter: $filter) {
@@ -1073,9 +1130,11 @@ export type ResolversTypes = {
   Cursor: ResolverTypeWrapper<Scalars['Cursor']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
+  GetUrlMetadataInput: GetUrlMetadataInput;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Market: Market;
+  Metadata: ResolverTypeWrapper<Metadata>;
   Mutation: ResolverTypeWrapper<{}>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Post: ResolverTypeWrapper<PostModel>;
@@ -1112,8 +1171,10 @@ export type ResolversParentTypes = {
   Cursor: Scalars['Cursor'];
   Date: Scalars['Date'];
   Float: Scalars['Float'];
+  GetUrlMetadataInput: GetUrlMetadataInput;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
+  Metadata: Metadata;
   Mutation: {};
   PageInfo: PageInfo;
   Post: PostModel;
@@ -1171,10 +1232,17 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type MarketResolvers = EnumResolverSignature<{ AD_TECH?: any, AI?: any, ANALYTICS?: any, COMSUMER?: any, CRYPTO?: any, DATABASES?: any, DEVELOPER_TOOL?: any, EDUCATION?: any, E_COMMERCE?: any, FASHION?: any, FINANCE?: any, FITNESS?: any, FOOD?: any, GAMES?: any, HEALTH_CARE?: any, HUMAN_RESOURCE?: any, LOGISTICS?: any, MEDIA?: any, PRODUCTIVITY?: any, REAL_ESTATE?: any, SECURITY?: any, SOCIAL_MEDIA?: any, TRAVEL?: any, VIRTUAL_REALITY?: any, WEARABLES?: any }, ResolversTypes['Market']>;
 
+export type MetadataResolvers<ContextType = any, ParentType extends ResolversParentTypes['Metadata'] = ResolversParentTypes['Metadata']> = {
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'input'>>;
   createVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationCreateVoteArgs, 'input'>>;
+  getUrlMetadata?: Resolver<Maybe<ResolversTypes['Metadata']>, ParentType, ContextType, RequireFields<MutationGetUrlMetadataArgs, 'input'>>;
   removeComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationRemoveCommentArgs, 'input'>>;
   removePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationRemovePostArgs, 'input'>>;
   removeVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationRemoveVoteArgs, 'input'>>;
@@ -1291,6 +1359,7 @@ export type Resolvers<ContextType = any> = {
   Cursor?: GraphQLScalarType;
   Date?: GraphQLScalarType;
   Market?: MarketResolvers;
+  Metadata?: MetadataResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;

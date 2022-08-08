@@ -7,7 +7,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { useCreatePostMutation } from '../../../codegen/graphql'
+import { useCreatePostMutation, useGetUrlMetadataMutation } from '../../../codegen/graphql'
 
 type FormValues = {
   title: string
@@ -22,6 +22,15 @@ export const ADD_POST = gql`
   }
 `
 
+export const GET_URL_METADATA = gql`
+  mutation getUrlMetadata($input: GetUrlMetadataInput!) {
+    getUrlMetadata(input: $input) {
+      url
+      title
+    }
+  }
+`
+
 const PostCreate: NextPage = () => {
   const toast = useToast()
   const router = useRouter()
@@ -30,9 +39,12 @@ const PostCreate: NextPage = () => {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
+    setValue,
+    getValues
   } = useForm<FormValues>()
 
   const [createPost, { loading, error }] = useCreatePostMutation()
+  const [getUrlMetadata] = useGetUrlMetadataMutation()
 
   if (!user) return <Center p='30px'>You need to sign in first ☝</Center>
   if (loading) return <Box>Submitting...</Box>
@@ -55,6 +67,18 @@ const PostCreate: NextPage = () => {
     router.push('/post')
   }
 
+  const onChangeUrl = async () => {
+    const res = await getUrlMetadata({
+      variables: {
+        input: {
+          url: getValues().url
+        }
+      }
+    })
+      
+    setValue("title", res.data?.getUrlMetadata?.title ?? '')
+  }
+
   return (
     <Box p='3'>
       <Heading size='lg'>Create Post</Heading>
@@ -65,6 +89,7 @@ const PostCreate: NextPage = () => {
             id='url'
             placeholder='url'
             {...register('url', {
+              onChange: onChangeUrl,
               required: 'This is required',
               minLength: { value: 4, message: 'Minimum length should be 4' },
               pattern: { value: /^((?:https?:\/\/)?(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b[-a-zA-Z0-9@:%_+.~#?&/=]*|)$/, message: 'Please enter a valid url'}

@@ -8,3 +8,16 @@ type PageInfo {
   endCursor: Cursor
   totalPageCount: Int
 }
+
+input GetUrlMetadataInput {
+  url: String!
+}
+
+type Metadata {
+  url: String!
+  title: String
+}
+
+type Mutation {
+  getUrlMetadata(input: GetUrlMetadataInput!): Metadata
+}
