@@ -134,7 +134,7 @@ const resolvers: Resolvers<UserContext> = {
   },
   Mutation: {
     updateProfile: async (_, { input }, context) => {
-      if (!context.user) throw Error('You must login.')
+      if (!context.user) throw Error('You must sign in.')
 
       const result = await context.prisma.profile.update({ 
         data: input,
@@ -145,7 +145,7 @@ const resolvers: Resolvers<UserContext> = {
       return result
     },
     createPost: async (_, { input }, context) => {
-      if (!context.user) throw Error('You must login.')
+      if (!context.user) throw Error('You must sign in.')
 
       const result = await context.prisma.post.create({ 
         data: { 
@@ -181,7 +181,7 @@ const resolvers: Resolvers<UserContext> = {
       return result
     },
     createVote: async (_, { input }, context) => {
-      if (!context.user) throw Error('You must login.')
+      if (!context.user) throw Error('You must sign in.')
       const { postId } = input
 
       // check if voted
@@ -228,7 +228,7 @@ const resolvers: Resolvers<UserContext> = {
       return result
     },
     removePost: async (_, { input }, context) => {
-      if (!context.user) throw Error('You must login.')
+      if (!context.user) throw Error('You must sign in.')
       const { id } = input 
 
       const result = await context.prisma.post.delete({ 
@@ -240,7 +240,7 @@ const resolvers: Resolvers<UserContext> = {
       return result
     },
     removeVote: async (_, { input }, context) => {
-      if (!context.user) throw Error('You must login.')
+      if (!context.user) throw Error('You must sign in.')
       const { postId } = input 
 
       // check if voted
@@ -289,7 +289,7 @@ const resolvers: Resolvers<UserContext> = {
       return result
     },
     createComment: async (_, { input }, context) => {
-      if (!context.user) throw Error('You must login.')
+      if (!context.user) throw Error('You must sign in.')
       const { postId, content } = input 
       
       const [result] = await context.prisma.$transaction([
@@ -317,7 +317,7 @@ const resolvers: Resolvers<UserContext> = {
       return result
     },
     removeComment: async (_, { input }, context) => {
-      if (!context.user) throw Error('You must login.')
+      if (!context.user) throw Error('You must sign in.')
       const { id } = input 
 
       // check if comment exist

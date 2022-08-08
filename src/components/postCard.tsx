@@ -1,6 +1,6 @@
 import { DocumentNode, gql } from '@apollo/client'
 import { DeleteIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { Box, Button, Center, Flex, Heading, Icon, Link, Text } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Heading, Icon, Link, Text, useToast } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import NextLink from 'next/link'
@@ -70,6 +70,7 @@ export const VIEW_POST = gql`
 
 const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode }) => {
   const { post, refetchQuery } = props
+  const toast = useToast()
   const router = useRouter()
   const { user } = useUser()
 
@@ -134,6 +135,12 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
             }
           }
         })
+
+        toast({
+          position: 'bottom-left',
+          status: 'success',
+          title: 'Successfully unvoted post.'
+        })
       } else {
         await createVote({
           variables: {
@@ -142,7 +149,19 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
             }
           }
         })
+
+        toast({
+          position: 'bottom-left',
+          status: 'success',
+          title: 'Successfully voted post.'
+        })
       } 
+    } else {
+      toast({
+        position: 'bottom-left',
+        status: 'info',
+        title: 'You need to sign in first.'
+      })
     }
   }
 
@@ -160,7 +179,9 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
     boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'
   >
     <Flex direction='column' w='30px' alignItems='center'>
-      <TriangleUpIcon m='8px' onClick={onVote} color={post.isVoted ? 'black' : 'gray.300'} />
+      <Link>
+        <TriangleUpIcon m='8px' onClick={onVote} color={post.isVoted ? 'black' : 'gray.300'} />
+      </Link>
       <Center>{post.voteCount}</Center>
     </Flex>
     <Flex flex='1'>
@@ -182,7 +203,7 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
                 </Box>
             }
           </Box>
-          <Box justifyContent='flex-end'>
+          <Box display={{ base: 'none', lg: 'initial' }} lineHeight='2' justifyContent='flex-end'>
             <Text fontSize='xs' color='gray'>{formatDistanceToNowStrict(parseISO(post.createdAt.toString()))}</Text>
           </Box> 
         </Flex>

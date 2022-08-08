@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <MDXProvider components={component}>
             <ChakraProvider>
               <Navbar />
-              <Box m={{ lg: '0 auto'}} width={{ lg: '800px' }} minH='calc(100vh - 96px)'>
+              <Box m={{ lg: '0 auto'}} width={{ lg: '800px' }} minH={{ base: 'calc(100vh - 96px)', lg: 'calc(100vh - 128px)' }}>
                 <Component {...pageProps} />
               </Box>
               <Footer />

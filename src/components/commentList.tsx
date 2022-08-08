@@ -166,7 +166,7 @@ const CommentList = ({ postId }: { postId: string}) => {
           </InputGroup>
         </FormControl>
       </form>
-      : 'You need to login to comment.'
+      : 'You need to sign in to comment.'
     }
   </Flex>
 }
