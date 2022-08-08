@@ -7,6 +7,10 @@ import { Resolvers } from "../../codegen/graphql"
 import { UserContext } from '../../src/pages/api/graphql'
 import dataloaders from '../dataLoader'
 
+import Metascraper from 'metascraper'
+import MetascraperTitle from 'metascraper-title'
+import { fetch } from 'undici'
+
 // https://felx.me/2021/08/29/improving-the-hacker-news-ranking-algorithm.html
 const getRankingScore = (
   voteCount: number,
@@ -17,6 +21,10 @@ const getRankingScore = (
   const rankingScore =  Math.pow(voteCount + 0.0001, 0.8) / Math.pow(ageHours + 2, 1.8) / (viewCount + 1) * 100000
   return rankingScore
 }
+
+const metascraper = Metascraper([
+  MetascraperTitle()
+])
 
 const resolvers: Resolvers<UserContext> = {  
   Post: {
@@ -363,6 +371,24 @@ const resolvers: Resolvers<UserContext> = {
       }))
 
       return true
+    },
+    getUrlMetadata: async (_, { input }) => {
+      const { url } = input
+      
+      try {
+        const res = await fetch(url)
+        const text = await res.text()  
+        const metadata = await metascraper({ url: url, html: text })
+        return {
+          url,
+          title: metadata.title
+        }
+      } catch {
+        return {
+          url,
+          title: ""
+        }
+      }
     }
   }
 }
