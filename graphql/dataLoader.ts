@@ -1,4 +1,4 @@
-import { Comment, Post, Profile, Vote } from "@prisma/client";
+import { Comment, Post, Profile, Vote } from ".prisma/client";
 import DataLoader from "dataloader";
 import { prisma } from "../src/utils/prismaClient";
 
