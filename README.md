@@ -30,19 +30,19 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY, DATABASE_URL in .env file
 
     ```javascript
     // install packages
-    yarn
+    pnpm i
 
     // generate merge sql, and use it to your sql instance
-    yarn codegen:sql
+    pnpm codegen:sql
 
     // generate gql type
-    yarn codegen
+    pnpm codegen
 
     // generate prisma client
     npx prisma generate
 
     // run
-    yarn dev
+    pnpm dev
     ```
 
 ## Contributors
