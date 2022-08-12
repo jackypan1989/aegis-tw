@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "codegen:prisma && next build",
+    "build": "pnpm codegen:prisma && next build",
     "start": "next start",
     "lint": "next lint",
     "codegen": "graphql-codegen",
