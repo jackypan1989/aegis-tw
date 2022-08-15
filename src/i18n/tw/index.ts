@@ -55,7 +55,7 @@ const tw: Translation = {
     }
   },
   MISC: {
-    YOU_NEED_TO_SIGN_IN_AT_FIRST: '你必須要先登入',
+    YOU_NEED_TO_SIGN_IN_FIRST: '你必須要先登入',
     NO_MATCHED_RESULT: '無搜索對應結果'
   }
 }

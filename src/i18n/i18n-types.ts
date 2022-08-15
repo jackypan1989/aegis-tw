@@ -138,9 +138,9 @@ type RootTranslation = {
 	}
 	MISC: {
 		/**
-		 * You need to sign in at first.
+		 * You need to sign in first.
 		 */
-		YOU_NEED_TO_SIGN_IN_AT_FIRST: string
+		YOU_NEED_TO_SIGN_IN_FIRST: string
 		/**
 		 * No matched result.
 		 */
@@ -273,9 +273,9 @@ export type TranslationFunctions = {
 	}
 	MISC: {
 		/**
-		 * You need to sign in at first.
+		 * You need to sign in first.
 		 */
-		YOU_NEED_TO_SIGN_IN_AT_FIRST: () => LocalizedString
+		YOU_NEED_TO_SIGN_IN_FIRST: () => LocalizedString
 		/**
 		 * No matched result.
 		 */

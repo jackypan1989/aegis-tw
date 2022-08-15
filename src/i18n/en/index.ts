@@ -55,7 +55,7 @@ const en: BaseTranslation = {
     },
 	},
 	MISC: {
-		YOU_NEED_TO_SIGN_IN_AT_FIRST: 'You need to sign in at first.',
+		YOU_NEED_TO_SIGN_IN_FIRST: 'You need to sign in first.',
 		NO_MATCHED_RESULT: 'No matched result.'
 	}
 }

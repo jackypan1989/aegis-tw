@@ -168,7 +168,7 @@ const CommentList = ({ postId }: { postId: string}) => {
           </InputGroup>
         </FormControl>
       </form>
-      : <Center>{LL.MISC.YOU_NEED_TO_SIGN_IN_AT_FIRST()}</Center>
+      : <Center>{LL.MISC.YOU_NEED_TO_SIGN_IN_FIRST()}</Center>
     }
   </Flex>
 }

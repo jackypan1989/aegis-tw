@@ -50,7 +50,7 @@ const PostCreate: NextPage = () => {
   const [createPost, { loading, error }] = useCreatePostMutation()
   const [getUrlMetadata] = useGetUrlMetadataMutation()
 
-  if (!user) return <Center p='30px'>{LL.MISC.YOU_NEED_TO_SIGN_IN_AT_FIRST()}</Center>
+  if (!user) return <Center p='30px'>{LL.MISC.YOU_NEED_TO_SIGN_IN_FIRST()}</Center>
   if (loading) return <Box>Submitting...</Box>
   if (error) return <Box>Submission error! ${error.message}</Box>
 
