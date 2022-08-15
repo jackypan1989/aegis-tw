@@ -31,7 +31,7 @@ const PostDetail = () => {
   if (!post) return <Center h='80vh'>Can not find any post.</Center>
 
   return <Box bg='white'>
-    <PostCard key={post?.id} post={post} refetchQuery={GET_POST} />
+    <PostCard key={post?.id} post={post} showContent refetchQuery={GET_POST} />
     <CommentList postId={post.id} />
   </Box>
 } 
