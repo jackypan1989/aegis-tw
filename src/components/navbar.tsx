@@ -2,8 +2,11 @@ import { AddIcon } from "@chakra-ui/icons"
 import { Avatar, Flex, Icon, Link, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import NextLink from "next/link"
+import { useContext } from "react"
+import { I18nContext } from "../i18n/i18n-react"
 
 const Navbar = () => {
+  const { LL } = useContext(I18nContext)
   const { user } = useUser() 
 
   return <Flex 
@@ -20,13 +23,13 @@ const Navbar = () => {
     position='sticky'
   >
     <NextLink href='/post' passHref>
-      <Link>News</Link>
+      <Link>{LL.COMPONENT.NAVBAR.NEWS()}</Link>
     </NextLink>
     <NextLink href='/job' passHref>
-      <Link>Jobs</Link>
+      <Link>{LL.COMPONENT.NAVBAR.JOBS()}</Link>
     </NextLink>
     <NextLink href='/community' passHref>
-      <Link>Community</Link>
+      <Link>{LL.COMPONENT.NAVBAR.COMMUNITY()}</Link>
     </NextLink>
     <Spacer />
     <NextLink href='/post/create' passHref>
@@ -42,7 +45,7 @@ const Navbar = () => {
       </NextLink>
       :<NextLink href='/auth/signIn' passHref>
         <Link>
-          Sign In
+          {LL.COMPONENT.NAVBAR.SIGN_IN()}
         </Link>
       </NextLink>
     }

@@ -8,7 +8,8 @@
     "codegen": "graphql-codegen",
     "codegen:watch": "graphql-codegen --watch",
     "codegen:sql": "node ./src/utils/mergeSql",
-    "codegen:prisma": "prisma generate"
+    "codegen:prisma": "prisma generate",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint"
@@ -44,6 +45,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "7.34.1",
     "react-icons": "4.4.0",
+    "typesafe-i18n": "^5.11.0",
     "undici": "5.8.2",
     "urijs": "1.19.11"
   },

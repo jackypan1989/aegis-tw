@@ -1,7 +1,10 @@
 import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
+import { useContext } from "react"
 import { useListPostQuery } from "../../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
+import { I18nContext } from "../../i18n/i18n-react"
+import { getI18nProps } from "../../utils/getI18nProps"
 
 export const defaultUuid = "00000000-0000-0000-0000-000000000000"
 
@@ -33,6 +36,7 @@ export const LIST_POST = gql`
 `
 
 const PostIndex = () => {
+  const { LL } = useContext(I18nContext)
   const { data, loading, error, fetchMore } = useListPostQuery({
     variables: {
       first: 10
@@ -61,9 +65,11 @@ const PostIndex = () => {
       return node && <PostCard key={node?.id} post={node} refetchQuery={LIST_POST}/>
     })}
     {hasNextPage && <Box p='30px'>
-      <Button onClick={onLoadMore}>Load More</Button>
+      <Button onClick={onLoadMore}>{LL.COMPONENT.BUTTON.LOAD_MORE()}</Button>
     </Box>}
   </Flex>
 }
 
 export default PostIndex
+
+export const getStaticProps = getI18nProps

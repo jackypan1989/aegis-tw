@@ -1,7 +1,11 @@
 import { Flex, Link, Spacer } from "@chakra-ui/react"
 import NextLink from "next/link"
+import { useContext } from "react"
+import { I18nContext } from "../i18n/i18n-react"
 
 const Footer = () => {
+  const { LL } = useContext(I18nContext)
+
   return <Flex 
     h={{ base: '12', lg: '16' }} 
     px={{ base: '3', lg: '16' }} 
@@ -16,13 +20,10 @@ const Footer = () => {
     position='sticky'
   >
     <NextLink href='/about' passHref>
-      <Link>About</Link> 
-    </NextLink>
-    <NextLink href='/feedback' passHref>
-      <Link>Feedback</Link> 
+      <Link>{LL.COMPONENT.FOOTER.ABOUT()}</Link> 
     </NextLink>
     <NextLink href='/privacy' passHref>
-      <Link>Privacy</Link> 
+      <Link>{LL.COMPONENT.FOOTER.PRIVACY()}</Link> 
     </NextLink>
     <Spacer />
     <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star" width='50' height='20'></iframe>

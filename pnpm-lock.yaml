@@ -52,6 +52,7 @@ specifiers:
   react-dom: 18.2.0
   react-hook-form: 7.34.1
   react-icons: 4.4.0
+  typesafe-i18n: ^5.11.0
   typescript: 4.7.4
   undici: 5.8.2
   urijs: 1.19.11
@@ -87,6 +88,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.34.1_react@18.2.0
   react-icons: 4.4.0_react@18.2.0
+  typesafe-i18n: 5.11.0_typescript@4.7.4
   undici: 5.8.2
   urijs: 1.19.11
 
@@ -8116,11 +8118,19 @@ packages:
       is-typedarray: 1.0.0
     dev: false
 
+  /typesafe-i18n/5.11.0_typescript@4.7.4:
+    resolution: {integrity: sha512-OVX/6/F834XldHTMdmo3TcMPePcvLXwYrkDgqWYxmuVCTyCrk0aIdUOIWM0RPZEQ2D106+/LcWFCkJiBCuK2pA==}
+    hasBin: true
+    peerDependencies:
+      typescript: '>=3.5.1'
+    dependencies:
+      typescript: 4.7.4
+    dev: false
+
   /typescript/4.7.4:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /ua-parser-js/0.7.31:
     resolution: {integrity: sha512-qLK/Xe9E2uzmYI3qLeOmI0tEOt+TBBQyUIAh4aAgU05FVYzeZrKUdkAZfBNVGRaHVgV0TDkdEngJSw/SyQchkQ==}

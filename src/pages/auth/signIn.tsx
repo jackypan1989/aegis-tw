@@ -3,6 +3,7 @@ import { supabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useUser } from '@supabase/auth-helpers-react'
 import { Auth } from '@supabase/ui'
 import { NextPage } from 'next'
+import { getI18nProps } from '../../utils/getI18nProps'
 
 const SignIn: NextPage = () => {
   const { user } = useUser()
@@ -28,3 +29,5 @@ const SignIn: NextPage = () => {
 }
 
 export default SignIn
+
+export const getStaticProps = getI18nProps

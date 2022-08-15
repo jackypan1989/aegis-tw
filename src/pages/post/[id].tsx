@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { useGetPostQuery } from "../../../codegen/graphql"
 import CommentList from "../../components/commentList"
 import PostCard, { POST_CARD } from "../../components/postCard"
+import { getI18nProps } from "../../utils/getI18nProps"
 
 export const GET_POST = gql`
   ${POST_CARD}
@@ -37,3 +38,5 @@ const PostDetail = () => {
 } 
 
 export default PostDetail
+
+export const getServerSideProps = getI18nProps

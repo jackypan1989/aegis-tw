@@ -1,10 +1,13 @@
 import { gql } from "@apollo/client"
 import { SearchIcon } from "@chakra-ui/icons"
 import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormLabel, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Spinner, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react"
+import { useContext } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { Market, Role, useListProfileQuery } from "../../../codegen/graphql"
 import ProfileCard, { PROFILE_CARD } from "../../components/profileCard"
+import { I18nContext } from "../../i18n/i18n-react"
 import { getEnumString } from "../../utils/getEnumString"
+import { getI18nProps } from "../../utils/getI18nProps"
 
 export const LIST_PROFILE = gql` 
   ${PROFILE_CARD}
@@ -38,7 +41,15 @@ type FormValues = {
   markets: Market[]
 }
 
-const ProfileFilterModal = (props: any) => {
+type ProfileFilterModalProps = {
+  isOpen: boolean
+  onOpen: () => void
+  onClose: () => void
+  refetch: ReturnType<typeof useListProfileQuery>['refetch']
+}
+
+const ProfileFilterModal = (props: ProfileFilterModalProps) => {
+  const { LL } = useContext(I18nContext)
   const { isOpen, onOpen, onClose, refetch } = props
   const {
     handleSubmit,
@@ -62,11 +73,11 @@ const ProfileFilterModal = (props: any) => {
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent maxW='90vw' ml='4' mr='4'>
-            <ModalHeader>Profle Filter</ModalHeader>
+            <ModalHeader>{LL.PAGE.PROFLIE.LIST.FILTER.TITLE()}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl>
-                <FormLabel htmlFor='roles'>Roles</FormLabel>
+                <FormLabel htmlFor='roles'>{LL.SCHEMA.TYPE.PROFILE.ROLES()}</FormLabel>
                 <Controller
                   name='roles'
                   control={control}
@@ -84,7 +95,7 @@ const ProfileFilterModal = (props: any) => {
                 />
               </FormControl>
               <FormControl mt='4'>
-                <FormLabel htmlFor='markets'>Markets</FormLabel>
+                <FormLabel htmlFor='markets'>{LL.SCHEMA.TYPE.PROFILE.MARKETS()}</FormLabel>
                 <Controller
                   name='markets'
                   control={control}
@@ -104,7 +115,7 @@ const ProfileFilterModal = (props: any) => {
             </ModalBody>
             <ModalFooter>
               <Button colorScheme='blue' type='submit'>
-                Search
+                {LL.COMPONENT.BUTTON.SEARCH()}
               </Button>
             </ModalFooter>
           </ModalContent>
@@ -115,6 +126,7 @@ const ProfileFilterModal = (props: any) => {
 }
 
 const Community = () => {
+  const { LL } = useContext(I18nContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { data, loading, error, fetchMore, refetch } = useListProfileQuery({
     variables: {
@@ -140,21 +152,23 @@ const Community = () => {
   }
 
   return <Box>
-    <Flex p='12px'>
-      <Heading size='lg'>Find out people</Heading>
+    <Flex p={{ base: 4, lg: 8 }}>
+      <Heading size='lg'>{LL.PAGE.PROFLIE.LIST.TITLE()}</Heading>
       <Spacer />
       <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
     </Flex>
-    {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
+    {nodes.length === 0 && <Center>{LL.MISC.NO_MATCHED_RESULT()}</Center>}
     <Flex direction='column' gap='3'>
       {nodes.map(node => {
         return node && <ProfileCard key={node?.id} profile={node} />
       })}
     </Flex>
     {hasNextPage && <Box p='30px'>
-      <Button onClick={onLoadMore}>Load More</Button>
+      <Button onClick={onLoadMore}>{LL.COMPONENT.BUTTON.LOAD_MORE()}</Button>
     </Box>}
   </Box>
 }
 
 export default Community
+
+export const getStaticProps = getI18nProps

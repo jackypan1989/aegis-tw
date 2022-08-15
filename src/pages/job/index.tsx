@@ -2,6 +2,7 @@ import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
 import { useListPostOnlyJobQuery } from "../../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
+import { getI18nProps } from "../../utils/getI18nProps"
 
 export const defaultUuid = "00000000-0000-0000-0000-000000000000"
 
@@ -70,3 +71,5 @@ const Job = () => {
 }
 
 export default Job
+
+export const getStaticProps = getI18nProps

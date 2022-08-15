@@ -7,6 +7,10 @@ import { AppProps } from 'next/app'
 import Script from "next/script"
 import Footer from '../components/footer'
 import Navbar from '../components/navbar'
+import TypesafeI18n from "../i18n/i18n-react"
+import { Locales, Translation } from "../i18n/i18n-types"
+import { loadedLocales } from "../i18n/i18n-util"
+import { loadFormatters } from "../i18n/i18n-util.async"
 import '../styles/globals.css'
 import { CustomApolloProvider } from '../utils/customApolloProvider'
 
@@ -25,6 +29,11 @@ const component: MDXComponents = {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const locale: Locales = pageProps.i18n.locale
+  const dictionary: Translation = pageProps.i18n.dictionary
+  loadedLocales[locale] = dictionary as Translation
+  loadFormatters(locale)
+
   return (
     <>
       <Script
@@ -44,11 +53,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <CustomApolloProvider>
           <MDXProvider components={component}>
             <ChakraProvider>
-              <Navbar />
-              <Box m={{ lg: '0 auto'}} width={{ lg: '800px' }} minH={{ base: 'calc(100vh - 96px)', lg: 'calc(100vh - 128px)' }}>
-                <Component {...pageProps} />
-              </Box>
-              <Footer />
+             <TypesafeI18n locale={locale}>
+                <Navbar />
+                <Box m={{ lg: '0 auto'}} width={{ lg: '800px' }} minH={{ base: 'calc(100vh - 96px)', lg: 'calc(100vh - 128px)' }}>
+                  <Component {...pageProps} />
+                </Box>
+                <Footer />
+              </TypesafeI18n>
             </ChakraProvider>
           </MDXProvider>
         </CustomApolloProvider>

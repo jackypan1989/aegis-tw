@@ -6,8 +6,11 @@ import {
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCreatePostMutation, useGetUrlMetadataMutation } from '../../../codegen/graphql'
+import { I18nContext } from '../../i18n/i18n-react'
+import { getI18nProps } from '../../utils/getI18nProps'
 
 type FormValues = {
   title: string
@@ -32,6 +35,7 @@ export const GET_URL_METADATA = gql`
 `
 
 const PostCreate: NextPage = () => {
+  const { LL } = useContext(I18nContext)
   const toast = useToast()
   const router = useRouter()
   const { user } = useUser()
@@ -46,7 +50,7 @@ const PostCreate: NextPage = () => {
   const [createPost, { loading, error }] = useCreatePostMutation()
   const [getUrlMetadata] = useGetUrlMetadataMutation()
 
-  if (!user) return <Center p='30px'>You need to sign in first ☝</Center>
+  if (!user) return <Center p='30px'>{LL.MISC.YOU_NEED_TO_SIGN_IN_AT_FIRST()}</Center>
   if (loading) return <Box>Submitting...</Box>
   if (error) return <Box>Submission error! ${error.message}</Box>
 
@@ -80,14 +84,13 @@ const PostCreate: NextPage = () => {
   }
 
   return (
-    <Box p='3'>
-      <Heading size='lg'>Create Post</Heading>
+    <Box p={{ base: 4, lg: 8 }}>
+      <Heading size='lg'>{LL.PAGE.POST.CREATE.TITLE()}</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.url}>
-          <FormLabel htmlFor='url'>Url</FormLabel>
+          <FormLabel htmlFor='url'>{LL.SCHEMA.TYPE.POST.URL()}</FormLabel>
           <Input
             id='url'
-            placeholder='url'
             {...register('url', {
               onChange: onChangeUrl,
               required: 'This is required',
@@ -100,10 +103,9 @@ const PostCreate: NextPage = () => {
           </FormErrorMessage>
         </FormControl>
         <FormControl mt='4' isInvalid={!!errors.title}>
-          <FormLabel htmlFor='title'>Title</FormLabel>
+          <FormLabel htmlFor='title'>{LL.SCHEMA.TYPE.POST.TITLE()}</FormLabel>
           <Input
             id='title'
-            placeholder='title'
             {...register('title', {
               required: 'This is required'
             })}
@@ -112,9 +114,9 @@ const PostCreate: NextPage = () => {
             {errors.title && errors.title.message}
           </FormErrorMessage>
         </FormControl>
-        <Text mt='4'>{`Title contains "Job" or "徵才" will be curated in Jobs tab.`}</Text>
+        <Text mt='4'>{LL.PAGE.POST.CREATE.NOTE()}</Text>
         <Button mt={4} isLoading={isSubmitting} type='submit'>
-          Submit
+          {LL.COMPONENT.BUTTON.SUBMIT()}
         </Button>
       </form>
     </Box>
@@ -122,3 +124,5 @@ const PostCreate: NextPage = () => {
 }
 
 export default PostCreate
+
+export const getStaticProps = getI18nProps

@@ -4,8 +4,10 @@ import { Avatar, Button, Center, Flex, FormControl, Heading, Icon, Input, InputG
 import { useUser } from "@supabase/auth-helpers-react"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import NextLink from "next/link"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import { useCommentsQuery, useCreateCommentMutation, useRemoveCommentMutation } from "../../codegen/graphql"
+import { I18nContext } from "../i18n/i18n-react"
 
 export const GET_COMMENT = gql`
   query comments( 
@@ -74,6 +76,7 @@ type FormValues = {
 }
 
 const CommentList = ({ postId }: { postId: string}) => {
+  const { LL } = useContext(I18nContext)
   const { user } = useUser()
 
   const {
@@ -122,7 +125,7 @@ const CommentList = ({ postId }: { postId: string}) => {
   const comments = data?.comments?.edges.map(edge => edge.node) ?? []
 
   return <Flex p='12px' gap='4px' direction='column'>
-    <Heading size='md'>Comments</Heading>
+    <Heading size='md'>{LL.COMPONENT.COMMENT_LIST.TITLE()}</Heading>
     {loading && <Center><Spinner size='lg'/></Center>}
     <Flex mt='2' mb='2' gap='8px' direction='column'>
       {comments.map(comment => {
@@ -153,20 +156,19 @@ const CommentList = ({ postId }: { postId: string}) => {
           <InputGroup size='md'>
             <Input
               id='content'
-              placeholder='content'
               {...register('content', {
                 required: 'This is required'
               })}
             />
             <InputRightElement width='4.5rem'>
               <Button h='1.75rem' size='xs' type='submit'>
-                Submit
+                {LL.COMPONENT.BUTTON.SUBMIT()}
               </Button>
             </InputRightElement>
           </InputGroup>
         </FormControl>
       </form>
-      : 'You need to sign in to comment.'
+      : <Center>{LL.MISC.YOU_NEED_TO_SIGN_IN_AT_FIRST()}</Center>
     }
   </Flex>
 }

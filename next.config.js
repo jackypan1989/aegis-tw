@@ -32,8 +32,10 @@ const nextConfig = {
     })
     return config
   },
-  // Append the default value with md extensions
-  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx']
+  i18n: {
+		locales: ['tw', 'en'],
+		defaultLocale: 'tw'
+	}
 }
 
 module.exports = withMDX(nextConfig)

@@ -1,6 +1,5 @@
-import { Text, Box } from "@chakra-ui/react"
-
-<Box p='6'>
+import { Text, Button } from "@chakra-ui/react"
+import NextLink from "next/link"
 
 ### Why Aegis?
 
@@ -35,4 +34,10 @@ The vision is that we could integrate Taiwaneses' energy worldwide just like Jew
 
 #### All about Taiwanese startups and the software ecosystem 👊
 
-</Box>
+<NextLink href="/auth/signIn">
+  <Button>Join Us</Button>
+</NextLink>
+
+<NextLink href="mailto: jacky@aegis.tw">
+  <Button ml='16px'>Mail Us</Button>
+</NextLink>
