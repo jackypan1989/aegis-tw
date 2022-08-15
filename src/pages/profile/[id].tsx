@@ -103,7 +103,7 @@ const ProfileDetail = () => {
   }
 
   if (id === user?.id) {
-    return <Box p='30'>
+    return <Box p={{ base: 4, lg: 8 }}>
       <Flex>
         <Heading size='lg'>{profile?.fullname || profile?.username || profile?.email}</Heading>
         <Spacer />

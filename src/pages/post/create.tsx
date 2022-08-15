@@ -80,7 +80,7 @@ const PostCreate: NextPage = () => {
   }
 
   return (
-    <Box p='3'>
+    <Box p={{ base: 4, lg: 8 }}>
       <Heading size='lg'>Create Post</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.url}>
