@@ -1,6 +1,6 @@
 import { Comment, Post, Profile, Vote } from ".prisma/client";
 import DataLoader from "dataloader";
-import { prisma } from "../src/utils/prismaClient";
+import { UserContext } from "../src/pages/api/graphql";
 
 interface Model {
   id: string
@@ -12,8 +12,8 @@ function keepOrder<T extends Model>(ids: readonly string[], items: T[]): T[] {
 }
 
 const dataloaders = {
-  profileById: new DataLoader<string, Profile>(async ids => {
-    const items = await prisma.profile.findMany({
+  profileById: (context: UserContext) => new DataLoader<string, Profile>(async ids => {
+    const items = await context.prisma.profile.findMany({
       where: {
         id: { in: ids as string[] },
       },
@@ -21,8 +21,8 @@ const dataloaders = {
 
     return keepOrder(ids, items)
   }),
-  postById: new DataLoader<string, Post>(async (ids) => {
-    const items = await prisma.post.findMany({
+  postById: (context: UserContext) => new DataLoader<string, Post>(async (ids) => {
+    const items = await context.prisma.post.findMany({
       where: {
         id: { in: ids as string[] },
       },
@@ -30,8 +30,8 @@ const dataloaders = {
 
     return keepOrder(ids, items)
   }),
-  voteById: new DataLoader<string, Vote>(async (ids) => {
-    const items = await prisma.vote.findMany({
+  voteById: (context: UserContext) => new DataLoader<string, Vote>(async (ids) => {
+    const items = await context.prisma.vote.findMany({
       where: {
         id: { in: ids as string[] },
       },
@@ -39,14 +39,29 @@ const dataloaders = {
 
     return keepOrder(ids, items)
   }),
-  commentById: new DataLoader<string, Comment>(async ids => {
-    const items = await prisma.comment.findMany({
+  commentById: (context: UserContext) => new DataLoader<string, Comment>(async ids => {
+    const items = await context.prisma.comment.findMany({
       where: {
         id: { in: ids as string[] },
       },
     })
 
     return keepOrder(ids, items)
+  }),
+  isVoted: (context: UserContext) => new DataLoader<string, boolean>(async ids => {
+    const items = await Promise.all(
+      ids.map(id => new Promise<boolean>((resolve) => {
+        context.prisma.vote.count({
+          where: { 
+            postId: id,
+            voterId: context.user?.id
+          }
+        }).then(value => {
+          resolve(value > 0)
+        })
+      }))
+    )
+    return items
   }),
 }
 

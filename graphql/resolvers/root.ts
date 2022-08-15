@@ -28,28 +28,22 @@ const metascraper = Metascraper([
 
 const resolvers: Resolvers<UserContext> = {  
   Post: {
-    poster: (post) => {
-      return dataloaders.profileById.load(post.posterId)
+    poster: (post, _args, context) => {
+      return dataloaders.profileById(context).load(post.posterId)
     },
-    isVoted: async (post, _args, context) => {
+    isVoted: (post, _args, context) => {
       if (!context.user) return false
-      const count = await context.prisma.vote.count({
-        where: { 
-          postId: post.id,
-          voterId: context.user.id
-        }
-      })
-      return count > 0
+      return dataloaders.isVoted(context).load(post.id)
     }
   },
   Vote: {
-    post: (vote) => {
-      return dataloaders.postById.load(vote.postId)
+    post: (vote, _args, context) => {
+      return dataloaders.postById(context).load(vote.postId)
     },
   },
   Comment: {
-    commenter: (comment) => {
-      return dataloaders.profileById.load(comment.commenterId)
+    commenter: (comment, _args, context) => {
+      return dataloaders.profileById(context).load(comment.commenterId)
     },
   },
   Query: {
