@@ -1,5 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons"
-import { Avatar, Flex, Icon, Link, Spacer } from "@chakra-ui/react"
+import { Avatar, Box, Flex, Icon, Link, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import NextLink from "next/link"
 import { useContext } from "react"
@@ -22,14 +22,19 @@ const Navbar = () => {
     alignItems='center' 
     position='sticky'
   >
+    <Box display={{ base: 'none', lg: 'initial' }} >
+      <NextLink href='/' passHref>
+        <Link>AEGIS</Link>
+      </NextLink>
+    </Box>
     <NextLink href='/post' passHref>
       <Link>{LL.COMPONENT.NAVBAR.NEWS()}</Link>
     </NextLink>
     <NextLink href='/job' passHref>
       <Link>{LL.COMPONENT.NAVBAR.JOBS()}</Link>
     </NextLink>
-    <NextLink href='/community' passHref>
-      <Link>{LL.COMPONENT.NAVBAR.COMMUNITY()}</Link>
+    <NextLink href='/social' passHref>
+      <Link>{LL.COMPONENT.NAVBAR.SOCIAL()}</Link>
     </NextLink>
     <Spacer />
     <NextLink href='/post/create' passHref>

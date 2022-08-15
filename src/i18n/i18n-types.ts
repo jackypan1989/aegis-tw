@@ -61,9 +61,9 @@ type RootTranslation = {
 			 */
 			JOBS: string
 			/**
-			 * Community
+			 * SOCIAL
 			 */
-			COMMUNITY: string
+			SOCIAL: string
 			/**
 			 * Sign In
 			 */
@@ -196,9 +196,9 @@ export type TranslationFunctions = {
 			 */
 			JOBS: () => LocalizedString
 			/**
-			 * Community
+			 * SOCIAL
 			 */
-			COMMUNITY: () => LocalizedString
+			SOCIAL: () => LocalizedString
 			/**
 			 * Sign In
 			 */

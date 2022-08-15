@@ -125,7 +125,7 @@ const ProfileFilterModal = (props: ProfileFilterModalProps) => {
   )
 }
 
-const Community = () => {
+const Social = () => {
   const { LL } = useContext(I18nContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { data, loading, error, fetchMore, refetch } = useListProfileQuery({
@@ -169,6 +169,6 @@ const Community = () => {
   </Box>
 }
 
-export default Community
+export default Social
 
 export const getStaticProps = getI18nProps

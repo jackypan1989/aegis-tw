@@ -20,7 +20,7 @@ const en: BaseTranslation = {
 		NAVBAR: {
 			NEWS: 'News',
 			JOBS: 'Jobs',
-			COMMUNITY: 'Community',
+			SOCIAL: 'SOCIAL',
 			SIGN_IN: 'Sign In'
 		},
 		FOOTER: {

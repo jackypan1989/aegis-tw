@@ -20,7 +20,7 @@ const tw: Translation = {
     NAVBAR: {
       NEWS: '新聞',
       JOBS: '徵才',
-      COMMUNITY: '社群',
+      SOCIAL: '社群',
       SIGN_IN: '登入'
     },
     FOOTER: {
