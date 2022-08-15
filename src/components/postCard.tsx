@@ -15,6 +15,7 @@ export const POST_CARD = gql`
     createdAt
     title
     url
+    content
     viewCount
     voteCount
     commentCount
@@ -68,8 +69,8 @@ export const VIEW_POST = gql`
   }
 `
 
-const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode }) => {
-  const { post, refetchQuery } = props
+const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetchQuery: DocumentNode }) => {
+  const { post, showContent, refetchQuery } = props
   const toast = useToast()
   const router = useRouter()
   const { user } = useUser()
@@ -218,8 +219,15 @@ const PostCard = (props: { post: PostCardFragment, refetchQuery: DocumentNode })
               {post.poster?.username}
             </Button>
           </NextLink>
-          {post.poster?.id === user?.id && <Icon onClick={onRemove} as={DeleteIcon}></Icon>}
+          {post.poster?.id === user?.id && 
+            <Link>
+              <Icon onClick={onRemove} as={DeleteIcon}></Icon>
+            </Link>
+          }
         </Flex>
+        {showContent && post.content && <Box>
+          <Text>{post.content.split('\n').map((s, val) => <Box key={val}>{s}</Box>)}</Text>
+        </Box>}
       </Flex>
     </Flex>
   </Flex>

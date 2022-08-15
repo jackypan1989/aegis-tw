@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import {
   Box, Button, Center, FormControl, FormErrorMessage,
-  FormLabel, Heading, Input, Text, useToast
+  FormLabel, Heading, Input, Text, Textarea, useToast
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
@@ -12,6 +12,7 @@ import { useCreatePostMutation, useGetUrlMetadataMutation } from '../../../codeg
 type FormValues = {
   title: string
   url: string
+  content: string
 }
 
 export const ADD_POST = gql`
@@ -46,16 +47,17 @@ const PostCreate: NextPage = () => {
   const [createPost, { loading, error }] = useCreatePostMutation()
   const [getUrlMetadata] = useGetUrlMetadataMutation()
 
-  if (!user) return <Center p='30px'>You need to sign in first ☝</Center>
-  if (loading) return <Box>Submitting...</Box>
-  if (error) return <Box>Submission error! ${error.message}</Box>
+  if (!user) return <Center p={{ base: 4, lg: 8 }}>You need to sign in first ☝</Center>
+  if (loading) return <Center p={{ base: 4, lg: 8 }}>Submitting...</Center>
+  if (error) return <Center p={{ base: 4, lg: 8 }}>Submission error! ${error.message}</Center>
 
   const onSubmit = async (value: FormValues) => {
     await createPost({
       variables: {
         input: {
           title: value.title,
-          url: value.url
+          url: value.url,
+          content: value.content
         }
       }
     })
@@ -82,6 +84,7 @@ const PostCreate: NextPage = () => {
   return (
     <Box p={{ base: 4, lg: 8 }}>
       <Heading size='lg'>Create Post</Heading>
+      <Text mt='4'>{`You can copy url to get title, or leave it blank. Job related title will be curated in Jobs tab.`}</Text>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.url}>
           <FormLabel htmlFor='url'>Url</FormLabel>
@@ -90,7 +93,6 @@ const PostCreate: NextPage = () => {
             placeholder='url'
             {...register('url', {
               onChange: onChangeUrl,
-              required: 'This is required',
               minLength: { value: 4, message: 'Minimum length should be 4' },
               pattern: { value: /^((?:https?:\/\/)?(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b[-a-zA-Z0-9@:%_+.~#?&/=]*|)$/, message: 'Please enter a valid url'}
             })}
@@ -112,7 +114,14 @@ const PostCreate: NextPage = () => {
             {errors.title && errors.title.message}
           </FormErrorMessage>
         </FormControl>
-        <Text mt='4'>{`Title contains "Job" or "徵才" will be curated in Jobs tab.`}</Text>
+        <FormControl mt='4' isInvalid={!!errors.content}>
+          <FormLabel htmlFor='content'>Content</FormLabel>
+          <Textarea
+            id='content'
+            placeholder='content'
+            {...register('content')}
+          />
+        </FormControl>
         <Button mt={4} isLoading={isSubmitting} type='submit'>
           Submit
         </Button>
