@@ -88,8 +88,13 @@ const resolvers: Resolvers<UserContext> = {
       const where = filter?.onlyJobs
         ? { 
           OR: [
+            { title: { contains: 'job' }},
+            { title: { contains: 'Job' }},
+            { title: { contains: 'hiring' }},
+            { title: { contains: 'Hiring' }},
             { title: { contains: '徵才' }},
-            { title: { contains: 'Job' }}
+            { title: { contains: '應徵' }},
+            { title: { contains: '面試' }},  
           ]
         } 
         : {}
