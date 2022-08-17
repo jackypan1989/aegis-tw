@@ -35,10 +35,10 @@ const ProfileCard = (props: { profile: ProfileCardFragment }) => {
     boxShadow='0px 0px 15px rgba(0, 0, 0, 0.1)'
     direction='column'
   >
-    <Flex gap='12px'>
-      <Avatar name={profile.username?.[0]} />
+    <Flex gap={{ base: '2', lg: '3' }} alignItems='center'>
+      <Avatar size={{ base: 'sm', lg: 'md' }} name={profile.username?.[0]} />
       <Flex direction='column'>
-        <Heading size='md'>{profile.fullname || profile.email}</Heading>
+        <Heading size={{ base: 'sm', lg: 'md' }}>{profile.fullname || profile.email}</Heading>
         <Text>@{profile.username}</Text>
       </Flex>
     </Flex>

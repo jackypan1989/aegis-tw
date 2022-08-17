@@ -18,9 +18,6 @@ const Footer = () => {
     <NextLink href='/about' passHref>
       <Link>About</Link> 
     </NextLink>
-    <NextLink href='/feedback' passHref>
-      <Link>Feedback</Link> 
-    </NextLink>
     <NextLink href='/privacy' passHref>
       <Link>Privacy</Link> 
     </NextLink>
