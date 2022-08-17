@@ -49,18 +49,20 @@ enum Market {
 }
 
 model Profile {
-  id          String      @id @db.Uuid
+  id          String      @id @db.Uuid @default(dbgenerated("uuid_generate_v4()"))
   createdAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("created_at")
   updatedAt   DateTime?   @default(now()) @db.Timestamptz(6) @map("updated_at")
   email       String      @unique @db.VarChar
   username    String      @unique @db.VarChar
   fullname    String?     @db.VarChar
   avatarUrl   String?     @db.VarChar @map("avatar_url")
+  location    String?     @db.VarChar  
   website     String?     @db.VarChar
   linkedin    String?     @db.VarChar
   facebook    String?     @db.VarChar
   twitter     String?     @db.VarChar
   github      String?     @db.VarChar
+  auto        Boolean?    @db.Boolean
 
   roles       Role[]
   markets     Market[]
