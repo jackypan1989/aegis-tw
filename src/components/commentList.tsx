@@ -121,7 +121,7 @@ const CommentList = ({ postId }: { postId: string}) => {
   
   const comments = data?.comments?.edges.map(edge => edge.node) ?? []
 
-  return <Flex p='12px' gap='4px' direction='column'>
+  return <Flex p={{ base: 4, lg: 8 }} gap={{ base: 2, lg: 4 }} direction='column'>
     <Heading size='md'>Comments</Heading>
     {loading && <Center><Spinner size='lg'/></Center>}
     <Flex mt='2' mb='2' gap='8px' direction='column'>
@@ -146,6 +146,7 @@ const CommentList = ({ postId }: { postId: string}) => {
           </Flex>
         </Flex>
       })}
+      {comments.length === 0 && <Center>No comments yet.</Center>}
     </Flex>
     {user 
       ? <form onSubmit={handleSubmit(onSubmit)}>

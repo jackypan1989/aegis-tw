@@ -84,7 +84,7 @@ const PostCreate: NextPage = () => {
   return (
     <Box p={{ base: 4, lg: 8 }}>
       <Heading size='lg'>Create Post</Heading>
-      <Text mt='4'>{`You can copy url to get title, or leave it blank. Job related title will be curated in Jobs tab.`}</Text>
+      <Text mt='4'>{`You can paste url to get title, or leave it blank. Job related title will be curated in Jobs tab.`}</Text>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.url}>
           <FormLabel htmlFor='url'>Url</FormLabel>

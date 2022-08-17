@@ -4,6 +4,7 @@ import { supabaseClient } from '@supabase/auth-helpers-nextjs'
 import { UserProvider } from '@supabase/auth-helpers-react'
 import { MDXComponents } from 'mdx/types'
 import { AppProps } from 'next/app'
+import Head from "next/head"
 import Script from "next/script"
 import Footer from '../components/footer'
 import Navbar from '../components/navbar'
@@ -27,6 +28,15 @@ const component: MDXComponents = {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <title>Aegis Community</title>
+        <meta name="description"  content="Taiwanese community for startups and software industry." />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Aegis Community" />
+        <meta property="og:description" content="Taiwanese community for startups and software industry." />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-REPJEXSGK2"
         strategy="afterInteractive"
