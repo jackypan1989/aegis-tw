@@ -125,7 +125,7 @@ const Community = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { data, loading, error, fetchMore, refetch } = useListProfileQuery({
     variables: {
-      first: 30
+      first: 10
     }
   })
 
@@ -158,9 +158,9 @@ const Community = () => {
         return node && <ProfileCard key={node?.id} profile={node} />
       })}
     </Flex>
-    {hasNextPage && <Box p={{ base: 4, lg: 8 }}>
+    {hasNextPage && <Center p={{ base: 4, lg: 8 }}>
       <Button onClick={onLoadMore}>Load More</Button>
-    </Box>}
+    </Center>}
   </Box>
 }
 
