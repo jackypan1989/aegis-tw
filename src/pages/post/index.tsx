@@ -35,7 +35,7 @@ export const LIST_POST = gql`
 const PostIndex = () => {
   const { data, loading, error, fetchMore } = useListPostQuery({
     variables: {
-      first: 10
+      first: 15
     }
   })
 

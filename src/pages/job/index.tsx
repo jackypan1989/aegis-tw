@@ -35,7 +35,7 @@ export const LIST_POST_ONLY_JOB = gql`
 const Job = () => {
   const { data, loading, error, fetchMore } = useListPostOnlyJobQuery({
     variables: {
-      first: 10,
+      first: 15,
       filter: {
         onlyJobs: true
       }

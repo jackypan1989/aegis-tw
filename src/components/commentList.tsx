@@ -141,7 +141,9 @@ const CommentList = ({ postId }: { postId: string}) => {
             <Flex>
               <Text>{comment.content}</Text>
               <Spacer />
-              {comment.commenter?.id === user?.id && <Icon onClick={() => onRemove(comment.id)} as={DeleteIcon}></Icon>}
+              {comment.commenter?.id === user?.id && <Link>
+                <Icon onClick={() => onRemove(comment.id)} as={DeleteIcon}></Icon>
+              </Link>}
             </Flex>
           </Flex>
         </Flex>

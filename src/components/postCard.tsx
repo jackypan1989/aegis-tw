@@ -1,6 +1,6 @@
 import { DocumentNode, gql } from '@apollo/client'
 import { DeleteIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { Box, Button, Center, Flex, Heading, Icon, Link, Text, useToast } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Icon, Link, Text, useToast } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import NextLink from 'next/link'
@@ -80,7 +80,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 30
+          first: 15
         }
       }
     ]
@@ -91,7 +91,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 30
+          first: 15
         }
       }
     ]
@@ -102,7 +102,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 30
+          first: 15
         }
       }
     ]
@@ -195,12 +195,12 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
             {post.url 
               ? <Link href={post.url} target='_new' onClick={onView}>
                   <Box>
-                    <Heading size='sm' display='inline'>{post.title}</Heading>
+                    <Text fontSize={{ base: 'sm', lg: 'md' }} fontWeight='bold' display='inline'>{post.title}</Text>
                     <Text display='inline' size='8' ml='1' color='gray'>{`(${new URI(post.url).domain()})`}</Text>
                   </Box>
                 </Link>
               : <Box>
-                  <Heading size='sm' display='inline'>{post.title}</Heading>
+                  <Text fontSize={{ base: 'sm', lg: 'md' }} fontWeight='bold' display='inline'>{post.title}</Text>
                 </Box>
             }
           </Box>
