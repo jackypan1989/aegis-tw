@@ -1,7 +1,7 @@
-import { Role } from '.prisma/client';
-import { Market } from '.prisma/client';
+import { Role } from '../codegen/prisma/client';
+import { Market } from '../codegen/prisma/client';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { Profile as ProfileModel, Post as PostModel, Vote as VoteModel, Comment as CommentModel } from '.prisma/client';
+import { Profile as ProfileModel, Post as PostModel, Vote as VoteModel, Comment as CommentModel } from '../codegen/prisma/client';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null | undefined;
@@ -65,6 +65,21 @@ export type CreatePostMutationInput = {
   url?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateStartupMutationInput = {
+  dau: Scalars['Int'];
+  description?: InputMaybe<Scalars['String']>;
+  foundedAt: Scalars['Date'];
+  funding: Scalars['Float'];
+  logo?: InputMaybe<Scalars['String']>;
+  markets: Array<Market>;
+  name: Scalars['String'];
+  revenue: Scalars['Float'];
+  stage?: InputMaybe<Scalars['String']>;
+  teamSize: Scalars['Int'];
+  url?: InputMaybe<Scalars['String']>;
+  valuation: Scalars['Float'];
+};
+
 export type CreateVoteMutationInput = {
   postId: Scalars['ID'];
 };
@@ -85,10 +100,12 @@ export type Mutation = {
   __typename?: 'Mutation';
   createComment: Comment;
   createPost: Post;
+  createStartup: Startup;
   createVote: Vote;
   getUrlMetadata?: Maybe<Metadata>;
   removeComment: Comment;
   removePost: Post;
+  removeStartup: Startup;
   removeVote: Vote;
   updateEveryPostRankingScore: Scalars['Boolean'];
   updateProfile?: Maybe<Profile>;
@@ -103,6 +120,11 @@ export type MutationCreateCommentArgs = {
 
 export type MutationCreatePostArgs = {
   input: CreatePostMutationInput;
+};
+
+
+export type MutationCreateStartupArgs = {
+  input: CreateStartupMutationInput;
 };
 
 
@@ -123,6 +145,11 @@ export type MutationRemoveCommentArgs = {
 
 export type MutationRemovePostArgs = {
   input: RemovePostMutationInput;
+};
+
+
+export type MutationRemoveStartupArgs = {
+  input: RemoveStartupMutationInput;
 };
 
 
@@ -225,6 +252,8 @@ export type Query = {
   posts: PostConnection;
   profile?: Maybe<Profile>;
   profiles: ProfileConnection;
+  startup?: Maybe<Startup>;
+  startups?: Maybe<StartupConnection>;
 };
 
 
@@ -264,6 +293,20 @@ export type QueryProfilesArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
+
+export type QueryStartupArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryStartupsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<StartupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+};
+
 export type RemoveCommentMutationInput = {
   id: Scalars['ID'];
 };
@@ -272,11 +315,49 @@ export type RemovePostMutationInput = {
   id: Scalars['ID'];
 };
 
+export type RemoveStartupMutationInput = {
+  id: Scalars['ID'];
+};
+
 export type RemoveVoteMutationInput = {
   postId: Scalars['ID'];
 };
 
 export { Role };
+
+export type Startup = {
+  __typename?: 'Startup';
+  createdAt: Scalars['Date'];
+  description?: Maybe<Scalars['String']>;
+  foundedAt: Scalars['Date'];
+  funding: Scalars['Float'];
+  id: Scalars['ID'];
+  logo?: Maybe<Scalars['String']>;
+  markets: Array<Market>;
+  name: Scalars['String'];
+  revenue: Scalars['Float'];
+  stage?: Maybe<Scalars['String']>;
+  teamSize: Scalars['Int'];
+  updatedAt: Scalars['Date'];
+  url?: Maybe<Scalars['String']>;
+  valuation: Scalars['Float'];
+};
+
+export type StartupConnection = {
+  __typename?: 'StartupConnection';
+  edges: Array<StartupEdges>;
+  pageInfo: PageInfo;
+};
+
+export type StartupEdges = {
+  __typename?: 'StartupEdges';
+  cursor: Scalars['Cursor'];
+  node: Startup;
+};
+
+export type StartupFilter = {
+  name?: InputMaybe<Scalars['String']>;
+};
 
 export type UpdateProfileMutationInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
@@ -373,6 +454,8 @@ export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename
 
 export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
 
+export type StartupCardFragment = { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined };
+
 export type ListProfileQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['Cursor']>;
@@ -435,6 +518,15 @@ export type UpdateProfileMutationVariables = Exact<{
 
 export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
+export type ListStartupQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<StartupFilter>;
+}>;
+
+
+export type ListStartupQuery = { __typename?: 'Query', startups?: { __typename?: 'StartupConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'StartupEdges', cursor: string, node: { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined } }> } | null | undefined };
+
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
   id
@@ -467,6 +559,14 @@ export const ProfileCardFragmentDoc = gql`
   facebook
   twitter
   github
+}
+    `;
+export const StartupCardFragmentDoc = gql`
+    fragment StartupCard on Startup {
+  id
+  logo
+  name
+  url
 }
     `;
 export const CommentsDocument = gql`
@@ -1051,6 +1151,52 @@ export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
 export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
 export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export const ListStartupDocument = gql`
+    query listStartup($first: Int, $after: Cursor, $filter: StartupFilter) {
+  startups(first: $first, after: $after, filter: $filter) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        ...StartupCard
+      }
+    }
+  }
+}
+    ${StartupCardFragmentDoc}`;
+
+/**
+ * __useListStartupQuery__
+ *
+ * To run a query within a React component, call `useListStartupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListStartupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListStartupQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useListStartupQuery(baseOptions?: Apollo.QueryHookOptions<ListStartupQuery, ListStartupQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListStartupQuery, ListStartupQueryVariables>(ListStartupDocument, options);
+      }
+export function useListStartupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListStartupQuery, ListStartupQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListStartupQuery, ListStartupQueryVariables>(ListStartupDocument, options);
+        }
+export type ListStartupQueryHookResult = ReturnType<typeof useListStartupQuery>;
+export type ListStartupLazyQueryHookResult = ReturnType<typeof useListStartupLazyQuery>;
+export type ListStartupQueryResult = Apollo.QueryResult<ListStartupQuery, ListStartupQueryVariables>;
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -1127,6 +1273,7 @@ export type ResolversTypes = {
   CommentFilter: CommentFilter;
   CreateCommentMutationInput: CreateCommentMutationInput;
   CreatePostMutationInput: CreatePostMutationInput;
+  CreateStartupMutationInput: CreateStartupMutationInput;
   CreateVoteMutationInput: CreateVoteMutationInput;
   Cursor: ResolverTypeWrapper<Scalars['Cursor']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
@@ -1149,8 +1296,13 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   RemoveCommentMutationInput: RemoveCommentMutationInput;
   RemovePostMutationInput: RemovePostMutationInput;
+  RemoveStartupMutationInput: RemoveStartupMutationInput;
   RemoveVoteMutationInput: RemoveVoteMutationInput;
   Role: Role;
+  Startup: ResolverTypeWrapper<Startup>;
+  StartupConnection: ResolverTypeWrapper<StartupConnection>;
+  StartupEdges: ResolverTypeWrapper<StartupEdges>;
+  StartupFilter: StartupFilter;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateProfileMutationInput: UpdateProfileMutationInput;
   ViewPostMutationInput: ViewPostMutationInput;
@@ -1168,6 +1320,7 @@ export type ResolversParentTypes = {
   CommentFilter: CommentFilter;
   CreateCommentMutationInput: CreateCommentMutationInput;
   CreatePostMutationInput: CreatePostMutationInput;
+  CreateStartupMutationInput: CreateStartupMutationInput;
   CreateVoteMutationInput: CreateVoteMutationInput;
   Cursor: Scalars['Cursor'];
   Date: Scalars['Date'];
@@ -1189,7 +1342,12 @@ export type ResolversParentTypes = {
   Query: {};
   RemoveCommentMutationInput: RemoveCommentMutationInput;
   RemovePostMutationInput: RemovePostMutationInput;
+  RemoveStartupMutationInput: RemoveStartupMutationInput;
   RemoveVoteMutationInput: RemoveVoteMutationInput;
+  Startup: Startup;
+  StartupConnection: StartupConnection;
+  StartupEdges: StartupEdges;
+  StartupFilter: StartupFilter;
   String: Scalars['String'];
   UpdateProfileMutationInput: UpdateProfileMutationInput;
   ViewPostMutationInput: ViewPostMutationInput;
@@ -1242,10 +1400,12 @@ export type MetadataResolvers<ContextType = any, ParentType extends ResolversPar
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'input'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'input'>>;
+  createStartup?: Resolver<ResolversTypes['Startup'], ParentType, ContextType, RequireFields<MutationCreateStartupArgs, 'input'>>;
   createVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationCreateVoteArgs, 'input'>>;
   getUrlMetadata?: Resolver<Maybe<ResolversTypes['Metadata']>, ParentType, ContextType, RequireFields<MutationGetUrlMetadataArgs, 'input'>>;
   removeComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationRemoveCommentArgs, 'input'>>;
   removePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationRemovePostArgs, 'input'>>;
+  removeStartup?: Resolver<ResolversTypes['Startup'], ParentType, ContextType, RequireFields<MutationRemoveStartupArgs, 'input'>>;
   removeVote?: Resolver<ResolversTypes['Vote'], ParentType, ContextType, RequireFields<MutationRemoveVoteArgs, 'input'>>;
   updateEveryPostRankingScore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   updateProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
@@ -1327,9 +1487,41 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   posts?: Resolver<ResolversTypes['PostConnection'], ParentType, ContextType, Partial<QueryPostsArgs>>;
   profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'id'>>;
   profiles?: Resolver<ResolversTypes['ProfileConnection'], ParentType, ContextType, Partial<QueryProfilesArgs>>;
+  startup?: Resolver<Maybe<ResolversTypes['Startup']>, ParentType, ContextType, RequireFields<QueryStartupArgs, 'id'>>;
+  startups?: Resolver<Maybe<ResolversTypes['StartupConnection']>, ParentType, ContextType, Partial<QueryStartupsArgs>>;
 };
 
 export type RoleResolvers = EnumResolverSignature<{ ANGEL_INVESTOR?: any, DESIGNER?: any, ENGINEERING?: any, FOUNDER?: any, MARKETING?: any, OPERATIONS?: any, PRODUCT?: any, SALES?: any, VENTURE_CAPITAL?: any }, ResolversTypes['Role']>;
+
+export type StartupResolvers<ContextType = any, ParentType extends ResolversParentTypes['Startup'] = ResolversParentTypes['Startup']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  foundedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  funding?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  logo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  markets?: Resolver<Array<ResolversTypes['Market']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  revenue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  stage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  teamSize?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  valuation?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type StartupConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['StartupConnection'] = ResolversParentTypes['StartupConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['StartupEdges']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type StartupEdgesResolvers<ContextType = any, ParentType extends ResolversParentTypes['StartupEdges'] = ResolversParentTypes['StartupEdges']> = {
+  cursor?: Resolver<ResolversTypes['Cursor'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Startup'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export type VoteResolvers<ContextType = any, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -1371,6 +1563,9 @@ export type Resolvers<ContextType = any> = {
   ProfileEdges?: ProfileEdgesResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Role?: RoleResolvers;
+  Startup?: StartupResolvers<ContextType>;
+  StartupConnection?: StartupConnectionResolvers<ContextType>;
+  StartupEdges?: StartupEdgesResolvers<ContextType>;
   Vote?: VoteResolvers<ContextType>;
   VoteConnection?: VoteConnectionResolvers<ContextType>;
   VoteEdges?: VoteEdgesResolvers<ContextType>;

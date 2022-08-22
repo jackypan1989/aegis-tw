@@ -1,4 +1,3 @@
-import { Market, Role } from ".prisma/client"
 import { gql } from "@apollo/client"
 import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Spinner, Text, useToast, Wrap, WrapItem } from "@chakra-ui/react"
 import { supabaseClient } from "@supabase/auth-helpers-nextjs"
@@ -7,6 +6,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useGetProfileQuery, useUpdateProfileMutation } from "../../../codegen/graphql"
+import { Market, Role } from "../../../codegen/prisma/client"
 import ProfileCard, { PROFILE_CARD } from "../../components/profileCard"
 import { getEnumString } from "../../utils/getEnumString"
 

@@ -1,9 +1,9 @@
-import { Prisma } from '.prisma/client'
 import {
   findManyCursorConnection
 } from '@devoxa/prisma-relay-cursor-connection'
 import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
+import { Prisma } from '../../codegen/prisma/client'
 import { UserContext } from '../../src/pages/api/graphql'
 import dataloaders from '../dataLoader'
 
@@ -126,6 +126,28 @@ const resolvers: Resolvers<UserContext> = {
           }
         }),
         () => context.prisma.comment.count(),
+        args
+      )
+      return result
+    },
+    startup: async (_, args, context) => {
+      const { id } = args
+      const result = await context.prisma.startup.findUnique({
+        where: {
+          id: id
+        }
+      })
+      return result
+    },
+    startups: async (_, args, context) => {
+      const { filter } = args
+
+      const result = await findManyCursorConnection(
+        (findManyArgs) => context.prisma.startup.findMany({
+          ...findManyArgs,
+          where: {},
+        }),
+        () => context.prisma.startup.count(),
         args
       )
       return result

@@ -1,5 +1,5 @@
-import { PrismaClient } from ".prisma/client";
 import { v4 as uuidv4 } from 'uuid';
+import { PrismaClient } from "../codegen/prisma/client";
 
 const prisma = new PrismaClient()
 const myId = 'd27b6a7d-9b95-467a-a9b9-896827c750c5'
@@ -7,6 +7,8 @@ const userId1 = uuidv4()
 const userId2 = uuidv4()
 const postId1 = uuidv4()
 const postId2 = uuidv4()
+const startupId1 = uuidv4()
+const startupId2 = uuidv4()
 
 async function main() {
   await prisma.profile.createMany({
@@ -43,6 +45,19 @@ async function main() {
       },
     ]
   })  
+
+  await prisma.startup.createMany({
+    data: [
+      {
+        id: startupId1,
+        name: 'Gogoro'
+      },
+      {
+        id: startupId2,
+        name: 'Appier'
+      },
+    ]
+  }) 
 }
 
 main()
