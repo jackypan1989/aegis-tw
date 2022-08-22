@@ -36,10 +36,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY, DATABASE_URL in .env file
     pnpm codegen:sql
 
     // generate gql type
-    pnpm codegen
+    pnpm codegen:gql
 
     // generate prisma client
-    npx prisma generate
+    pnpm codegen:prisma
 
     // run
     pnpm dev

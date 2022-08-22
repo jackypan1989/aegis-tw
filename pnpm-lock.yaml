@@ -30,6 +30,7 @@ specifiers:
   '@types/node': ^18.7.9
   '@types/react': ^18.0.17
   '@types/urijs': ^1.19.19
+  '@types/uuid': ^8.3.4
   '@typescript-eslint/eslint-plugin': ^5.33.1
   '@typescript-eslint/parser': ^5.33.1
   dataloader: ^2.1.0
@@ -56,6 +57,7 @@ specifiers:
   typescript: ^4.7.4
   undici: ^5.9.1
   urijs: ^1.19.11
+  uuid: ^8.3.2
 
 dependencies:
   '@apollo/client': 3.6.9_onqnqwb3ubg5opvemcqf7c2qhy
@@ -90,6 +92,7 @@ dependencies:
   react-icons: 4.4.0_react@18.2.0
   undici: 5.9.1
   urijs: 1.19.11
+  uuid: 8.3.2
 
 devDependencies:
   '@graphql-codegen/add': 3.2.1_graphql@16.6.0
@@ -103,6 +106,7 @@ devDependencies:
   '@types/node': 18.7.9
   '@types/react': 18.0.17
   '@types/urijs': 1.19.19
+  '@types/uuid': 8.3.4
   '@typescript-eslint/eslint-plugin': 5.33.1_vsoshirnpb7xw6mr7xomgfas2i
   '@typescript-eslint/parser': 5.33.1_4rv7y5c6xz3vfxwhbrcxxi73bq
   dotenv-cli: 6.0.0
@@ -3065,6 +3069,10 @@ packages:
 
   /@types/urijs/1.19.19:
     resolution: {integrity: sha512-FDJNkyhmKLw7uEvTxx5tSXfPeQpO0iy73Ry+PmYZJvQy0QIWX8a7kJ4kLWRf+EbTPJEPDSgPXHaM7pzr5lmvCg==}
+    dev: true
+
+  /@types/uuid/8.3.4:
+    resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
     dev: true
 
   /@types/ws/8.5.3:
@@ -8325,6 +8333,11 @@ packages:
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  /uuid/8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+    dev: false
 
   /uvu/0.5.6:
     resolution: {integrity: sha512-+g8ENReyr8YsOc6fv/NVJs2vFdHBnBNdfE49rshrTzDWOlUx4Gq7KOS2GD8eqhy2j+Ejq29+SbKH8yjkAqXqoA==}

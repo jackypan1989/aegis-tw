@@ -6,14 +6,16 @@
     "start": "next start",
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "lint": "next lint",
-    "codegen": "graphql-codegen",
-    "codegen:watch": "graphql-codegen --watch",
-    "codegen:sql": "node ./src/utils/mergeSql",
+    "codegen:gql": "graphql-codegen",
+    "codegen:sql": "ts-node --compiler-options ./src/utils/mergeSql",
     "codegen:prisma": "prisma generate",
-    "prisma": "dotenv -e .env.local -- npx prisma"
+    "prisma": "npx prisma"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -47,7 +49,8 @@
     "react-hook-form": "^7.34.2",
     "react-icons": "^4.4.0",
     "undici": "^5.9.1",
-    "urijs": "^1.19.11"
+    "urijs": "^1.19.11",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^3.2.1",
@@ -61,6 +64,7 @@
     "@types/node": "^18.7.9",
     "@types/react": "^18.0.17",
     "@types/urijs": "^1.19.19",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
     "dotenv-cli": "^6.0.0",
