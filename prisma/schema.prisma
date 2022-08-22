@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Profile {
-  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
   username  String    @unique @db.VarChar
@@ -42,7 +42,7 @@ model Post {
   commentCount Int       @default(0) @map("comment_count")
   voteCount    Int       @default(0) @map("vote_count")
   viewCount    Int       @default(0) @map("view_count")
-  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   rankingScore Float     @default(0) @map("ranking_score") @db.Real
   poster       Profile   @relation(fields: [posterId], references: [id], onDelete: Cascade)
   comments     Comment[]
@@ -56,7 +56,7 @@ model Vote {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
   voterId   String   @map("voter_id") @db.Uuid
-  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   postId    String   @map("post_id") @db.Uuid
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   voter     Profile  @relation(fields: [voterId], references: [id], onDelete: Cascade)
@@ -70,7 +70,7 @@ model Comment {
   updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
   commenterId String   @map("commenter_id") @db.Uuid
   content     String   @db.VarChar
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   postId      String   @map("post_id") @db.Uuid
   commenter   Profile  @relation(fields: [commenterId], references: [id], onDelete: Cascade)
   post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)

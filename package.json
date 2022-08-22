@@ -2,13 +2,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm codegen:prisma && next build",
+    "build": "next build",
     "start": "next start",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "lint": "next lint",
     "codegen": "graphql-codegen",
     "codegen:watch": "graphql-codegen --watch",
     "codegen:sql": "node ./src/utils/mergeSql",
-    "codegen:prisma": "prisma generate"
+    "codegen:prisma": "prisma generate",
+    "migrate:postgres": "dotenv -e .env.local -- npx prisma migrate dev"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint"
@@ -61,6 +63,7 @@
     "@types/urijs": "^1.19.19",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
+    "dotenv-cli": "^6.0.0",
     "eslint": "^8.22.0",
     "eslint-config-next": "^12.2.5",
     "eslint-config-prettier": "^8.5.0",
