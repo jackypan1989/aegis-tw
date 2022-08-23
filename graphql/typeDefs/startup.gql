@@ -12,6 +12,7 @@ type Startup {
   valuation: Float!
   teamSize: Int!
   revenue: Float!
+  dau: Int!
   markets: [Market!]!
 }
 

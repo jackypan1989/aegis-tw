@@ -2,6 +2,7 @@ import { gql } from "@apollo/client"
 import { Avatar, Flex, Heading, Link, Spacer, Tag, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { StartupCardFragment } from "../../codegen/graphql"
 import { getEnumString } from "../utils/getEnumString"
+import { NextLink } from "./exportUtils"
 
 export const STARTUP_CARD = gql`
   fragment StartupCard on Startup {
@@ -9,7 +10,7 @@ export const STARTUP_CARD = gql`
     logo
     name
     url
-    funding
+    valuation
     markets
   }
 `
@@ -28,9 +29,13 @@ const StartupCard = (props: { startup: StartupCardFragment }) => {
     <Avatar size={{ base: 'sm', lg: 'md' }} src={startup.logo || undefined} name={startup.logo || ''} />
     <Flex gap={{ base: '2', lg: '3' }} direction='column' flex='1'>
       <Flex>
-        <Heading size={{ base: 'md', lg: 'md' }}>{startup.name}</Heading>
+        <NextLink href={`/startup/${startup.id}`}>
+          <Link>
+            <Heading size={{ base: 'md', lg: 'md' }}>{startup.name}</Heading>
+          </Link>
+        </NextLink>
         <Spacer />
-        <Text>US${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.funding)}</Text>
+        <Heading size={{ base: 'md', lg: 'md' }}>${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.valuation)}</Heading>
       </Flex>
       {startup.url && <Link href={startup.url} target='_blank'><Text>{startup.url}</Text></Link>}
       <Wrap>

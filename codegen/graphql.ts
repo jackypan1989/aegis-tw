@@ -327,6 +327,7 @@ export { Role };
 export type Startup = {
   __typename?: 'Startup';
   createdAt: Scalars['Date'];
+  dau: Scalars['Int'];
   description?: Maybe<Scalars['String']>;
   foundedAt: Scalars['Date'];
   funding: Scalars['Float'];
@@ -452,7 +453,7 @@ export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename
 
 export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
 
-export type StartupCardFragment = { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, funding: number, markets: Array<Market> };
+export type StartupCardFragment = { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, valuation: number, markets: Array<Market> };
 
 export type ListProfileQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -521,7 +522,7 @@ export type GetStartupQueryVariables = Exact<{
 }>;
 
 
-export type GetStartupQuery = { __typename?: 'Query', startup?: { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, funding: number, markets: Array<Market> } | null | undefined };
+export type GetStartupQuery = { __typename?: 'Query', startup?: { __typename?: 'Startup', description?: string | null | undefined, foundedAt: Date, funding: number, valuation: number, teamSize: number, revenue: number, dau: number, id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, markets: Array<Market> } | null | undefined };
 
 export type CreateStartupMutationVariables = Exact<{
   input: CreateStartupMutationInput;
@@ -537,7 +538,7 @@ export type ListStartupQueryVariables = Exact<{
 }>;
 
 
-export type ListStartupQuery = { __typename?: 'Query', startups?: { __typename?: 'StartupConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'StartupEdges', cursor: string, node: { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, funding: number, markets: Array<Market> } }> } | null | undefined };
+export type ListStartupQuery = { __typename?: 'Query', startups?: { __typename?: 'StartupConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'StartupEdges', cursor: string, node: { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, valuation: number, markets: Array<Market> } }> } | null | undefined };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -579,7 +580,7 @@ export const StartupCardFragmentDoc = gql`
   logo
   name
   url
-  funding
+  valuation
   markets
 }
     `;
@@ -1169,6 +1170,13 @@ export const GetStartupDocument = gql`
     query getStartup($id: ID!) {
   startup(id: $id) {
     ...StartupCard
+    description
+    foundedAt
+    funding
+    valuation
+    teamSize
+    revenue
+    dau
   }
 }
     ${StartupCardFragmentDoc}`;
@@ -1577,6 +1585,7 @@ export type RoleResolvers = EnumResolverSignature<{ ANGEL_INVESTOR?: any, DESIGN
 
 export type StartupResolvers<ContextType = any, ParentType extends ResolversParentTypes['Startup'] = ResolversParentTypes['Startup']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  dau?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   foundedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   funding?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;

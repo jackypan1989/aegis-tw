@@ -1,7 +1,7 @@
 import { AddIcon } from "@chakra-ui/icons"
 import { Avatar, Box, Flex, Icon, Link, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
-import NextLink from "next/link"
+import { NextLink } from "./exportUtils"
 
 const Navbar = () => {
   const { user } = useUser() 
