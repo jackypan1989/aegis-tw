@@ -54,25 +54,25 @@ const StartupDetail = () => {
       </Stat>
       <Stat>
         <StatLabel>Valuation(USD)</StatLabel>
-        <StatNumber>${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.valuation)}</StatNumber>
+        <StatNumber>{startup.revenue ? `$${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.valuation)}` : '-'}</StatNumber>
       </Stat>
       <Stat>
         <StatLabel>Funding(USD)</StatLabel>
-        <StatNumber>${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.funding)}</StatNumber>
+        <StatNumber>{startup.revenue ? `$${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.funding)}` : '-'}</StatNumber>
       </Stat>
     </StatGroup>
     <StatGroup p={{ base: 2, lg: 3 }}>
       <Stat>
         <StatLabel>Team Size</StatLabel>
-        <StatNumber>{startup.teamSize}</StatNumber>
+        <StatNumber>{startup.teamSize ?? '-'}</StatNumber>
       </Stat>
       <Stat>
         <StatLabel>Annual Revenue</StatLabel>
-        <StatNumber>${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.revenue)}</StatNumber>
+        <StatNumber>{startup.revenue ? `$${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.revenue)}` : '-'}</StatNumber>
       </Stat>
       <Stat>
         <StatLabel>Daily Active User</StatLabel>
-        <StatNumber>{startup.dau}</StatNumber>
+        <StatNumber>{startup.dau ?? '-'}</StatNumber>
       </Stat>
     </StatGroup>
     <Stat p={{ base: 2, lg: 3 }}>

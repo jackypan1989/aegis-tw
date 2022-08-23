@@ -355,7 +355,7 @@ export type StartupEdges = {
 };
 
 export type StartupFilter = {
-  name?: InputMaybe<Scalars['String']>;
+  markets?: InputMaybe<Array<Market>>;
 };
 
 export type UpdateProfileMutationInput = {

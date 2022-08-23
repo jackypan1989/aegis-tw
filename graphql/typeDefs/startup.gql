@@ -27,7 +27,7 @@ type StartupConnection {
 }
 
 input StartupFilter {
-  name: String
+  markets: [Market!]
 }
 
 type Query {

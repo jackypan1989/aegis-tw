@@ -155,7 +155,7 @@ const StartupCreate: NextPage = () => {
           />
         </FormControl>
         <FormControl mt='4'>
-          <FormLabel htmlFor='funding'>Funding</FormLabel>
+          <FormLabel htmlFor='funding'>Funding(USD)</FormLabel>
           <Input
             type="number"
             defaultValue={0}
@@ -165,7 +165,7 @@ const StartupCreate: NextPage = () => {
           />
         </FormControl>
         <FormControl mt='4'>
-          <FormLabel htmlFor='valuation'>Valuation</FormLabel>
+          <FormLabel htmlFor='valuation'>Valuation(USD)</FormLabel>
           <Input
             type="number"
             defaultValue={0}

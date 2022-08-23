@@ -35,7 +35,7 @@ const StartupCard = (props: { startup: StartupCardFragment }) => {
           </Link>
         </NextLink>
         <Spacer />
-        <Heading size={{ base: 'md', lg: 'md' }}>${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.valuation)}</Heading>
+        <Heading size={{ base: 'md', lg: 'md' }}>{startup.valuation ? `$${Intl.NumberFormat('en', { notation: 'compact' }).format(startup.valuation)}` : ''}</Heading>
       </Flex>
       {startup.url && <Link href={startup.url} target='_blank'><Text>{startup.url}</Text></Link>}
       <Wrap>

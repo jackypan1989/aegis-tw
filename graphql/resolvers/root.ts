@@ -141,11 +141,14 @@ const resolvers: Resolvers<UserContext> = {
     },
     startups: async (_, args, context) => {
       const { filter } = args
+      const where: Prisma.StartupWhereInput = {}
+
+      if (filter?.markets?.length ?? 0 > 0) where.markets = { hasSome: filter?.markets }
 
       const result = await findManyCursorConnection(
         (findManyArgs) => context.prisma.startup.findMany({
           ...findManyArgs,
-          where: {},
+          where,
         }),
         () => context.prisma.startup.count(),
         args

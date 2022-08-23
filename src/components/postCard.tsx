@@ -80,7 +80,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 15
+          first: 10
         }
       }
     ]
@@ -91,7 +91,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 15
+          first: 10
         }
       }
     ]
@@ -102,7 +102,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 15
+          first: 10
         }
       }
     ]

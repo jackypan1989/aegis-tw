@@ -54,7 +54,11 @@ const StartupFilterModal = (props: StartupFilterModalProps) => {
 
   const onSubmit = async (value: FormValues) => {
     onClose()
-    await refetch({})
+    await refetch({
+      filter: {
+        markets: value.markets
+      }
+    })
   }
 
   return (
@@ -64,27 +68,9 @@ const StartupFilterModal = (props: StartupFilterModalProps) => {
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent maxW='90vw' ml='4' mr='4'>
-            <ModalHeader>Profle Filter</ModalHeader>
+            <ModalHeader>Startup Filter</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <FormControl>
-                <FormLabel htmlFor='roles'>Roles</FormLabel>
-                <Controller
-                  name='roles'
-                  control={control}
-                  render={({ field }) => (
-                    <CheckboxGroup {...field}>
-                      <Wrap spacing='12px'>
-                        {Object.values(Role).map(role => {
-                          return <WrapItem key={role}>
-                            <Checkbox value={role}>{getEnumString(role)}</Checkbox>
-                          </WrapItem>
-                        })}
-                      </Wrap>
-                    </CheckboxGroup>
-                  )}
-                />
-              </FormControl>
               <FormControl mt='4'>
                 <FormLabel htmlFor='markets'>Markets</FormLabel>
                 <Controller
