@@ -148,7 +148,7 @@ const Community = () => {
 
   return <Box>
     <Flex p={{ base: 4, lg: 8 }}>
-      <Heading size='lg'>Find out people 🧑‍💻</Heading>
+      <Heading size='lg'>Find out people 👋</Heading>
       <Spacer />
       <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
     </Flex>
