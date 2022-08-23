@@ -26,6 +26,7 @@ specifiers:
   '@supabase/auth-helpers-react': ^0.2.3
   '@supabase/supabase-js': ^1.35.6
   '@supabase/ui': ^0.36.5
+  '@types/glob': ^7.2.0
   '@types/mdx': ^2.0.2
   '@types/node': ^18.7.9
   '@types/react': ^18.0.17
@@ -54,6 +55,7 @@ specifiers:
   react-dom: ^18.2.0
   react-hook-form: ^7.34.2
   react-icons: ^4.4.0
+  ts-node: ^10.9.1
   typescript: ^4.7.4
   undici: ^5.9.1
   urijs: ^1.19.11
@@ -102,6 +104,7 @@ devDependencies:
   '@graphql-codegen/typescript-operations': 2.5.3_graphql@16.6.0
   '@graphql-codegen/typescript-react-apollo': 3.3.3_graphql@16.6.0
   '@graphql-codegen/typescript-resolvers': 2.7.3_graphql@16.6.0
+  '@types/glob': 7.2.0
   '@types/mdx': 2.0.2
   '@types/node': 18.7.9
   '@types/react': 18.0.17
@@ -118,6 +121,7 @@ devDependencies:
   lint-staged: 13.0.3
   prettier: 2.7.1
   prisma: 4.1.1
+  ts-node: 10.9.1_x2ciz3xvsjwezrs6sivolisayi
   typescript: 4.7.4
 
 packages:
@@ -2984,6 +2988,13 @@ packages:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
     dev: false
 
+  /@types/glob/7.2.0:
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+    dependencies:
+      '@types/minimatch': 3.0.5
+      '@types/node': 18.7.9
+    dev: true
+
   /@types/hast/2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
@@ -3034,6 +3045,10 @@ packages:
 
   /@types/mdx/2.0.2:
     resolution: {integrity: sha512-mJGfgj4aWpiKb8C0nnJJchs1sHBHn0HugkVfqqyQi7Wn6mBRksLeQsPOFvih/Pu8L1vlDzfe/LidhVHBeUk3aQ==}
+
+  /@types/minimatch/3.0.5:
+    resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
+    dev: true
 
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
