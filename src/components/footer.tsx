@@ -1,5 +1,5 @@
 import { Flex, Link, Spacer } from "@chakra-ui/react"
-import NextLink from "next/link"
+import { NextLink } from "./exportUtils"
 
 const Footer = () => {
   return <Flex 

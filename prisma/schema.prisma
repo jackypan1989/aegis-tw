@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
+  output   = "../codegen/prisma/client"
 }
 
 datasource db {
@@ -9,30 +9,32 @@ datasource db {
 }
 
 model Profile {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
-  username  String    @unique @db.VarChar
-  avatarUrl String?   @map("avatar_url") @db.VarChar
-  website   String?   @db.VarChar
-  email     String    @unique @db.VarChar
-  markets   Market[]
-  roles     Role[]
-  facebook  String?   @db.VarChar
-  github    String?   @db.VarChar
-  linkedin  String?   @db.VarChar
-  twitter   String?   @db.VarChar
-  fullname  String?   @db.VarChar
-  auto      Boolean?
-  location  String?   @db.VarChar
-  comments  Comment[]
-  posts     Post[]
-  votes     Vote[]
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
+  username      String    @unique @db.VarChar
+  avatarUrl     String?   @map("avatar_url") @db.VarChar
+  website       String?   @db.VarChar
+  email         String    @unique @db.VarChar
+  markets       Market[]
+  roles         Role[]
+  facebook      String?   @db.VarChar
+  github        String?   @db.VarChar
+  linkedin      String?   @db.VarChar
+  twitter       String?   @db.VarChar
+  fullname      String?   @db.VarChar
+  auto          Boolean?
+  location      String?   @db.VarChar
+  comments      Comment[]
+  posts         Post[]
+  votes         Vote[]
+  editStartups  Startup[]
 
   @@map("profiles")
 }
 
 model Post {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt    DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
   posterId     String    @map("poster_id") @db.Uuid
@@ -42,7 +44,6 @@ model Post {
   commentCount Int       @default(0) @map("comment_count")
   voteCount    Int       @default(0) @map("vote_count")
   viewCount    Int       @default(0) @map("view_count")
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   rankingScore Float     @default(0) @map("ranking_score") @db.Real
   poster       Profile   @relation(fields: [posterId], references: [id], onDelete: Cascade)
   comments     Comment[]
@@ -53,10 +54,10 @@ model Post {
 }
 
 model Vote {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
   voterId   String   @map("voter_id") @db.Uuid
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   postId    String   @map("post_id") @db.Uuid
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   voter     Profile  @relation(fields: [voterId], references: [id], onDelete: Cascade)
@@ -66,16 +67,37 @@ model Vote {
 }
 
 model Comment {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
-  commenterId String   @map("commenter_id") @db.Uuid
   content     String   @db.VarChar
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  commenterId String   @map("commenter_id") @db.Uuid
   postId      String   @map("post_id") @db.Uuid
   commenter   Profile  @relation(fields: [commenterId], references: [id], onDelete: Cascade)
   post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("comments")
+}
+
+model Startup {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  name          String    @db.VarChar
+  url           String?   @db.VarChar
+  logo          String?   @db.VarChar
+  description   String?   @db.VarChar
+  markets       Market[]
+  foundedAt     DateTime  @default(now()) @map("founded_at") @db.Timestamptz(6)
+  funding       Float     @default(0) @db.Real
+  valuation     Float     @default(0) @db.Real
+  teamSize      Int       @default(0) @map("team_size")
+  revenue       Float     @default(0) @db.Real
+  dau           Int       @default(0)
+  lastEditorId  String    @map("last_editor_id") @db.Uuid 
+  lastEditor    Profile   @relation(fields: [lastEditorId], references: [id], onDelete: Cascade)
+
+  @@map("startups")
 }
 
 enum Role {

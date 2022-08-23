@@ -1,0 +1,65 @@
+type Startup {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  
+  name: String!
+  url: String
+  logo: String
+  description: String
+  foundedAt: Date!
+  funding: Float!
+  valuation: Float!
+  teamSize: Int!
+  revenue: Float!
+  dau: Int!
+  markets: [Market!]!
+}
+
+type StartupEdges {
+  cursor: Cursor!
+  node: Startup!
+}
+
+type StartupConnection {
+  edges: [StartupEdges!]!
+  pageInfo: PageInfo!
+}
+
+input StartupFilter {
+  markets: [Market!]
+}
+
+type Query {
+  startup(id: ID!): Startup
+  startups(
+    first: Int,
+    after: Cursor,
+    last: Int,
+    before: Cursor,
+    filter: StartupFilter
+  ): StartupConnection
+}
+
+input CreateStartupMutationInput {
+  name: String!
+  url: String
+  logo: String
+  description: String
+  foundedAt: Date!
+  funding: Float!
+  valuation: Float!
+  teamSize: Int!
+  revenue: Float!
+  dau: Int!
+  markets: [Market!]!
+}
+
+input RemoveStartupMutationInput {
+  id: ID!
+}
+
+type Mutation {
+  createStartup(input: CreateStartupMutationInput!): Startup!
+  removeStartup(input: RemoveStartupMutationInput!): Startup!
+}

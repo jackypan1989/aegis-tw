@@ -3,9 +3,9 @@ import { DeleteIcon } from "@chakra-ui/icons"
 import { Avatar, Button, Center, Flex, FormControl, Heading, Icon, Input, InputGroup, InputRightElement, Link, Spacer, Spinner, Text } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
-import NextLink from "next/link"
 import { useForm } from "react-hook-form"
 import { useCommentsQuery, useCreateCommentMutation, useRemoveCommentMutation } from "../../codegen/graphql"
+import { NextLink } from "./exportUtils"
 
 export const GET_COMMENT = gql`
   query comments( 

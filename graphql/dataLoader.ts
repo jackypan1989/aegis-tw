@@ -1,5 +1,5 @@
-import { Comment, Post, Profile, Vote } from ".prisma/client";
 import DataLoader from "dataloader";
+import { Comment, Post, Profile, Vote } from "../codegen/prisma/client";
 import { UserContext } from "../src/pages/api/graphql";
 
 interface Model {

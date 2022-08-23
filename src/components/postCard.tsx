@@ -3,11 +3,11 @@ import { DeleteIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Flex, Icon, Link, Text, useToast } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
-import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import URI from 'urijs'
 import { PostCardFragment, useCreateVoteMutation, useRemovePostMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
+import { NextLink } from "./exportUtils"
 
 export const POST_CARD = gql`
   fragment PostCard on Post {
@@ -80,7 +80,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 15
+          first: 10
         }
       }
     ]
@@ -91,7 +91,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 15
+          first: 10
         }
       }
     ]
@@ -102,7 +102,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
       { 
         query: refetchQuery,
         variables: {
-          first: 15
+          first: 10
         }
       }
     ]

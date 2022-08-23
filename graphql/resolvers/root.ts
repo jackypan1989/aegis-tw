@@ -1,9 +1,9 @@
-import { Prisma } from '.prisma/client'
 import {
   findManyCursorConnection
 } from '@devoxa/prisma-relay-cursor-connection'
 import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
+import { Prisma } from '../../codegen/prisma/client'
 import { UserContext } from '../../src/pages/api/graphql'
 import dataloaders from '../dataLoader'
 
@@ -126,6 +126,31 @@ const resolvers: Resolvers<UserContext> = {
           }
         }),
         () => context.prisma.comment.count(),
+        args
+      )
+      return result
+    },
+    startup: async (_, args, context) => {
+      const { id } = args
+      const result = await context.prisma.startup.findUnique({
+        where: {
+          id: id
+        }
+      })
+      return result
+    },
+    startups: async (_, args, context) => {
+      const { filter } = args
+      const where: Prisma.StartupWhereInput = {}
+
+      if (filter?.markets?.length ?? 0 > 0) where.markets = { hasSome: filter?.markets }
+
+      const result = await findManyCursorConnection(
+        (findManyArgs) => context.prisma.startup.findMany({
+          ...findManyArgs,
+          where,
+        }),
+        () => context.prisma.startup.count(),
         args
       )
       return result
@@ -347,6 +372,27 @@ const resolvers: Resolvers<UserContext> = {
         })
       ])
 
+      return result
+    },
+    createStartup: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must sign in.')
+
+      const result = await context.prisma.startup.create({ 
+        data: { 
+          name: input.name,
+          url: input.url,
+          logo: input.logo,
+          description: input.description,
+          teamSize: input.teamSize,
+          funding: input.funding,
+          valuation: input.valuation,
+          revenue: input.revenue,
+          dau: input.dau,
+          markets: input.markets,
+          foundedAt: input.foundedAt,
+          lastEditorId: context.user.id
+        }
+      })
       return result
     },
     updateEveryPostRankingScore: async (_, args, context) => {
