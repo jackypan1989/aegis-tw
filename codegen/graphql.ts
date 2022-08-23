@@ -454,7 +454,7 @@ export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename
 
 export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
 
-export type StartupCardFragment = { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined };
+export type StartupCardFragment = { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, funding: number, markets: Array<Market> };
 
 export type ListProfileQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -525,7 +525,7 @@ export type ListStartupQueryVariables = Exact<{
 }>;
 
 
-export type ListStartupQuery = { __typename?: 'Query', startups?: { __typename?: 'StartupConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'StartupEdges', cursor: string, node: { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined } }> } | null | undefined };
+export type ListStartupQuery = { __typename?: 'Query', startups?: { __typename?: 'StartupConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'StartupEdges', cursor: string, node: { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, funding: number, markets: Array<Market> } }> } | null | undefined };
 
 export const PostCardFragmentDoc = gql`
     fragment PostCard on Post {
@@ -567,6 +567,8 @@ export const StartupCardFragmentDoc = gql`
   logo
   name
   url
+  funding
+  markets
 }
     `;
 export const CommentsDocument = gql`

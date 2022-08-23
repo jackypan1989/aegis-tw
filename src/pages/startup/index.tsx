@@ -142,7 +142,7 @@ const Startup = () => {
 
   return <Box>
     <Flex p={{ base: 4, lg: 8 }}>
-      <Heading size='lg'>Find out people 🧑‍🤝‍🧑</Heading>
+      <Heading size='lg'>Find out startups 🦄</Heading>
       <Spacer />
       <StartupFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
     </Flex>

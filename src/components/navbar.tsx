@@ -32,7 +32,7 @@ const Navbar = () => {
     <NextLink href='/job' passHref>
       <Link>
         <Flex direction={{ base: 'column', lg: 'row' }} alignItems='center'>
-          <Box>👋</Box> 
+          <Box>🔍</Box> 
           <Box>Jobs</Box>
         </Flex>
       </Link>
@@ -40,7 +40,7 @@ const Navbar = () => {
     <NextLink href='/community' passHref>
       <Link>
         <Flex direction={{ base: 'column', lg: 'row' }} alignItems='center'>
-          <Box>🔍</Box> 
+          <Box>🧑‍💻</Box> 
           <Box>People</Box>
         </Flex>
       </Link>

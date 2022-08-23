@@ -9,25 +9,26 @@ datasource db {
 }
 
 model Profile {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
-  username  String    @unique @db.VarChar
-  avatarUrl String?   @map("avatar_url") @db.VarChar
-  website   String?   @db.VarChar
-  email     String    @unique @db.VarChar
-  markets   Market[]
-  roles     Role[]
-  facebook  String?   @db.VarChar
-  github    String?   @db.VarChar
-  linkedin  String?   @db.VarChar
-  twitter   String?   @db.VarChar
-  fullname  String?   @db.VarChar
-  auto      Boolean?
-  location  String?   @db.VarChar
-  comments  Comment[]
-  posts     Post[]
-  votes     Vote[]
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
+  username      String    @unique @db.VarChar
+  avatarUrl     String?   @map("avatar_url") @db.VarChar
+  website       String?   @db.VarChar
+  email         String    @unique @db.VarChar
+  markets       Market[]
+  roles         Role[]
+  facebook      String?   @db.VarChar
+  github        String?   @db.VarChar
+  linkedin      String?   @db.VarChar
+  twitter       String?   @db.VarChar
+  fullname      String?   @db.VarChar
+  auto          Boolean?
+  location      String?   @db.VarChar
+  comments      Comment[]
+  posts         Post[]
+  votes         Vote[]
+  editStartups  Startup[]
 
   @@map("profiles")
 }
@@ -79,22 +80,24 @@ model Comment {
 }
 
 model Startup {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
-  name        String    @db.VarChar
-  url         String?   @db.VarChar
-  logo        String?   @db.VarChar
-  description String?   @db.VarChar
-  markets     Market[]
-  foundedAt   DateTime  @default(now()) @map("founded_at") @db.Timestamptz(6)
-  stage       String?   @db.VarChar
-  teamSize    Int       @default(0) @map("team_size")
-  funding     Float     @default(0) @db.Real
-  valuation   Float     @default(0) @db.Real
-  revenue     Float     @default(0) @db.Real
-  dau         Int       @default(0)
-  
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  name          String    @db.VarChar
+  url           String?   @db.VarChar
+  logo          String?   @db.VarChar
+  description   String?   @db.VarChar
+  markets       Market[]
+  foundedAt     DateTime  @default(now()) @map("founded_at") @db.Timestamptz(6)
+  stage         String?   @db.VarChar
+  teamSize      Int       @default(0) @map("team_size")
+  funding       Float     @default(0) @db.Real
+  valuation     Float     @default(0) @db.Real
+  revenue       Float     @default(0) @db.Real
+  dau           Int       @default(0)
+  lastEditorId  String    @map("last_editor_id") @db.Uuid 
+  lastEditor    Profile   @relation(fields: [lastEditorId], references: [id], onDelete: Cascade)
+
   @@map("startups")
 }
 
