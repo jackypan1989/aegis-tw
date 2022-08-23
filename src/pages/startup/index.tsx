@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client"
-import { SearchIcon } from "@chakra-ui/icons"
+import { AddIcon, Icon, SearchIcon } from "@chakra-ui/icons"
 import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormLabel, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Spinner, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react"
+import NextLink from 'next/link'
 import { Controller, useForm } from "react-hook-form"
 import { ListStartupQueryHookResult, Market, Role, useListStartupQuery } from "../../../codegen/graphql"
 import StartupCard, { STARTUP_CARD } from "../../components/startupCard"
@@ -145,6 +146,9 @@ const Startup = () => {
       <Heading size='lg'>Find out startups 🦄</Heading>
       <Spacer />
       <StartupFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
+      <NextLink href='/startup/create' passHref>
+        <IconButton ml='3' size='sm' icon={<Icon as={AddIcon} />} aria-label="filter"></IconButton>
+      </NextLink>
     </Flex>
     {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
     <Flex direction='column' gap={{ base: 1, lg: 2 }}>

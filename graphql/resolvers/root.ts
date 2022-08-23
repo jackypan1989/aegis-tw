@@ -371,6 +371,27 @@ const resolvers: Resolvers<UserContext> = {
 
       return result
     },
+    createStartup: async (_, { input }, context) => {
+      if (!context.user) throw Error('You must sign in.')
+
+      const result = await context.prisma.startup.create({ 
+        data: { 
+          name: input.name,
+          url: input.url,
+          logo: input.logo,
+          description: input.description,
+          teamSize: input.teamSize,
+          funding: input.funding,
+          valuation: input.valuation,
+          revenue: input.revenue,
+          dau: input.dau,
+          markets: input.markets,
+          foundedAt: input.foundedAt,
+          lastEditorId: context.user.id
+        }
+      })
+      return result
+    },
     updateEveryPostRankingScore: async (_, args, context) => {
       const posts = await context.prisma.post.findMany()
 

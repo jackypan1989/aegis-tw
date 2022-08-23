@@ -8,10 +8,9 @@ type Startup {
   logo: String
   description: String
   foundedAt: Date!
-  teamSize: Int!
-  stage: String
   funding: Float!
   valuation: Float!
+  teamSize: Int!
   revenue: Float!
   markets: [Market!]!
 }
@@ -47,10 +46,9 @@ input CreateStartupMutationInput {
   logo: String
   description: String
   foundedAt: Date!
-  teamSize: Int!
-  stage: String
   funding: Float!
   valuation: Float!
+  teamSize: Int!
   revenue: Float!
   dau: Int!
   markets: [Market!]!

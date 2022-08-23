@@ -89,10 +89,9 @@ model Startup {
   description   String?   @db.VarChar
   markets       Market[]
   foundedAt     DateTime  @default(now()) @map("founded_at") @db.Timestamptz(6)
-  stage         String?   @db.VarChar
-  teamSize      Int       @default(0) @map("team_size")
   funding       Float     @default(0) @db.Real
   valuation     Float     @default(0) @db.Real
+  teamSize      Int       @default(0) @map("team_size")
   revenue       Float     @default(0) @db.Real
   dau           Int       @default(0)
   lastEditorId  String    @map("last_editor_id") @db.Uuid 

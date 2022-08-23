@@ -74,7 +74,6 @@ export type CreateStartupMutationInput = {
   markets: Array<Market>;
   name: Scalars['String'];
   revenue: Scalars['Float'];
-  stage?: InputMaybe<Scalars['String']>;
   teamSize: Scalars['Int'];
   url?: InputMaybe<Scalars['String']>;
   valuation: Scalars['Float'];
@@ -336,7 +335,6 @@ export type Startup = {
   markets: Array<Market>;
   name: Scalars['String'];
   revenue: Scalars['Float'];
-  stage?: Maybe<Scalars['String']>;
   teamSize: Scalars['Int'];
   updatedAt: Scalars['Date'];
   url?: Maybe<Scalars['String']>;
@@ -517,6 +515,20 @@ export type UpdateProfileMutationVariables = Exact<{
 
 
 export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
+
+export type GetStartupQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetStartupQuery = { __typename?: 'Query', startup?: { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, funding: number, markets: Array<Market> } | null | undefined };
+
+export type CreateStartupMutationVariables = Exact<{
+  input: CreateStartupMutationInput;
+}>;
+
+
+export type CreateStartupMutation = { __typename?: 'Mutation', createStartup: { __typename?: 'Startup', id: string } };
 
 export type ListStartupQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -1153,6 +1165,74 @@ export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
 export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
 export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export const GetStartupDocument = gql`
+    query getStartup($id: ID!) {
+  startup(id: $id) {
+    ...StartupCard
+  }
+}
+    ${StartupCardFragmentDoc}`;
+
+/**
+ * __useGetStartupQuery__
+ *
+ * To run a query within a React component, call `useGetStartupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStartupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStartupQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetStartupQuery(baseOptions: Apollo.QueryHookOptions<GetStartupQuery, GetStartupQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStartupQuery, GetStartupQueryVariables>(GetStartupDocument, options);
+      }
+export function useGetStartupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStartupQuery, GetStartupQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStartupQuery, GetStartupQueryVariables>(GetStartupDocument, options);
+        }
+export type GetStartupQueryHookResult = ReturnType<typeof useGetStartupQuery>;
+export type GetStartupLazyQueryHookResult = ReturnType<typeof useGetStartupLazyQuery>;
+export type GetStartupQueryResult = Apollo.QueryResult<GetStartupQuery, GetStartupQueryVariables>;
+export const CreateStartupDocument = gql`
+    mutation createStartup($input: CreateStartupMutationInput!) {
+  createStartup(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateStartupMutationFn = Apollo.MutationFunction<CreateStartupMutation, CreateStartupMutationVariables>;
+
+/**
+ * __useCreateStartupMutation__
+ *
+ * To run a mutation, you first call `useCreateStartupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStartupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStartupMutation, { data, loading, error }] = useCreateStartupMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateStartupMutation(baseOptions?: Apollo.MutationHookOptions<CreateStartupMutation, CreateStartupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateStartupMutation, CreateStartupMutationVariables>(CreateStartupDocument, options);
+      }
+export type CreateStartupMutationHookResult = ReturnType<typeof useCreateStartupMutation>;
+export type CreateStartupMutationResult = Apollo.MutationResult<CreateStartupMutation>;
+export type CreateStartupMutationOptions = Apollo.BaseMutationOptions<CreateStartupMutation, CreateStartupMutationVariables>;
 export const ListStartupDocument = gql`
     query listStartup($first: Int, $after: Cursor, $filter: StartupFilter) {
   startups(first: $first, after: $after, filter: $filter) {
@@ -1505,7 +1585,6 @@ export type StartupResolvers<ContextType = any, ParentType extends ResolversPare
   markets?: Resolver<Array<ResolversTypes['Market']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   revenue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  stage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   teamSize?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
