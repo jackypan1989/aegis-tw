@@ -217,13 +217,14 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
         <Flex fontSize='sm' fontWeight='thin' gap='8px' alignItems='center'>
           <NextLink href={`/post/${post.id}`}>
             <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal'>
-              💬 {post.commentCount}
+              <Text>💬</Text> 
+              <Text ml={2}>{post.commentCount}</Text>
             </Button>
           </NextLink>
           {post.poster && <NextLink href={`/profile/${post.poster?.id}`}>
             <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal'>
-              <Avatar size='2xs' name={getProfileDisplay(post.poster)?.[0]} mr={2} />
-              {getProfileDisplay(post.poster)}
+              <Avatar size='2xs' name={getProfileDisplay(post.poster)?.[0]} />
+              <Text ml={2}>{getProfileDisplay(post.poster)}</Text>
             </Button>
           </NextLink>}
           {post.poster?.id === user?.id && 

@@ -71,9 +71,10 @@ const PostIndex = () => {
         <Button onClick={onLoadMore}>Load More</Button>
       </Box>}
       <Box
+        zIndex={2}
         position='fixed'
         right={{ base: 4, lg: 16 }}
-        bottom={{ base: 16, lg: 32 }}
+        bottom={{ base: 16, lg: 24 }}
       >
         <NextLink href='/post/create'>
           <IconButton 

@@ -66,7 +66,10 @@ const resolvers: Resolvers<UserContext> = {
       const result = await findManyCursorConnection(
         (findManyArgs) => context.prisma.profile.findMany({
           ...findManyArgs,
-          where
+          where,
+          orderBy: {
+            createdAt: 'desc'
+          }
         }),
         () => context.prisma.profile.count(),
         args
@@ -152,6 +155,9 @@ const resolvers: Resolvers<UserContext> = {
         (findManyArgs) => context.prisma.startup.findMany({
           ...findManyArgs,
           where,
+          orderBy: {
+            createdAt: 'desc'
+          }
         }),
         () => context.prisma.startup.count(),
         args

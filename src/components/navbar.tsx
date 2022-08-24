@@ -1,24 +1,7 @@
-import { Avatar, Box, Flex, Link, Spacer } from "@chakra-ui/react"
+import { Avatar, Flex, Link, Show, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { NextLink } from "./exportUtils"
-
-type TabItem = {
-  icon: string,
-  title: string,
-  href: string
-}
-
-const Tab = (props: { tabItem: TabItem }) => {
-  const { tabItem } = props 
-  return <NextLink href={tabItem.href} passHref>
-    <Link>
-      <Flex direction={{ base: 'row', lg: 'row' }} alignItems='center'>
-        <Box>{tabItem.icon}</Box> 
-        <Box>{tabItem.title}</Box>
-      </Flex>
-    </Link>
-  </NextLink>
-}
+import { Tab, TabItem } from "./tab"
 
 const Navbar = () => {
   const { user } = useUser() 
@@ -62,6 +45,7 @@ const Navbar = () => {
     top='0px'
     zIndex='1'
   >
+    <Show above='lg'>Aegis</Show>
     {mainTabItems.map((tabItem, index) => <Tab key={index} tabItem={tabItem} />)}
     <Spacer />
     {user

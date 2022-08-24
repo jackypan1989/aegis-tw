@@ -1,5 +1,5 @@
-import { Flex, Link, Spacer } from "@chakra-ui/react"
-import { NextLink } from "./exportUtils"
+import { Flex, Spacer } from "@chakra-ui/react"
+import { Tab } from "./tab"
 
 const Footer = () => {
   return <Flex 
@@ -18,14 +18,10 @@ const Footer = () => {
     {/* <NextLink href='/venture' passHref>
       <Link>Venture</Link> 
     </NextLink> */}
-    <NextLink href='/about' passHref>
-      <Link>關於</Link> 
-    </NextLink>
+    <Tab tabItem={{ href: '/about', icon: 'ℹ️', title: '關於' }} />
     <Spacer />
-    <NextLink href='/privacy' passHref>
-      <Link>隱私政策</Link> 
-    </NextLink>
-    <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star&count=true" frameBorder="0" scrolling="0" width='150' height='20'></iframe>
+    <Tab tabItem={{ href: '/privacy', icon: undefined, title: '隱私權' }} />
+    <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star" frameBorder="0" scrolling="0" width='50' height='20'></iframe>
   </Flex>
 }
 
