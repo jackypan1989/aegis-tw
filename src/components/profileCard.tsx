@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"
-import { Avatar, Flex, Heading, Icon, Link, Tag, Wrap, WrapItem } from "@chakra-ui/react"
+import { Avatar, Flex, Heading, Icon, Link, Tag, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { AiFillFacebook, AiFillGithub, AiFillLinkedin, AiFillTwitterSquare, AiOutlineLink, AiOutlineMail } from 'react-icons/ai'
 import { ProfileCardFragment } from "../../codegen/graphql"
 import { getEnumString } from "../utils/getEnumString"
@@ -14,6 +14,7 @@ export const PROFILE_CARD = gql`
     roles
     markets
     avatarUrl
+    location
     website
     linkedin
     facebook
@@ -40,6 +41,7 @@ const ProfileCard = (props: { profile: ProfileCardFragment }) => {
       <Avatar size={{ base: 'sm', lg: 'md' }} name={getProfileDisplay(profile)?.[0]} />
       <Flex direction='column'>
         <Heading size={{ base: 'sm', lg: 'md' }}>{getProfileDisplay(profile)}</Heading>
+        {profile.location && <Text>{profile.location}</Text>}
       </Flex>
     </Flex>
     {hasRoles && hasMarkets && <Flex direction='column' gap='8px'>
