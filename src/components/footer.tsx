@@ -1,4 +1,5 @@
-import { Flex, Spacer } from "@chakra-ui/react"
+import { Center, Flex, Spacer } from "@chakra-ui/react"
+import GitHubButton from 'react-github-btn'
 import { Tab } from "./tab"
 
 const Footer = () => {
@@ -19,9 +20,16 @@ const Footer = () => {
       <Link>Venture</Link> 
     </NextLink> */}
     <Tab tabItem={{ href: '/about', icon: 'ℹ️', title: '關於' }} />
-    <Spacer />
     <Tab tabItem={{ href: '/privacy', icon: undefined, title: '隱私權' }} />
-    <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star" frameBorder="0" scrolling="0" width='50' height='20'></iframe>
+    <Spacer />
+    <Center pt='2'>
+      <GitHubButton 
+        href="https://github.com/jackypan1989/aegis-tw" 
+        data-show-count='true'
+      >
+        Star
+      </GitHubButton>
+    </Center>
   </Flex>
 }
 
