@@ -94,7 +94,10 @@ const resolvers: Resolvers<UserContext> = {
             { title: { contains: 'Hiring' }},
             { title: { contains: '徵才' }},
             { title: { contains: '應徵' }},
-            { title: { contains: '面試' }},  
+            { title: { contains: '面試' }},
+            { title: { contains: '轉職' }}, 
+            { title: { contains: '求職' }},
+            { title: { contains: '實習' }},    
           ]
         } 
         : {}
