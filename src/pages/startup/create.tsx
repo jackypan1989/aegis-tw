@@ -8,6 +8,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
 import { Market, useCreateStartupMutation } from '../../../codegen/graphql'
+import SignInPanel from '../../components/SignInPanel'
 import { getEnumString } from '../../utils/getEnumString'
 
 type FormValues = {
@@ -46,9 +47,9 @@ const StartupCreate: NextPage = () => {
 
   const [createStartup, { loading, error }] = useCreateStartupMutation()
 
-  if (!user) return <Center p={{ base: 4, lg: 8 }}>You need to sign in first ☝</Center>
-  if (loading) return <Center p={{ base: 4, lg: 8 }}>Submitting...</Center>
-  if (error) return <Center p={{ base: 4, lg: 8 }}>Submission error! ${error.message}</Center>
+  if (!user) return <Center p={{ base: 4, lg: 10 }}><SignInPanel /></Center>
+  if (loading) return <Center p={{ base: 4, lg: 10 }}>Submitting...</Center>
+  if (error) return <Center p={{ base: 4, lg: 10 }}>Submission error! ${error.message}</Center>
 
   const onSubmit = async (value: FormValues) => {
     await createStartup({
@@ -78,7 +79,7 @@ const StartupCreate: NextPage = () => {
 
   return (
     <Box p={{ base: 4, lg: 8 }}>
-      <Heading size='lg'>Create Startup</Heading>
+      <Heading size='lg'>上傳新創資料</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.name}>
           <FormLabel htmlFor='name'>Name</FormLabel>

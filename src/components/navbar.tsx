@@ -1,5 +1,4 @@
-import { AddIcon } from "@chakra-ui/icons"
-import { Avatar, Box, Flex, Icon, Link, Spacer } from "@chakra-ui/react"
+import { Avatar, Box, Flex, Link, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { NextLink } from "./exportUtils"
 
@@ -27,7 +26,7 @@ const Navbar = () => {
   const mainTabItems: TabItem[] = [
     {
       href: '/post',
-      icon: '📰',
+      icon: '🗞️',
       title: '動態'
     },
     {
@@ -38,7 +37,7 @@ const Navbar = () => {
     {
       href: '/community',
       icon: '👋',
-      title: '社群'
+      title: '人脈'
 
     },
     {
@@ -65,24 +64,13 @@ const Navbar = () => {
   >
     {mainTabItems.map((tabItem, index) => <Tab key={index} tabItem={tabItem} />)}
     <Spacer />
-    <NextLink href='/post/create' passHref>
-      <Link display='block'>
-        <Icon as={AddIcon} mb='1' />
-      </Link>
-    </NextLink>
     {user
       ?<NextLink href={`/profile/${user.id}`} passHref>
         <Link>
           <Avatar size='sm' name={user.email?.[0]}/>
         </Link>
       </NextLink>
-      :<NextLink href='/auth/signIn' passHref>
-        <Link>
-          <Flex direction={{ base: 'row', lg: 'row' }} alignItems='center'>
-            <Box>登入</Box>
-          </Flex>
-        </Link>
-      </NextLink>
+      :<Tab tabItem={{ href: '/auth/signIn', icon: '➡️', title: '加入' }} />
     }
   </Flex>
 }

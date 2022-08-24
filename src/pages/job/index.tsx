@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client"
 import { Box, Button, Center, Flex, Spinner } from "@chakra-ui/react"
+import Head from "next/head"
 import { useListPostOnlyJobQuery } from "../../../codegen/graphql"
 import PostCard, { POST_CARD } from "../../components/postCard"
 
@@ -59,14 +60,19 @@ const Job = () => {
     }
   }
 
-  return <Flex direction='column' alignItems='center' gap={{ base: 1, lg: 2 }}>
-    {nodes.map(node => {
-      return node && <PostCard key={node?.id} post={node} refetchQuery={LIST_POST_ONLY_JOB} />
-    })}
-    {hasNextPage && <Box p={{ base: 4, lg: 8 }}>
-      <Button onClick={onLoadMore}>Load More</Button>
-    </Box>}
-  </Flex>
+  return <Box>
+    <Head>
+      <title>求職 | Aegis | 臺灣人軟體新創社群</title>
+    </Head>
+    <Flex direction='column' alignItems='center' gap={{ base: 1, lg: 2 }}>
+      {nodes.map(node => {
+        return node && <PostCard key={node?.id} post={node} refetchQuery={LIST_POST_ONLY_JOB} />
+      })}
+      {hasNextPage && <Box p={{ base: 4, lg: 8 }}>
+        <Button onClick={onLoadMore}>Load More</Button>
+      </Box>}
+    </Flex>
+  </Box>
 }
 
 export default Job

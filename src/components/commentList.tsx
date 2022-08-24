@@ -1,11 +1,12 @@
 import { gql } from "@apollo/client"
 import { DeleteIcon } from "@chakra-ui/icons"
-import { Avatar, Button, Center, Flex, FormControl, Heading, Icon, Input, InputGroup, InputRightElement, Link, Spacer, Spinner, Text } from "@chakra-ui/react"
+import { Avatar, Box, Button, Center, Flex, FormControl, Heading, Icon, Input, InputGroup, InputRightElement, Link, Spacer, Spinner, Text } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import { useForm } from "react-hook-form"
 import { useCommentsQuery, useCreateCommentMutation, useRemoveCommentMutation } from "../../codegen/graphql"
 import { NextLink } from "./exportUtils"
+import SignInPanel from "./SignInPanel"
 
 export const GET_COMMENT = gql`
   query comments( 
@@ -122,7 +123,7 @@ const CommentList = ({ postId }: { postId: string}) => {
   const comments = data?.comments?.edges.map(edge => edge.node) ?? []
 
   return <Flex p={{ base: 4, lg: 8 }} gap={{ base: 2, lg: 4 }} direction='column'>
-    <Heading size='md'>Comments</Heading>
+    <Heading size='md'>評論</Heading>
     {loading && <Center><Spinner size='lg'/></Center>}
     <Flex mt='2' mb='2' gap='8px' direction='column'>
       {comments.map(comment => {
@@ -169,7 +170,10 @@ const CommentList = ({ postId }: { postId: string}) => {
           </InputGroup>
         </FormControl>
       </form>
-      : 'You need to sign in to comment.'
+      : <Box>
+        <Text>評論請先登入</Text>
+        <SignInPanel />
+      </Box>
     }
   </Flex>
 }

@@ -8,6 +8,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { useCreatePostMutation, useGetUrlMetadataMutation } from '../../../codegen/graphql'
+import SignInPanel from '../../components/SignInPanel'
 
 type FormValues = {
   title: string
@@ -47,9 +48,9 @@ const PostCreate: NextPage = () => {
   const [createPost, { loading, error }] = useCreatePostMutation()
   const [getUrlMetadata] = useGetUrlMetadataMutation()
 
-  if (!user) return <Center p={{ base: 4, lg: 8 }}>You need to sign in first ☝</Center>
-  if (loading) return <Center p={{ base: 4, lg: 8 }}>Submitting...</Center>
-  if (error) return <Center p={{ base: 4, lg: 8 }}>Submission error! ${error.message}</Center>
+  if (!user) return <Center p={{ base: 4, lg: 10 }}><SignInPanel /></Center>
+  if (loading) return <Center p={{ base: 4, lg: 10 }}>Submitting...</Center>
+  if (error) return <Center p={{ base: 4, lg: 10 }}>Submission error! ${error.message}</Center>
 
   const onSubmit = async (value: FormValues) => {
     await createPost({
@@ -83,8 +84,8 @@ const PostCreate: NextPage = () => {
 
   return (
     <Box p={{ base: 4, lg: 8 }}>
-      <Heading size='lg'>Create Post</Heading>
-      <Text mt='4'>{`You can paste url to get title, or leave it blank. Job related title will be curated in Jobs tab.`}</Text>
+      <Heading size='lg'>發表文章</Heading>
+      <Text mt='4'>你可以純粹發表文章(以網址留白方式)，或貼上外部網站超連結(自動抓取標題)，標題含有求職關鍵字會同步加入到求職區塊</Text>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.url}>
           <FormLabel htmlFor='url'>Url</FormLabel>

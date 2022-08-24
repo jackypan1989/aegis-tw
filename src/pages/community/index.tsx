@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client"
 import { SearchIcon } from "@chakra-ui/icons"
 import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormLabel, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Spinner, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react"
+import Head from "next/head"
 import { Controller, useForm } from "react-hook-form"
 import { ListProfileQueryHookResult, Market, Role, useListProfileQuery } from "../../../codegen/graphql"
 import ProfileCard, { PROFILE_CARD } from "../../components/profileCard"
@@ -147,8 +148,11 @@ const Community = () => {
   }
 
   return <Box>
+    <Head>
+      <title>尋找人脈 | Aegis | 臺灣人軟體新創社群</title>
+    </Head>
     <Flex p={{ base: 4, lg: 8 }}>
-      <Heading size='lg'>Find out people 👋</Heading>
+      <Heading size='lg'>尋找人脈 👋</Heading>
       <Spacer />
       <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
     </Flex>
