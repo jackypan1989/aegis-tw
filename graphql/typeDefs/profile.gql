@@ -48,6 +48,7 @@ type Profile {
   roles: [Role!]!
   markets: [Market!]!
   avatarUrl: String
+  location: String
   website: String
   linkedin: String
   facebook: String
@@ -93,6 +94,7 @@ input UpdateProfileMutationInput {
   roles: [Role!]!
   markets: [Market!]!
   avatarUrl: String
+  location: String
   website: String
   linkedin: String
   facebook: String

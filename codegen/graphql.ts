@@ -219,6 +219,7 @@ export type Profile = {
   github?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   linkedin?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
   markets: Array<Market>;
   roles: Array<Role>;
   twitter?: Maybe<Scalars['String']>;
@@ -371,6 +372,7 @@ export type UpdateProfileMutationInput = {
   github?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   linkedin?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
   markets: Array<Market>;
   roles: Array<Role>;
   twitter?: InputMaybe<Scalars['String']>;
@@ -457,7 +459,7 @@ export type ViewPostMutationVariables = Exact<{
 
 export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename?: 'Post', id: string, viewCount: number } };
 
-export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
+export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
 
 export type StartupCardFragment = { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, valuation: number, markets: Array<Market> };
 
@@ -468,7 +470,7 @@ export type ListProfileQueryVariables = Exact<{
 }>;
 
 
-export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
+export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
 
 export type ListPostOnlyJobQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -514,14 +516,14 @@ export type GetProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
+export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export type UpdateProfileMutationVariables = Exact<{
   input: UpdateProfileMutationInput;
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export type GetStartupQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -575,6 +577,7 @@ export const ProfileCardFragmentDoc = gql`
   roles
   markets
   avatarUrl
+  location
   website
   linkedin
   facebook
@@ -1563,6 +1566,7 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   linkedin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  location?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   markets?: Resolver<Array<ResolversTypes['Market']>, ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>;
   twitter?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
