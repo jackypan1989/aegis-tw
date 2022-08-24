@@ -201,9 +201,13 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
                     <Text display='inline' size='8' ml='1' color='gray'>{`(${new URI(post.url).domain()})`}</Text>
                   </Box>
                 </Link>
-              : <Box>
-                  <Text fontSize={{ base: 'sm', lg: 'md' }} fontWeight='bold' display='inline'>{post.title}</Text>
-                </Box>
+              : <NextLink href={`/post/${post.id}`} onClick={onView}>
+                  <Link>
+                    <Box>
+                      <Text fontSize={{ base: 'sm', lg: 'md' }} fontWeight='bold' display='inline'>{post.title}</Text>
+                    </Box>
+                  </Link>
+                </NextLink>
             }
           </Box>
           <Box display={{ base: 'none', lg: 'initial' }} lineHeight='2' justifyContent='flex-end'>
