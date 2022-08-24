@@ -6,7 +6,7 @@ import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import { useForm } from "react-hook-form"
 import { useCommentsQuery, useCreateCommentMutation, useRemoveCommentMutation } from "../../codegen/graphql"
 import { NextLink } from "./exportUtils"
-import SignInPanel from "./SignInPanel"
+import SignInPanel from "./signInPanel"
 
 export const GET_COMMENT = gql`
   query comments( 
