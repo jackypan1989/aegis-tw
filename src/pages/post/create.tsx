@@ -8,7 +8,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { useCreatePostMutation, useGetUrlMetadataMutation } from '../../../codegen/graphql'
-import SignInPanel from '../../components/SignInPanel'
+import SignInPanel from '../../components/signInPanel'
 
 type FormValues = {
   title: string

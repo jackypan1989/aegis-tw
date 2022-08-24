@@ -8,7 +8,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
 import { Market, useCreateStartupMutation } from '../../../codegen/graphql'
-import SignInPanel from '../../components/SignInPanel'
+import SignInPanel from '../../components/signInPanel'
 import { getEnumString } from '../../utils/getEnumString'
 
 type FormValues = {
