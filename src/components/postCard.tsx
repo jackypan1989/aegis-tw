@@ -1,12 +1,12 @@
 import { DocumentNode, gql } from '@apollo/client'
 import { DeleteIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { Box, Button, Center, Flex, Icon, Link, Text, useToast } from '@chakra-ui/react'
+import { Avatar, Box, Button, Center, Flex, Icon, Link, Text, useToast } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { useRouter } from 'next/router'
-import { BiMessageAdd, BiUser } from 'react-icons/bi'
 import URI from 'urijs'
 import { PostCardFragment, useCreateVoteMutation, useRemovePostMutation, useRemoveVoteMutation, useViewPostMutation } from '../../codegen/graphql'
+import { getProfileDisplay } from '../utils/profileDisplay'
 import { NextLink } from "./exportUtils"
 
 export const POST_CARD = gql`
@@ -23,7 +23,9 @@ export const POST_CARD = gql`
     isVoted
     poster {
       id
+      email
       username
+      fullname
     }
   }
 `
@@ -210,15 +212,16 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
         </Flex>
         <Flex fontSize='sm' fontWeight='thin' gap='8px' alignItems='center'>
           <NextLink href={`/post/${post.id}`}>
-            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiMessageAdd}/>}>
-            {post.commentCount}
-          </Button>
-          </NextLink>
-          <NextLink href={`/profile/${post.poster?.id}`}>
-            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' leftIcon={<Icon boxSize='18px' as={BiUser}/>}>
-              {post.poster?.username}
+            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal'>
+              💬 {post.commentCount}
             </Button>
           </NextLink>
+          {post.poster && <NextLink href={`/profile/${post.poster?.id}`}>
+            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal'>
+              <Avatar size='2xs' name={getProfileDisplay(post.poster)?.[0]} mr={2} />
+              {getProfileDisplay(post.poster)}
+            </Button>
+          </NextLink>}
           {post.poster?.id === user?.id && 
             <Link>
               <Icon onClick={onRemove} as={DeleteIcon}></Icon>
