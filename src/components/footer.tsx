@@ -14,15 +14,18 @@ const Footer = () => {
     alignItems='center' 
     boxShadow='sm' 
     position='sticky'
-  >
+  > 
+    {/* <NextLink href='/venture' passHref>
+      <Link>Venture</Link> 
+    </NextLink> */}
     <NextLink href='/about' passHref>
-      <Link>About</Link> 
-    </NextLink>
-    <NextLink href='/privacy' passHref>
-      <Link>Privacy</Link> 
+      <Link>關於</Link> 
     </NextLink>
     <Spacer />
     <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star" width='50' height='20'></iframe>
+    <NextLink href='/privacy' passHref>
+      <Link>隱私政策</Link> 
+    </NextLink>
   </Flex>
 }
 

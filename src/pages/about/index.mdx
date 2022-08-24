@@ -1,18 +1,75 @@
-import { Text, Box, Button } from "@chakra-ui/react"
+import { Text, Box, Button, Divider } from "@chakra-ui/react"
 import NextLink from 'next/link'
 
 <Box p={{ base: 4, lg: 8 }}>
 
 ### Why Aegis?
 
-#### Software could be the next shield for our home 🛡️
+#### 軟體可以是下一個保護臺灣的產業，如同 40 年前由半導體開始的矽盾
+
+你是否想過，矽盾還可以保護臺灣多久？半導體製造需要大量的水、電和廠房設施，
+在這個四面環海且缺乏天然資源的島上，我們需要一個更長期的產業核心，來提昇台灣的保護力，
+而軟體恰好是最不需要實體資源的產業，也是台灣沒有跟上全球資本市場腳步的產業之一。
+
+2022 年中，我們做了一個臺灣人的臉書海外工作社團調查，我們得到了
+<Text as='span' mx='1' fontSize='xl' color='red'>271</Text> 份回覆，
+他們都是在美國，歐洲，日本，新加坡，以色列等等地區工作的工程師、設計師及學生。
+
+其中高達 <Text as='span' mx='1' fontSize='xl' color='red'>63.3%</Text> 
+的海外工作者(從事軟體業或是有興趣進入)說，如果台灣的軟體生態系與工作環境，
+可以像是他們所在地區一樣，他們就會馬上回到台灣，他們的家，而台灣顯然不是缺乏人才，
+那為什麼台灣留不住這些人？在調查中，我們統計了幾個關鍵原因。
+
+1. 缺乏資本與投資人 (61.1%)
+2. 缺乏國際經驗 (50%)
+3. 缺乏政府政策 (48.9%)
+4. 缺乏創業家出場的實例 (47.8%)
+5. <Text as='span' color='red'> 缺乏串連的社群 (35.6%) 👈 </Text> 
+
+前四個都是雞生蛋蛋生雞的生態系痛點，不易馬上解決，而第五個是我們可以立即行動的。
+
+串連社群很困難，臉書社團跟 Line 群組都沒有很容易讓人找到彼此，文章一下就洗掉，要找新創資訊也麻煩。
+
+所以我們做了一個非常簡易的平台讓大家交流，
+參考國外的 HackerNews 跟 AngelList 點子，我們開發了 Aegis，
+他不會是另外一個新聞媒體或是 LinkedIn。
+
+我們希望 Aegis 可以做到的
+
+* 你可以找到軟體開發者與設計師的消息 📰  
+* 你可以找到徵才資訊 🔍   
+* 你可以找到創業家 👋
+* 你可以找到投資人 👨‍🦳
+
+永久免費與無廣告，同時平台程式碼完全公開。
+我們希望可以聚集海內外台灣人的能量，如同猶太人凝聚彼此。
+
+#### 跟我們一起創造下一個生態系 👊
+
+<NextLink href="/auth/signIn">
+  <Button>登入與加入我們</Button>
+</NextLink>
+
+<NextLink href="mailto: jacky@aegis.tw">
+  <Button ml='16px'>寄信回饋</Button>
+</NextLink>
+
+</Box>
+
+<Divider />
+
+<Box p={{ base: 4, lg: 8 }}>
+
+### Why Aegis?
+
+#### Software could be the next shield for our home
 
 In mid-2022, we did a job research from overseas 
 Taiwanese developer and designer Facebook groups. 
-We got <Text as='span' mx='1' fontSize='2xl' color='red'>271</Text> replies 
+We got <Text as='span' mx='1' fontSize='xl' color='red'>271</Text> replies 
 working in the USA, EU, Japan, Singapore, Israel, etc. 
 
-Up to <Text as='span' mx='1' fontSize='2xl' color='red'>63.3%</Text> 
+Up to <Text as='span' mx='1' fontSize='xl' color='red'>63.3%</Text> 
 of overseas Taiwanese employees (most of them in the software area) would return to 
 Taiwan if there were a software/startup ecosystem like the countries they live in. Why can't they stay in their hometown? 
 They also pointed out several key reasons:
@@ -28,13 +85,13 @@ Networking is hard.
 We need a dead simple site to let people communicate.
 By leveraging ideas from HackerNews and AngelList, we build Aegis to Taiwanese people.
 It would not be another media site or LinkedIn alternative.
-All time open sourced, free and no advertisement. 
 
 * You can find out startup/dev/design news 📰  
 * You can find out great talents 🔍   
 * You can find out founders 👋
 * You can find out investors 👨‍🦳
 
+All time open sourced, free and no advertisement.
 The vision is that we could gel Taiwaneses energy worldwide just like Jewish did. 
 
 #### All about Taiwanese startups and the software ecosystem 👊

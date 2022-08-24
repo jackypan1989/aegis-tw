@@ -29,11 +29,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Aegis Community</title>
-        <meta name="description"  content="Taiwanese community for startups and software industry." />
+        <title>Aegis | 臺灣人軟體新創社群</title>
+        <meta name="description"  content="Aegis 是以軟體業為出發，擁有臺灣人認同，串連海內外臺灣人的跨境新創社群。" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="Aegis Community" />
-        <meta property="og:description" content="Taiwanese community for startups and software industry." />
+        <meta property="og:title" content="Aegis | 臺灣人軟體新創社群" />
+        <meta property="og:description" content="Aegis 是以軟體業為出發，擁有臺灣人認同，串連海內外臺灣人的跨境新創社群。" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>

@@ -1,7 +1,7 @@
 import { createServer } from '@graphql-yoga/node';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabaseClient, User } from '@supabase/auth-helpers-nextjs';
+import { getUser, User } from '@supabase/auth-helpers-nextjs';
 import { PrismaClient } from '../../../codegen/prisma/client';
 import resolvers from '../../../graphql/resolvers/root';
 import { prisma } from '../../utils/prismaClient';
@@ -23,9 +23,8 @@ export default createServer<ServerContext, UserContext>({
     typeDefs: typeDefs,
     resolvers: resolvers,
   },
-  context: async ({ req, res }) => {
-    // get custom header value
-    const { user } = await supabaseClient.auth.api.getUserByCookie(req, res)
+  context: async (ctx) => {
+    const { user } = await getUser(ctx)
 
     return {
       user: user,

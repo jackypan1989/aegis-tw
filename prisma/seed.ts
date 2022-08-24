@@ -36,12 +36,18 @@ async function main() {
       {
         id: postId1,
         posterId: userId1,
-        title: 'Post 1'
+        title: 'Post 1',
+        voteCount: 2,
+        createdAt: new Date(),
+        viewCount: 1
       },
       {
         id: postId2,
         posterId: userId2,
-        title: 'Post 2 - Job'
+        title: 'Post 2 - Job',
+        voteCount: 1,
+        createdAt: new Date(),
+        viewCount: 1
       },
     ]
   })  
