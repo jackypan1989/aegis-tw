@@ -36,6 +36,7 @@ type FormValues = {
   roles: Role[]
   markets: Market[]
   avatarUrl: string
+  location: string
   website: string
   linkedin: string
   facebook: string
@@ -71,6 +72,7 @@ const ProfileDetail = () => {
       roles: profile?.roles ?? [],
       markets: profile?.markets ?? [],
       avatarUrl: profile?.avatarUrl ?? '',
+      location: profile?.location ?? '',
       website: profile?.website ?? '',
       linkedin: profile?.linkedin ?? '',
       facebook: profile?.facebook ?? '',
@@ -173,6 +175,14 @@ const ProfileDetail = () => {
                 </Wrap>
               </CheckboxGroup>
             )}
+          />
+        </FormControl>
+        <FormControl mt='4'>
+          <FormLabel htmlFor='location'>Location</FormLabel>
+          <Input
+            id='location'
+            placeholder='ex: Miami, America'
+            {...register('location')}
           />
         </FormControl>
         <FormControl mt='4'>

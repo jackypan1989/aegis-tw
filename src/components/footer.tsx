@@ -22,10 +22,10 @@ const Footer = () => {
       <Link>關於</Link> 
     </NextLink>
     <Spacer />
-    <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star" width='50' height='20'></iframe>
     <NextLink href='/privacy' passHref>
       <Link>隱私政策</Link> 
     </NextLink>
+    <iframe src="https://ghbtns.com/github-btn.html?user=jackypan1989&repo=aegis-tw-community&type=star&count=true" frameBorder="0" scrolling="0" width='150' height='20'></iframe>
   </Flex>
 }
 

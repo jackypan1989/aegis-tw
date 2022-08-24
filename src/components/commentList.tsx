@@ -5,6 +5,7 @@ import { useUser } from "@supabase/auth-helpers-react"
 import { formatDistanceToNowStrict, parseISO } from "date-fns"
 import { useForm } from "react-hook-form"
 import { useCommentsQuery, useCreateCommentMutation, useRemoveCommentMutation } from "../../codegen/graphql"
+import { getProfileDisplay } from "../utils/profileDisplay"
 import { NextLink } from "./exportUtils"
 import SignInPanel from "./signInPanel"
 
@@ -33,6 +34,7 @@ export const GET_COMMENT = gql`
             id
             username
             fullname
+            email
           }
         }
       }
@@ -50,6 +52,7 @@ export const CREATE_COMMENT = gql`
         id
         username
         fullname
+        email
       }
     }
   }
@@ -65,6 +68,7 @@ export const REMOVE_COMMENT = gql`
         id
         username
         fullname
+        email
       }
     }
   }
@@ -127,13 +131,13 @@ const CommentList = ({ postId }: { postId: string}) => {
     {loading && <Center><Spinner size='lg'/></Center>}
     <Flex mt='2' mb='2' gap='8px' direction='column'>
       {comments.map(comment => {
-        return <Flex key={comment.id} gap='12px'>
-          <Avatar mt='1' size='sm' name={comment.commenter?.username?.[0]} />
+        return comment.commenter && <Flex key={comment.id} gap='12px'>
+          <Avatar mt='1' size='sm' name={getProfileDisplay(comment.commenter)?.[0]} />
           <Flex flex='1' direction='column' gap='4px'>
             <Flex>
               <NextLink href={`/profile/${comment.commenter?.id}`}>
                 <Link>
-                  <Text fontWeight='bold'>{comment.commenter?.fullname || comment.commenter?.username}</Text>
+                  <Text fontWeight='bold'>{getProfileDisplay(comment.commenter)}</Text>
                 </Link>
               </NextLink>
               <Spacer />

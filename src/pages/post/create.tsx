@@ -1,13 +1,14 @@
 import { gql } from '@apollo/client'
 import {
   Box, Button, Center, FormControl, FormErrorMessage,
-  FormLabel, Heading, Input, Text, Textarea, useToast
+  FormLabel, Heading, Input, Text, useToast
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { useCreatePostMutation, useGetUrlMetadataMutation } from '../../../codegen/graphql'
+import { AutoResizeTextarea } from '../../components/autoResizeTextarea'
 import SignInPanel from '../../components/signInPanel'
 
 type FormValues = {
@@ -117,8 +118,8 @@ const PostCreate: NextPage = () => {
         </FormControl>
         <FormControl mt='4' isInvalid={!!errors.content}>
           <FormLabel htmlFor='content'>Content</FormLabel>
-          <Textarea
-            id='content'
+          <AutoResizeTextarea
+            id='content'            
             placeholder='content'
             {...register('content')}
           />

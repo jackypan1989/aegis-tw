@@ -157,6 +157,13 @@ const resolvers: Resolvers<UserContext> = {
         args
       )
       return result
+    },
+    stats: async (_, _args, context) => {
+      const profileCount = await context.prisma.profile.count()
+
+      return {
+        profileCount
+      }
     }
   },
   Mutation: {

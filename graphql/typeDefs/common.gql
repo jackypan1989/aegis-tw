@@ -18,6 +18,14 @@ type Metadata {
   title: String
 }
 
+type Stats {
+  profileCount: Int!
+}
+
+type Query {
+  stats: Stats
+}
+
 type Mutation {
   getUrlMetadata(input: GetUrlMetadataInput!): Metadata
 }

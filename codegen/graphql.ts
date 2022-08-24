@@ -219,6 +219,7 @@ export type Profile = {
   github?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   linkedin?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
   markets: Array<Market>;
   roles: Array<Role>;
   twitter?: Maybe<Scalars['String']>;
@@ -253,6 +254,7 @@ export type Query = {
   profiles: ProfileConnection;
   startup?: Maybe<Startup>;
   startups?: Maybe<StartupConnection>;
+  stats?: Maybe<Stats>;
 };
 
 
@@ -358,6 +360,11 @@ export type StartupFilter = {
   markets?: InputMaybe<Array<Market>>;
 };
 
+export type Stats = {
+  __typename?: 'Stats';
+  profileCount: Scalars['Int'];
+};
+
 export type UpdateProfileMutationInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
   facebook?: InputMaybe<Scalars['String']>;
@@ -365,6 +372,7 @@ export type UpdateProfileMutationInput = {
   github?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   linkedin?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
   markets: Array<Market>;
   roles: Array<Role>;
   twitter?: InputMaybe<Scalars['String']>;
@@ -405,23 +413,23 @@ export type CommentsQueryVariables = Exact<{
 }>;
 
 
-export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'CommentEdges', cursor: string, node: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined } | null | undefined } }> } | null | undefined };
+export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'CommentEdges', cursor: string, node: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined, email: string } | null | undefined } }> } | null | undefined };
 
 export type CreateCommentMutationVariables = Exact<{
   input: CreateCommentMutationInput;
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined } | null | undefined } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined, email: string } | null | undefined } };
 
 export type RemoveCommentMutationVariables = Exact<{
   input: RemoveCommentMutationInput;
 }>;
 
 
-export type RemoveCommentMutation = { __typename?: 'Mutation', removeComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined } | null | undefined } };
+export type RemoveCommentMutation = { __typename?: 'Mutation', removeComment: { __typename?: 'Comment', id: string, createdAt: Date, content: string, commenter?: { __typename?: 'Profile', id: string, username: string, fullname?: string | null | undefined, email: string } | null | undefined } };
 
-export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined };
+export type PostCardFragment = { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined } | null | undefined };
 
 export type RemovePostMutationVariables = Exact<{
   input: RemovePostMutationInput;
@@ -451,7 +459,7 @@ export type ViewPostMutationVariables = Exact<{
 
 export type ViewPostMutation = { __typename?: 'Mutation', viewPost: { __typename?: 'Post', id: string, viewCount: number } };
 
-export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
+export type ProfileCardFragment = { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined };
 
 export type StartupCardFragment = { __typename?: 'Startup', id: string, logo?: string | null | undefined, name: string, url?: string | null | undefined, valuation: number, markets: Array<Market> };
 
@@ -462,7 +470,7 @@ export type ListProfileQueryVariables = Exact<{
 }>;
 
 
-export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
+export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
 
 export type ListPostOnlyJobQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -471,14 +479,14 @@ export type ListPostOnlyJobQueryVariables = Exact<{
 }>;
 
 
-export type ListPostOnlyJobQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
+export type ListPostOnlyJobQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined } | null | undefined } }> } };
 
 export type GetPostQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetPostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } | null | undefined };
+export type GetPostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined } | null | undefined } | null | undefined };
 
 export type CreatePostMutationVariables = Exact<{
   input: CreatePostMutationInput;
@@ -501,21 +509,21 @@ export type ListPostQueryVariables = Exact<{
 }>;
 
 
-export type ListPostQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, username: string } | null | undefined } }> } };
+export type ListPostQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined } | null | undefined } }> } };
 
 export type GetProfileQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
+export type GetProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export type UpdateProfileMutationVariables = Exact<{
   input: UpdateProfileMutationInput;
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } | null | undefined };
 
 export type GetStartupQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -554,7 +562,9 @@ export const PostCardFragmentDoc = gql`
   isVoted
   poster {
     id
+    email
     username
+    fullname
   }
 }
     `;
@@ -567,6 +577,7 @@ export const ProfileCardFragmentDoc = gql`
   roles
   markets
   avatarUrl
+  location
   website
   linkedin
   facebook
@@ -601,6 +612,7 @@ export const CommentsDocument = gql`
           id
           username
           fullname
+          email
         }
       }
     }
@@ -647,6 +659,7 @@ export const CreateCommentDocument = gql`
       id
       username
       fullname
+      email
     }
   }
 }
@@ -687,6 +700,7 @@ export const RemoveCommentDocument = gql`
       id
       username
       fullname
+      email
     }
   }
 }
@@ -1393,6 +1407,7 @@ export type ResolversTypes = {
   StartupConnection: ResolverTypeWrapper<StartupConnection>;
   StartupEdges: ResolverTypeWrapper<StartupEdges>;
   StartupFilter: StartupFilter;
+  Stats: ResolverTypeWrapper<Stats>;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateProfileMutationInput: UpdateProfileMutationInput;
   ViewPostMutationInput: ViewPostMutationInput;
@@ -1438,6 +1453,7 @@ export type ResolversParentTypes = {
   StartupConnection: StartupConnection;
   StartupEdges: StartupEdges;
   StartupFilter: StartupFilter;
+  Stats: Stats;
   String: Scalars['String'];
   UpdateProfileMutationInput: UpdateProfileMutationInput;
   ViewPostMutationInput: ViewPostMutationInput;
@@ -1550,6 +1566,7 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   linkedin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  location?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   markets?: Resolver<Array<ResolversTypes['Market']>, ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>;
   twitter?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1579,6 +1596,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   profiles?: Resolver<ResolversTypes['ProfileConnection'], ParentType, ContextType, Partial<QueryProfilesArgs>>;
   startup?: Resolver<Maybe<ResolversTypes['Startup']>, ParentType, ContextType, RequireFields<QueryStartupArgs, 'id'>>;
   startups?: Resolver<Maybe<ResolversTypes['StartupConnection']>, ParentType, ContextType, Partial<QueryStartupsArgs>>;
+  stats?: Resolver<Maybe<ResolversTypes['Stats']>, ParentType, ContextType>;
 };
 
 export type RoleResolvers = EnumResolverSignature<{ ANGEL_INVESTOR?: any, DESIGNER?: any, ENGINEERING?: any, FOUNDER?: any, MARKETING?: any, OPERATIONS?: any, PRODUCT?: any, SALES?: any, VENTURE_CAPITAL?: any }, ResolversTypes['Role']>;
@@ -1610,6 +1628,11 @@ export type StartupConnectionResolvers<ContextType = any, ParentType extends Res
 export type StartupEdgesResolvers<ContextType = any, ParentType extends ResolversParentTypes['StartupEdges'] = ResolversParentTypes['StartupEdges']> = {
   cursor?: Resolver<ResolversTypes['Cursor'], ParentType, ContextType>;
   node?: Resolver<ResolversTypes['Startup'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type StatsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Stats'] = ResolversParentTypes['Stats']> = {
+  profileCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1656,6 +1679,7 @@ export type Resolvers<ContextType = any> = {
   Startup?: StartupResolvers<ContextType>;
   StartupConnection?: StartupConnectionResolvers<ContextType>;
   StartupEdges?: StartupEdgesResolvers<ContextType>;
+  Stats?: StatsResolvers<ContextType>;
   Vote?: VoteResolvers<ContextType>;
   VoteConnection?: VoteConnectionResolvers<ContextType>;
   VoteEdges?: VoteEdgesResolvers<ContextType>;
