@@ -8,25 +8,25 @@ const Navbar = () => {
 
   const mainTabItems: TabItem[] = [
     {
-      href: '/post',
-      icon: '🗞️',
-      title: '動態'
-    },
-    {
-      href: '/job',
-      icon: '🔍',
-      title: '求職'
-    },
-    {
       href: '/community',
       icon: '👋',
       title: '人脈'
 
     },
     {
+      href: '/post',
+      icon: '🗞️',
+      title: '動態'
+    },
+    {
       href: '/startup',
       icon: '🦄',
       title: '新創',
+    },
+    {
+      href: '/venture',
+      icon: '🚀',
+      title: 'Venture',
     },
   ]
 
