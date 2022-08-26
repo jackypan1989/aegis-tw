@@ -69,7 +69,7 @@ const ProfileFilterModal = (props: ProfileFilterModalProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalContent maxW='90vw' ml='4' mr='4'>
+          <ModalContent maxW={{ base: '90vw', lg: '50vw' }} ml='4' mr='4'>
             <ModalHeader>Profle Filter</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
@@ -149,15 +149,15 @@ const Community = () => {
 
   return <Box>
     <Head>
-      <title>尋找人脈 | Aegis | 臺灣人軟體新創社群</title>
+      <title>尋找人脈 | Aegis | 台灣人軟體新創社群</title>
     </Head>
-    <Flex p={{ base: 4, lg: 8 }}>
-      <Box>
-        <Heading size='lg'>尋找創業人脈 👋</Heading>
-        <Text mt='3'>可以根據功能角色(如創辦人 / 天使 / 工程師 / 設計師)，還有感興趣的市場進行搜索，也請點選右上角，更新你自己的資料讓別人好找到你喔</Text>
-      </Box>
-      <Spacer />
-      <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
+    <Flex p={{ base: 4, lg: 8 }} direction='column'>
+      <Flex>
+        <Heading size='lg'>尋找新創人脈 👋</Heading>
+        <Spacer />
+        <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
+      </Flex>
+      <Text mt='3'>根據功能角色(如創辦人、天使、工程師等)及感興趣的垂直市場進行探索，也請登入並更新你個人資料讓別人好找到你。</Text>
     </Flex>
     {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
     <Flex direction='column' gap={{ base: 1, lg: 2 }}>

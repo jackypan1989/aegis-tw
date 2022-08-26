@@ -18,7 +18,7 @@ const component: MDXComponents = {
   h4: (props) => <Heading as='h4' size='md' mb='4' {...props} />,
   h5: (props) => <Heading as='h5' size='sm' mb='4' {...props} />,
   h6: (props) => <Heading as='h6' size='xs' mb='4' {...props} />,
-  p: (props) => <Text mb='4' {...props} />,
+  p: (props) => <Text mb='4' lineHeight={1.6} {...props} />,
   a: (props) => <Link {...props} />,
   ol: (props) => <OrderedList mb='4' {...props} />,
   ul: (props) => <UnorderedList mb='4' {...props} />,
@@ -29,11 +29,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Aegis | 臺灣人軟體新創社群</title>
-        <meta name="description"  content="Aegis 是以軟體業為出發，擁有臺灣人認同，串連海內外臺灣人的跨境新創社群。" />
+        <title>Aegis | 台灣人軟體新創社群</title>
+        <meta name="description"  content="Aegis 是以軟體業為出發，擁有台灣人認同，串連海內外台灣人的跨境新創社群。" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="Aegis | 臺灣人軟體新創社群" />
-        <meta property="og:description" content="Aegis 是以軟體業為出發，擁有臺灣人認同，串連海內外臺灣人的跨境新創社群。" />
+        <meta property="og:title" content="Aegis | 台灣人軟體新創社群" />
+        <meta property="og:description" content="Aegis 是以軟體業為出發，擁有台灣人認同，串連海內外台灣人的跨境新創社群。" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>

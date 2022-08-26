@@ -68,7 +68,7 @@ const StartupFilterModal = (props: StartupFilterModalProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalContent maxW='90vw' ml='4' mr='4'>
+          <ModalContent maxW={{ base: '90vw', lg: '50vw' }} ml='4' mr='4'>
             <ModalHeader>Startup Filter</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
@@ -130,18 +130,18 @@ const Startup = () => {
 
   return <Box>
     <Head>
-      <title>尋找新創 | Aegis | 臺灣人軟體新創社群</title>
+      <title>尋找新創 | Aegis | 台灣人軟體新創社群</title>
     </Head>
-    <Flex p={{ base: 4, lg: 8 }}>
-      <Box>
+    <Flex p={{ base: 4, lg: 8 }} direction='column'>
+      <Flex>
         <Heading size='lg'>尋找新創公司 🦄</Heading>
-        <Text mt='3'>可以根據你感興趣的市場進行搜索，點擊名稱可以查看更多資料，也可點擊新增共同編輯，一起幫助社群。</Text>
-      </Box>
-      <Spacer />
-      <StartupFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
-      <NextLink href='/startup/create' passHref>
-        <IconButton ml='3' size='sm' icon={<Icon as={AddIcon} />} aria-label="filter"></IconButton>
-      </NextLink>
+        <Spacer />
+        <StartupFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
+        <NextLink href='/startup/create' passHref>
+          <IconButton ml='3' size='sm' icon={<Icon as={AddIcon} />} aria-label="Add"></IconButton>
+        </NextLink>
+      </Flex>
+      <Text mt='3'>根據你感興趣的垂直市場進行探索，點擊新創標題可以查看新創更多資料，也可點擊新增按鈕共同編輯，共同幫助社群。</Text>
     </Flex>
     {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
     <Flex direction='column' gap={{ base: 1, lg: 2 }}>
