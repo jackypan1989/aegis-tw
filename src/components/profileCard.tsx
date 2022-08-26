@@ -44,7 +44,7 @@ const ProfileCard = (props: { profile: ProfileCardFragment }) => {
         {profile.location && <Text>{profile.location}</Text>}
       </Flex>
     </Flex>
-    {hasRoles && hasMarkets && <Flex direction='column' gap='8px'>
+    <Flex direction='column' gap='8px'>
       {hasRoles && 
         <Wrap>
           {profile.roles.map(role => <WrapItem key={role}>
@@ -63,7 +63,7 @@ const ProfileCard = (props: { profile: ProfileCardFragment }) => {
           </WrapItem>)}
         </Wrap>
       }
-    </Flex>}
+    </Flex>
     <Wrap>
       {profile.email && <WrapItem>
         <Link href={`mailto:${profile.email}`}>
