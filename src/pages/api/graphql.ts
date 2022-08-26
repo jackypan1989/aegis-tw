@@ -34,7 +34,6 @@ export default createServer<ServerContext, UserContext>({
 })
 
 export const config = {
-  runtime: 'experimental-edge',
   api: {
     // Disable body parsing (required for file uploads)
     bodyParser: false,

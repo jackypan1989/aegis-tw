@@ -71,7 +71,6 @@ const PostIndex = () => {
           <IconButton ml='3' size='sm' icon={<Icon as={AddIcon} />} aria-label="Add"></IconButton>
         </NextLink>
       </Flex>
-      
     </Flex>
     <Flex direction='column' alignItems='center' gap={{ base: 1, lg: 2 }}>
       {nodes.map(node => {

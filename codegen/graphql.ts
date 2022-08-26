@@ -472,14 +472,10 @@ export type ListProfileQueryVariables = Exact<{
 
 export type ListProfileQuery = { __typename?: 'Query', profiles: { __typename?: 'ProfileConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'ProfileEdges', cursor: string, node: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined, roles: Array<Role>, markets: Array<Market>, avatarUrl?: string | null | undefined, location?: string | null | undefined, website?: string | null | undefined, linkedin?: string | null | undefined, facebook?: string | null | undefined, twitter?: string | null | undefined, github?: string | null | undefined } }> } };
 
-export type ListPostOnlyJobQueryVariables = Exact<{
-  first?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['Cursor']>;
-  filter?: InputMaybe<PostFilter>;
-}>;
+export type GetStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListPostOnlyJobQuery = { __typename?: 'Query', posts: { __typename?: 'PostConnection', pageInfo: { __typename?: 'PageInfo', hasNextPage?: boolean | null | undefined, endCursor?: string | null | undefined }, edges: Array<{ __typename?: 'PostEdges', cursor: string, node: { __typename?: 'Post', id: string, createdAt: Date, title: string, url?: string | null | undefined, content?: string | null | undefined, viewCount: number, voteCount: number, commentCount: number, rankingScore: number, isVoted: boolean, poster?: { __typename?: 'Profile', id: string, email: string, username: string, fullname?: string | null | undefined } | null | undefined } }> } };
+export type GetStatsQuery = { __typename?: 'Query', stats?: { __typename?: 'Stats', profileCount: number } | null | undefined };
 
 export type GetPostQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -918,52 +914,40 @@ export function useListProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ListProfileQueryHookResult = ReturnType<typeof useListProfileQuery>;
 export type ListProfileLazyQueryHookResult = ReturnType<typeof useListProfileLazyQuery>;
 export type ListProfileQueryResult = Apollo.QueryResult<ListProfileQuery, ListProfileQueryVariables>;
-export const ListPostOnlyJobDocument = gql`
-    query listPostOnlyJob($first: Int, $after: Cursor, $filter: PostFilter) {
-  posts(first: $first, after: $after, filter: $filter) {
-    pageInfo {
-      hasNextPage
-      endCursor
-    }
-    edges {
-      cursor
-      node {
-        ...PostCard
-      }
-    }
+export const GetStatsDocument = gql`
+    query getStats {
+  stats {
+    profileCount
   }
 }
-    ${PostCardFragmentDoc}`;
+    `;
 
 /**
- * __useListPostOnlyJobQuery__
+ * __useGetStatsQuery__
  *
- * To run a query within a React component, call `useListPostOnlyJobQuery` and pass it any options that fit your needs.
- * When your component renders, `useListPostOnlyJobQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useListPostOnlyJobQuery({
+ * const { data, loading, error } = useGetStatsQuery({
  *   variables: {
- *      first: // value for 'first'
- *      after: // value for 'after'
- *      filter: // value for 'filter'
  *   },
  * });
  */
-export function useListPostOnlyJobQuery(baseOptions?: Apollo.QueryHookOptions<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>) {
+export function useGetStatsQuery(baseOptions?: Apollo.QueryHookOptions<GetStatsQuery, GetStatsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>(ListPostOnlyJobDocument, options);
+        return Apollo.useQuery<GetStatsQuery, GetStatsQueryVariables>(GetStatsDocument, options);
       }
-export function useListPostOnlyJobLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>) {
+export function useGetStatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStatsQuery, GetStatsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>(ListPostOnlyJobDocument, options);
+          return Apollo.useLazyQuery<GetStatsQuery, GetStatsQueryVariables>(GetStatsDocument, options);
         }
-export type ListPostOnlyJobQueryHookResult = ReturnType<typeof useListPostOnlyJobQuery>;
-export type ListPostOnlyJobLazyQueryHookResult = ReturnType<typeof useListPostOnlyJobLazyQuery>;
-export type ListPostOnlyJobQueryResult = Apollo.QueryResult<ListPostOnlyJobQuery, ListPostOnlyJobQueryVariables>;
+export type GetStatsQueryHookResult = ReturnType<typeof useGetStatsQuery>;
+export type GetStatsLazyQueryHookResult = ReturnType<typeof useGetStatsLazyQuery>;
+export type GetStatsQueryResult = Apollo.QueryResult<GetStatsQuery, GetStatsQueryVariables>;
 export const GetPostDocument = gql`
     query getPost($id: ID!) {
   post(id: $id) {

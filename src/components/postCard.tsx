@@ -195,15 +195,15 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
         <Flex gap='4px'>
           <Box flex='1'>
             {post.url 
-              ? <Link href={post.url} target='_new' onClick={onView}>
-                  <Box>
+              ? <Link href={post.url} target='_new'>
+                  <Box onClick={onView}>
                     <Text fontSize={{ base: 'sm', lg: 'md' }} fontWeight='bold' display='inline'>{post.title}</Text>
                     <Text display='inline' size='8' ml='1' color='gray'>{`(${new URI(post.url).domain()})`}</Text>
                   </Box>
                 </Link>
-              : <NextLink href={`/post/${post.id}`} onClick={onView}>
-                  <Link>
-                    <Box>
+              : <NextLink href={`/post/${post.id}`} >
+                  <Link >
+                    <Box onClick={onView}>
                       <Text fontSize={{ base: 'sm', lg: 'md' }} fontWeight='bold' display='inline'>{post.title}</Text>
                     </Box>
                   </Link>
@@ -215,11 +215,13 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
           </Box> 
         </Flex>
         <Flex fontSize='sm' fontWeight='thin' gap='8px' alignItems='center'>
-          <NextLink href={`/post/${post.id}`}>
-            <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal'>
-              <Text>💬</Text> 
-              <Text ml={2}>{post.commentCount}</Text>
-            </Button>
+          <NextLink href={`/post/${post.id}`} passHref>
+            <Link>
+              <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal' onClick={onView}>
+                <Text>💬</Text> 
+                <Text ml={2}>{post.commentCount}</Text>
+              </Button>
+            </Link>
           </NextLink>
           {post.poster && <NextLink href={`/profile/${post.poster?.id}`}>
             <Button size='sm' borderRadius='100px' bg='blackAlpha.50' fontWeight='normal'>
