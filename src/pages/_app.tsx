@@ -5,7 +5,9 @@ import { UserProvider } from '@supabase/auth-helpers-react'
 import { MDXComponents } from 'mdx/types'
 import { AppProps } from 'next/app'
 import Head from "next/head"
+import { useRouter } from "next/router"
 import Script from "next/script"
+import Banner from "../components/banner"
 import Footer from '../components/footer'
 import Navbar from '../components/navbar'
 import '../styles/globals.css'
@@ -26,6 +28,8 @@ const component: MDXComponents = {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+
   return (
     <>
       <Head>
@@ -55,6 +59,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <MDXProvider components={component}>
             <ChakraProvider>
               <Navbar />
+              {router.pathname === '/' && <Banner />}
               <Box m={{ lg: '0 auto'}} width={{ lg: '800px' }} minH={{ base: 'calc(100vh - 96px)', lg: 'calc(100vh - 128px)' }}>
                 <Component {...pageProps} />
               </Box>
@@ -65,7 +70,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       </UserProvider>
     </>
   )
-
 }
 
 export default MyApp

@@ -1,14 +1,5 @@
-import { gql } from "@apollo/client"
 import { Avatar, Box, Button, Container, Flex, Heading, HStack, SimpleGrid, Stack, Text, useColorModeValue, VStack } from "@chakra-ui/react"
 import { NextLink } from "../components/exportUtils"
-
-export const GET_STATS = gql`
-  query getStats {
-    stats {
-      profileCount
-    }
-  }
-`
 
 const Hero = () => 
   <Stack

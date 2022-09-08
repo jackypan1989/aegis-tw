@@ -2,11 +2,12 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  const { user } = await getUser(req)
-  if (!user) {
-    return NextResponse.next()
-  } 
-  return NextResponse.redirect(new URL('/community', req.url))
+  // const { user } = await getUser(req)
+  // if (!user) {
+  //   return NextResponse.next()
+  // } 
+  // return NextResponse.redirect(new URL('/community', req.url))
+  return NextResponse.next()
 }
 
 async function getUser(req: NextRequest): Promise<any> {
