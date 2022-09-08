@@ -2,11 +2,12 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  // const { user } = await getUser(req)
-  // if (!user) {
-  //   return NextResponse.next()
-  // } 
-  // return NextResponse.redirect(new URL('/community', req.url))
+  const { user } = await getUser(req)
+  const { pathname } = req.nextUrl
+
+  if (user && pathname === '/auth/signIn') {
+    return NextResponse.redirect(new URL(`/community`, req.url))
+  }
   return NextResponse.next()
 }
 
@@ -27,7 +28,6 @@ async function getUser(req: NextRequest): Promise<any> {
   })
 
   const result = await authRequestResult.json()
-  console.log("Supabase auth result", result)
   if (authRequestResult.status != 200) {
     return {
       user: null,
@@ -41,8 +41,4 @@ async function getUser(req: NextRequest): Promise<any> {
       error: null,
     }
   }
-}
-
-export const config = {
-  matcher: '/',
 }

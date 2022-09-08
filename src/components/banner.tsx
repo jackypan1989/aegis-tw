@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client"
 import { Button, Flex, Text } from "@chakra-ui/react"
-import { useGetStatsQuery } from "../../codegen/graphql"
 import { NextLink } from "./exportUtils"
 
 export const GET_STATS = gql`
@@ -12,13 +11,13 @@ export const GET_STATS = gql`
 `
 
 const Banner = () => {
-  const { data } = useGetStatsQuery()
-  const profileCount = data?.stats?.profileCount
+  // const { data } = useGetStatsQuery()
+  // const profileCount = data?.stats?.profileCount
 
-  return <Flex p='2' gap='2' bg='purple.400' color='white' justifyContent='center' alignItems='center'>
-    <Text as='span'>尋找創業夥伴？尋找投資人？尋找新創工作？目前已有 { profileCount } 位海內外台灣軟體人，加入 Aegis 人脈網路</Text>
+  return <Flex px='3' py='2' gap='2' bg='purple.400' color='white' justifyContent='center' alignItems='center'>
+    <Text as='span'>你正在尋找創業夥伴？天使投資人？還是新創工作？</Text>
     <NextLink href="/auth/signIn">
-      <Button colorScheme='blackAlpha'>點此加入</Button>
+      <Button colorScheme='blackAlpha'>加入社群</Button>
     </NextLink>
   </Flex>
 }

@@ -1,4 +1,4 @@
-import { Avatar, Flex, Hide, Icon, Link, Show, Spacer } from "@chakra-ui/react"
+import { Avatar, Flex, Hide, Icon, Link, Show, Spacer, Stack } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { AiFillHome, AiOutlineUser } from "react-icons/ai"
 import { NextLink } from "./exportUtils"
@@ -43,8 +43,10 @@ const Navbar = () => {
   >
     <NextLink href='/' passHref>
       <Link>
-        <Hide above='lg'><Icon mt={{ base: 1.5, md: 2 }} as={AiFillHome}></Icon></Hide>
-        <Show above='lg'>Aegis Venture</Show>
+        <Stack>
+          <Hide above='md'><Icon as={AiFillHome}></Icon></Hide>
+          <Show above='md'>Aegis 首頁</Show>
+        </Stack>
       </Link>
     </NextLink>
     {mainTabItems.map((tabItem, index) => <Tab key={index} tabItem={tabItem} />)}
@@ -57,7 +59,9 @@ const Navbar = () => {
       </NextLink>
       :<NextLink href={`/auth/signIn`} passHref>
         <Link>
-          <Icon mt={{ base: 1.5, md: 2 }} as={AiOutlineUser} />
+          <Stack>
+            <Icon as={AiOutlineUser} />
+          </Stack>  
         </Link>
       </NextLink>
     }

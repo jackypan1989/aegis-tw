@@ -9,7 +9,7 @@ const SignInPanel = () => {
     socialButtonSize='medium'
     socialColors={true}
     onlyThirdPartyProviders={true}
-    redirectTo={process.env.NEXT_PUBLIC_URL}
+    redirectTo={`${process.env.NEXT_PUBLIC_URL}/community`}
   />
 }
 
