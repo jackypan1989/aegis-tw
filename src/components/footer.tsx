@@ -9,16 +9,13 @@ const Footer = () => {
     py={{ base: '2', lg: '8' }} 
     gap={{ base: '3', lg: '6' }} 
     fontSize={{ base: 'md', lg: 'xl' }}
-    bg='#5A57FF'  
+    bg='black' 
     fontWeight='medium' 
     color='white' 
     alignItems='center' 
     boxShadow='sm' 
     position='sticky'
   > 
-    {/* <NextLink href='/venture' passHref>
-      <Link>Venture</Link> 
-    </NextLink> */}
     <Tab tabItem={{ href: '/about', icon: 'ℹ️', title: '關於' }} />
     <Tab tabItem={{ href: '/privacy', icon: undefined, title: '隱私權' }} />
     <Spacer />

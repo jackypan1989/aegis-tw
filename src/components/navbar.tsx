@@ -1,5 +1,6 @@
-import { Avatar, Flex, Link, Show, Spacer } from "@chakra-ui/react"
+import { Avatar, Flex, Hide, Icon, Link, Show, Spacer } from "@chakra-ui/react"
 import { useUser } from "@supabase/auth-helpers-react"
+import { AiFillHome, AiOutlineUser } from "react-icons/ai"
 import { NextLink } from "./exportUtils"
 import { Tab, TabItem } from "./tab"
 
@@ -22,12 +23,7 @@ const Navbar = () => {
       href: '/startup',
       icon: '🦄',
       title: '新創',
-    },
-    {
-      href: '/venture',
-      icon: '🚀',
-      title: 'Venture',
-    },
+    }
   ]
 
   return <Flex 
@@ -38,14 +34,19 @@ const Navbar = () => {
     gap={{ base: '3', lg: '6' }} 
     fontSize={{ base: 'md', lg: 'xl' }}
     fontWeight='bold' 
-    bg='#5A57FF' 
+    bg='black'
     color='white' 
     alignItems='center' 
     position='sticky'
     top='0px'
     zIndex='1'
   >
-    <Show above='lg'>Aegis</Show>
+    <NextLink href='/' passHref>
+      <Link>
+        <Hide above='lg'><Icon mt={{ base: 1.5, md: 2 }} as={AiFillHome}></Icon></Hide>
+        <Show above='lg'>Aegis Venture</Show>
+      </Link>
+    </NextLink>
     {mainTabItems.map((tabItem, index) => <Tab key={index} tabItem={tabItem} />)}
     <Spacer />
     {user
@@ -54,7 +55,11 @@ const Navbar = () => {
           <Avatar size='sm' name={user.email?.[0]}/>
         </Link>
       </NextLink>
-      :<Tab tabItem={{ href: '/auth/signIn', icon: '➡️', title: '加入' }} />
+      :<NextLink href={`/auth/signIn`} passHref>
+        <Link>
+          <Icon mt={{ base: 1.5, md: 2 }} as={AiOutlineUser} />
+        </Link>
+      </NextLink>
     }
   </Flex>
 }

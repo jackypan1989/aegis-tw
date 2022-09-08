@@ -229,7 +229,6 @@ const ProfileDetail = () => {
           Update
         </Button>
       </form>
-      
     </Box>
   } else {
     return <ProfileCard profile={profile}></ProfileCard>
