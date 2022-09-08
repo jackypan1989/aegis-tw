@@ -171,7 +171,7 @@ const CTA = () =>
 const Home = () => {
   return <Container maxW='3xl' textAlign='center'>
     <Hero />
-    <Feature />
+    {/* <Feature /> */}
     <Testimonials />
     <CTA />
   </Container>
