@@ -69,7 +69,7 @@ const StartupFilterModal = (props: StartupFilterModalProps) => {
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent maxW={{ base: '90vw', lg: '50vw' }} ml='4' mr='4'>
-            <ModalHeader>Startup Filter</ModalHeader>
+            <ModalHeader>新創搜尋</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl mt='4'>
@@ -93,7 +93,7 @@ const StartupFilterModal = (props: StartupFilterModalProps) => {
             </ModalBody>
             <ModalFooter>
               <Button colorScheme='blue' type='submit'>
-                Search
+                搜尋
               </Button>
             </ModalFooter>
           </ModalContent>
@@ -134,7 +134,7 @@ const Startup = () => {
     </Head>
     <Flex p={{ base: 4, lg: 8 }} direction='column'>
       <Flex>
-        <Heading size='lg'>尋找新創公司 🦄</Heading>
+        <Heading size='lg'>新創資料庫 🦄</Heading>
         <Spacer />
         <StartupFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
         <NextLink href='/startup/create' passHref>

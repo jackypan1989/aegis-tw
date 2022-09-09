@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 import { AddIcon } from "@chakra-ui/icons"
-import { Box, Button, Center, Flex, Heading, Icon, IconButton, Spacer, Spinner } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Heading, Icon, IconButton, Spacer, Spinner, Text } from "@chakra-ui/react"
 import Head from "next/head"
 import { useListPostQuery } from "../../../codegen/graphql"
 import { NextLink } from "../../components/exportUtils"
@@ -71,6 +71,7 @@ const PostIndex = () => {
           <IconButton ml='3' size='sm' icon={<Icon as={AddIcon} />} aria-label="Add"></IconButton>
         </NextLink>
       </Flex>
+      <Text color='gray.500' mt='3'>你可以張貼新聞連結、發問問題，點擊標題可以查看詳情，也可以留言互動。</Text>
     </Flex>
     <Flex direction='column' alignItems='center' gap={{ base: 1, lg: 2 }}>
       {nodes.map(node => {

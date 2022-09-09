@@ -125,7 +125,7 @@ const PostCreate: NextPage = () => {
           />
         </FormControl>
         <Button mt={4} isLoading={isSubmitting} type='submit'>
-          Submit
+          送出
         </Button>
       </form>
     </Box>

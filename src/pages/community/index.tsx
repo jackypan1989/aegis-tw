@@ -70,7 +70,7 @@ const ProfileFilterModal = (props: ProfileFilterModalProps) => {
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent maxW={{ base: '90vw', lg: '50vw' }} ml='4' mr='4'>
-            <ModalHeader>Profle Filter</ModalHeader>
+            <ModalHeader>人脈搜尋</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl>
@@ -112,7 +112,7 @@ const ProfileFilterModal = (props: ProfileFilterModalProps) => {
             </ModalBody>
             <ModalFooter>
               <Button colorScheme='blue' type='submit'>
-                Search
+                搜尋
               </Button>
             </ModalFooter>
           </ModalContent>
@@ -153,11 +153,11 @@ const Community = () => {
     </Head>
     <Flex p={{ base: 4, lg: 8 }} direction='column'>
       <Flex>
-        <Heading size='lg'>尋找新創人脈 👋</Heading>
+        <Heading size='lg'>尋找你的新創人脈 👋</Heading>
         <Spacer />
         <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
       </Flex>
-      <Text mt='3'>根據功能角色(如創辦人、天使、工程師等)及感興趣的垂直市場進行探索，也請登入並更新你個人資料讓別人好找到你。</Text>
+      <Text color='gray.500' mt='3'>根據創辦人、投資人、工程師等不同身份別及特定領域市場進行搜索。</Text>
     </Flex>
     {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
     <Flex direction='column' gap={{ base: 1, lg: 2 }}>

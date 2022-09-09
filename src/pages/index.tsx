@@ -13,7 +13,7 @@ const Hero = () =>
       </Text>
     </Heading>
     <Text color='gray.500'>
-      Aegis Venture 是一家專注於軟體新創的投資與孵化機構，我們可以帶來，你想要的資源跟作戰方式，從商業模式、產品運營、定價、客戶溝通、募資策略、投資人人脈、技術與市場行銷、再到法務與團隊招募，我們幫助所有的創辦人去完成他們的夢想。
+      Aegis Venture 是一家專注於軟體新創的投資與孵化機構，我們可以帶來，跟別人不一樣的資源跟作戰方式，從點子發想、募資策略、商業模式、產品運營、客戶溝通、投資人人脈、技術與市場行銷、再到法務與團隊招募等，我們幫助創辦人們去完成他們的夢想。
     </Text>
     <HStack
       spacing='6'
@@ -54,7 +54,7 @@ const Feature = () =>
       <br />
       調整商業模式，建立出海產品
       <br />
-      一共募得 USD 1.2 M 國內外種子輪資金
+      取得國內外種子輪資金
     </Heading>
   </Stack>
 
@@ -171,7 +171,7 @@ const CTA = () =>
 const Home = () => {
   return <Container maxW='3xl' textAlign='center'>
     <Hero />
-    {/* <Feature /> */}
+    <Feature />
     <Testimonials />
     <CTA />
   </Container>

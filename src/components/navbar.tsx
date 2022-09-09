@@ -11,13 +11,13 @@ const Navbar = () => {
     {
       href: '/community',
       icon: '👋',
-      title: '人脈'
+      title: '社群'
 
     },
     {
       href: '/post',
       icon: '🗞️',
-      title: '動態'
+      title: '貼文'
     },
     {
       href: '/startup',

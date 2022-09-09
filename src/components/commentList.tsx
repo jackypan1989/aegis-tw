@@ -168,7 +168,7 @@ const CommentList = ({ postId }: { postId: string}) => {
             />
             <InputRightElement width='4.5rem'>
               <Button h='1.75rem' size='xs' type='submit'>
-                Submit
+                送出
               </Button>
             </InputRightElement>
           </InputGroup>
