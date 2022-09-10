@@ -50,8 +50,8 @@ const PostCreate: NextPage = () => {
   const [getUrlMetadata] = useGetUrlMetadataMutation()
 
   if (!user) return <Center p={{ base: 4, lg: 10 }}><SignInPanel /></Center>
-  if (loading) return <Center p={{ base: 4, lg: 10 }}>Submitting...</Center>
-  if (error) return <Center p={{ base: 4, lg: 10 }}>Submission error! ${error.message}</Center>
+  if (loading) return <Center p={{ base: 4, lg: 10 }}>送出中 ...</Center>
+  if (error) return <Center p={{ base: 4, lg: 10 }}>送出失敗 ${error.message}</Center>
 
   const onSubmit = async (value: FormValues) => {
     await createPost({
@@ -86,10 +86,10 @@ const PostCreate: NextPage = () => {
   return (
     <Box p={{ base: 4, lg: 8 }}>
       <Heading size='lg'>發表文章</Heading>
-      <Text mt='4'>你可以純粹發表文章(以網址留白方式)，或貼上外部網站超連結(自動抓取標題)，標題含有求職關鍵字會同步加入到求職區塊</Text>
+      <Text mt='4'>你可以張貼網站超連結，或張貼你自己的貼文。</Text>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4' isInvalid={!!errors.url}>
-          <FormLabel htmlFor='url'>Url</FormLabel>
+          <FormLabel htmlFor='url'>網址</FormLabel>
           <Input
             id='url'
             placeholder='url'
@@ -104,7 +104,7 @@ const PostCreate: NextPage = () => {
           </FormErrorMessage>
         </FormControl>
         <FormControl mt='4' isInvalid={!!errors.title}>
-          <FormLabel htmlFor='title'>Title</FormLabel>
+          <FormLabel htmlFor='title'>標題</FormLabel>
           <Input
             id='title'
             placeholder='title'
@@ -117,7 +117,7 @@ const PostCreate: NextPage = () => {
           </FormErrorMessage>
         </FormControl>
         <FormControl mt='4' isInvalid={!!errors.content}>
-          <FormLabel htmlFor='content'>Content</FormLabel>
+          <FormLabel htmlFor='content'>內文</FormLabel>
           <AutoResizeTextarea
             id='content'            
             placeholder='content'

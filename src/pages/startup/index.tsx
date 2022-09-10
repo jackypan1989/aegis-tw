@@ -134,23 +134,23 @@ const Startup = () => {
     </Head>
     <Flex p={{ base: 4, lg: 8 }} direction='column'>
       <Flex>
-        <Heading size='lg'>新創資料庫 🦄</Heading>
+        <Heading size='lg'>軟體新創資料庫 🦄</Heading>
         <Spacer />
         <StartupFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
         <NextLink href='/startup/create' passHref>
           <IconButton ml='3' size='sm' icon={<Icon as={AddIcon} />} aria-label="Add"></IconButton>
         </NextLink>
       </Flex>
-      <Text mt='3'>根據你感興趣的垂直市場進行探索，點擊新創標題可以查看新創更多資料，也可點擊新增按鈕共同編輯，共同幫助社群。</Text>
+      <Text mt='3'>這裡是軟體新創共編資料庫，可以根據你感興趣的軟體領域進行搜尋，點擊新創標題可以查看新創更多詳情(如募資與估值等等)，一起共同編輯，幫助社群。</Text>
     </Flex>
-    {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
+    {nodes.length === 0 && <Center>無結果，請更新搜尋條件</Center>}
     <Flex direction='column' gap={{ base: 1, lg: 2 }}>
       {nodes.map(node => {
         return node && <StartupCard key={node?.id} startup={node} />
       })}
     </Flex>
     {hasNextPage && <Center p={{ base: 4, lg: 8 }}>
-      <Button onClick={onLoadMore}>Load More</Button>
+      <Button onClick={onLoadMore}>查看更多</Button>
     </Center>}
   </Box>
 }

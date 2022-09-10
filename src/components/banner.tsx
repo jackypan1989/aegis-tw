@@ -15,7 +15,7 @@ const Banner = () => {
   // const profileCount = data?.stats?.profileCount
 
   return <Flex px='3' py='2' gap='2' bg='purple.400' color='white' justifyContent='center' alignItems='center'>
-    <Text as='span'>你正在尋找創業夥伴？天使投資人？還是想在新創工作？</Text>
+    <Text as='span'>你正在尋找創業夥伴？天使投資人？新創公司職缺？</Text>
     <NextLink href="/auth/signIn">
       <Button colorScheme='blackAlpha'>加入社群</Button>
     </NextLink>

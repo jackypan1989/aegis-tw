@@ -29,7 +29,7 @@ const PostDetail = () => {
   const post = data?.post
 
   if (loading) return <Center h='80vh'><Spinner size='lg'/></Center>
-  if (!post) return <Center h='80vh'>Can not find any post.</Center>
+  if (!post) return <Center h='80vh'>找不到任何貼文</Center>
 
   return <>
     <Head>

@@ -153,20 +153,20 @@ const Community = () => {
     </Head>
     <Flex p={{ base: 4, lg: 8 }} direction='column'>
       <Flex>
-        <Heading size='lg'>尋找你的新創人脈 👋</Heading>
+        <Heading size='lg'>尋找軟體業人脈 👋</Heading>
         <Spacer />
         <ProfileFilterModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} refetch={refetch} />
       </Flex>
-      <Text color='gray.500' mt='3'>根據創辦人、投資人、工程師等不同身份別及特定領域市場進行搜索。</Text>
+      <Text color='gray.500' mt='3'>根據創辦人、投資人、工程師等不同身份別及特定領域市場進行人脈搜尋。</Text>
     </Flex>
-    {nodes.length === 0 && <Center>No matched result, please update filter.</Center>}
+    {nodes.length === 0 && <Center>無結果，請更新搜尋條件</Center>}
     <Flex direction='column' gap={{ base: 1, lg: 2 }}>
       {nodes.map(node => {
         return node && <ProfileCard key={node?.id} profile={node} />
       })}
     </Flex>
     {hasNextPage && <Center p={{ base: 4, lg: 8 }}>
-      <Button onClick={onLoadMore}>Load More</Button>
+      <Button onClick={onLoadMore}>查看更多</Button>
     </Center>}
   </Box>
 }

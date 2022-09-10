@@ -65,20 +65,20 @@ const PostIndex = () => {
     </Head>
     <Flex p={{ base: 4, lg: 8 }} direction='column'>
       <Flex>
-        <Heading size='lg'>動態消息 🗞️</Heading>
+        <Heading size='lg'>社群貼文 🗞️</Heading>
         <Spacer />
         <NextLink href='/post/create' passHref>
           <IconButton ml='3' size='sm' icon={<Icon as={AddIcon} />} aria-label="Add"></IconButton>
         </NextLink>
       </Flex>
-      <Text color='gray.500' mt='3'>你可以張貼新聞連結、發問問題，點擊標題可以查看詳情，也可以留言互動。</Text>
+      <Text color='gray.500' mt='3'>你可以張貼新聞連結、提交問題、投票及留言互動，點擊標題可以查看詳情。</Text>
     </Flex>
     <Flex direction='column' alignItems='center' gap={{ base: 1, lg: 2 }}>
       {nodes.map(node => {
         return node && <PostCard key={node?.id} post={node} refetchQuery={LIST_POST}/>
       })}
       {hasNextPage && <Box p={{ base: 4, lg: 8 }}>
-        <Button onClick={onLoadMore}>Load More</Button>
+        <Button onClick={onLoadMore}>查看更多</Button>
       </Box>}
     </Flex>
   </Box>

@@ -109,7 +109,7 @@ const ProfileDetail = () => {
       <Flex>
         <Heading size='lg'>{profile?.fullname || profile?.username || profile?.email}</Heading>
         <Spacer />
-        <Button size='sm' onClick={() => supabaseClient.auth.signOut()}>Sign Out</Button>
+        <Button size='sm' onClick={() => supabaseClient.auth.signOut()}>登出</Button>
       </Flex>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt='4'>
@@ -120,7 +120,7 @@ const ProfileDetail = () => {
           <FormLabel htmlFor='username'>Username</FormLabel>
           <Input
             id='username'
-            placeholder='username'
+            placeholder='輸入你的帳號'
             {...register('username', {
               required: 'This is required',
               minLength: { value: 4, message: 'Minimum length should be 4' },
@@ -134,15 +134,26 @@ const ProfileDetail = () => {
           <FormLabel htmlFor='fullname'>Fullname</FormLabel>
           <Input
             id='fullname'
-            placeholder='fullname'
+            placeholder='輸入你的本名'
             {...register('fullname')}
           />
           <FormErrorMessage>
             {errors.fullname && errors.fullname.message}
           </FormErrorMessage>
         </FormControl>
+        <FormControl mt='4' isInvalid={!!errors.avatarUrl}>
+          <FormLabel htmlFor='avatarUrl'>Avatar Url</FormLabel>
+          <Input
+            id='avatarUrl'
+            placeholder='輸入你的頭像網址'
+            {...register('avatarUrl')}
+          />
+          <FormErrorMessage>
+            {errors.avatarUrl && errors.avatarUrl.message}
+          </FormErrorMessage>
+        </FormControl>
         <FormControl mt='4'>
-          <FormLabel htmlFor='roles'>Roles</FormLabel>
+          <FormLabel htmlFor='roles'>角色身份</FormLabel>
           <Controller
             name='roles'
             control={control}
@@ -160,7 +171,7 @@ const ProfileDetail = () => {
           />
         </FormControl>
         <FormControl mt='4'>
-          <FormLabel htmlFor='markets'>Markets</FormLabel>
+          <FormLabel htmlFor='markets'></FormLabel>
           <Controller
             name='markets'
             control={control}
@@ -226,7 +237,7 @@ const ProfileDetail = () => {
           />
         </FormControl>
         <Button mt={4} isLoading={isSubmitting} type='submit'>
-          Update
+          更新
         </Button>
       </form>
     </Box>
