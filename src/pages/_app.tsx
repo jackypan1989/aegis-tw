@@ -33,11 +33,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Aegis | 台灣人軟體新創社群</title>
-        <meta name="description"  content="Aegis 是以軟體業為出發，擁有台灣人認同，串連海內外台灣人的跨境新創社群。" />
+        <title>Aegis Taiwan | 台灣人軟體新創社群</title>
+        <meta name="description"  content="Aegis Taiwan 是以軟體業為出發，擁有台灣人認同，串連海內外台灣人的跨境新創社群。" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="Aegis | 台灣人軟體新創社群" />
-        <meta property="og:description" content="Aegis 是以軟體業為出發，擁有台灣人認同，串連海內外台灣人的跨境新創社群。" />
+        <meta property="og:title" content="Aegis Taiwan | 台灣人軟體新創社群" />
+        <meta property="og:description" content="Aegis Taiwan 是以軟體業為出發，擁有台灣人認同，串連海內外台灣人的跨境新創社群。" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>

@@ -45,7 +45,7 @@ const Navbar = () => {
       <Link>
         <Stack>
           <Hide above='md'><Icon as={AiFillHome}></Icon></Hide>
-          <Show above='md'>Aegis 首頁</Show>
+          <Show above='md'>Aegis Taiwan</Show>
         </Stack>
       </Link>
     </NextLink>

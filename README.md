@@ -1,7 +1,7 @@
-# Aegis TW
+# Aegis Taiwan
 
-A community site for Taiwanese startups and ecosystem.
-Why [Aegis](https://aegis.tw/about)?
+A community site for Taiwanese software startups and ecosystem.
+Why [Aegis Taiwan](https://aegis.tw/about)?
 
 ## Tech Stack
 

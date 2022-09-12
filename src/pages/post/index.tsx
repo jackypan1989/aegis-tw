@@ -61,7 +61,7 @@ const PostIndex = () => {
 
   return <Box>
     <Head>
-      <title>動態 | Aegis | 台灣人軟體新創社群</title>
+      <title>動態 | Aegis Taiwan | 台灣人軟體新創社群</title>
     </Head>
     <Flex p={{ base: 4, lg: 8 }} direction='column'>
       <Flex>
