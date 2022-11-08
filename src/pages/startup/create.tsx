@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import {
-  Box, Button, Center, Checkbox, CheckboxGroup, FormControl, FormErrorMessage,
-  FormLabel, Heading, Input, Textarea, useToast, Wrap, WrapItem
+    Box, Button, Center, Checkbox, CheckboxGroup, FormControl, FormErrorMessage,
+    FormLabel, Heading, Input, Textarea, useToast, Wrap, WrapItem
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
@@ -37,7 +37,7 @@ export const ADD_STARTUP = gql`
 const StartupCreate: NextPage = () => {
   const toast = useToast()
   const router = useRouter()
-  const { user } = useUser()
+  const user = useUser()
   const {
     handleSubmit,
     register,

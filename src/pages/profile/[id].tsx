@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client"
 import { Box, Button, Center, Checkbox, CheckboxGroup, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Spinner, Text, useToast, Wrap, WrapItem } from "@chakra-ui/react"
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useGetProfileQuery, useUpdateProfileMutation } from "../../../codegen/graphql"
 import { Market, Role } from "../../../codegen/prisma/client"
@@ -45,8 +45,11 @@ type FormValues = {
 }
 
 const ProfileDetail = () => {
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient<any>()
+  )
   const toast = useToast()
-  const { user } = useUser()
+  const user = useUser()
   const router = useRouter()
   const id = router.query.id as string
   const {

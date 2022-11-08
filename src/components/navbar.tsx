@@ -5,7 +5,7 @@ import { NextLink } from "./exportUtils"
 import { Tab, TabItem } from "./tab"
 
 const Navbar = () => {
-  const { user } = useUser() 
+  const user = useUser() 
 
   const mainTabItems: TabItem[] = [
     {

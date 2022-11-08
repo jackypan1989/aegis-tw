@@ -75,7 +75,7 @@ const PostCard = (props: { post: PostCardFragment, showContent?: boolean, refetc
   const { post, showContent, refetchQuery } = props
   const toast = useToast()
   const router = useRouter()
-  const { user } = useUser()
+  const user = useUser()
 
   const [createVote] = useCreateVoteMutation({
     refetchQueries: [

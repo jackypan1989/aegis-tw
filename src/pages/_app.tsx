@@ -1,12 +1,13 @@
 import { Box, ChakraProvider, Heading, Link, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react"
 import { MDXProvider } from "@mdx-js/react"
-import { supabaseClient } from '@supabase/auth-helpers-nextjs'
-import { UserProvider } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient, Session } from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { MDXComponents } from 'mdx/types'
 import { AppProps } from 'next/app'
 import Head from "next/head"
 import { useRouter } from "next/router"
 import Script from "next/script"
+import { useState } from "react"
 import Banner from "../components/banner"
 import Footer from '../components/footer'
 import Navbar from '../components/navbar'
@@ -27,8 +28,11 @@ const component: MDXComponents = {
   li: (props) => <ListItem mb='1' {...props} />,
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps<{ initialSession: Session }>) {
   const router = useRouter()
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient<any>()
+  )
 
   return (
     <>
@@ -54,7 +58,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           gtag('config', 'G-REPJEXSGK2');
         `}
       </Script>
-      <UserProvider supabaseClient={supabaseClient}>
+      <SessionContextProvider 
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
         <CustomApolloProvider>
           <MDXProvider components={component}>
             <ChakraProvider>
@@ -67,7 +74,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </ChakraProvider>
           </MDXProvider>
         </CustomApolloProvider>
-      </UserProvider>
+      </SessionContextProvider>
     </>
   )
 }

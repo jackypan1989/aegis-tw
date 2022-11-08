@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import {
-  Box, Button, Center, FormControl, FormErrorMessage,
-  FormLabel, Heading, Input, Text, useToast
+    Box, Button, Center, FormControl, FormErrorMessage,
+    FormLabel, Heading, Input, Text, useToast
 } from '@chakra-ui/react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
@@ -37,7 +37,7 @@ export const GET_URL_METADATA = gql`
 const PostCreate: NextPage = () => {
   const toast = useToast()
   const router = useRouter()
-  const { user } = useUser()
+  const user = useUser()
   const {
     handleSubmit,
     register,

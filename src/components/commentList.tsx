@@ -79,7 +79,7 @@ type FormValues = {
 }
 
 const CommentList = ({ postId }: { postId: string}) => {
-  const { user } = useUser()
+  const user = useUser()
 
   const {
     handleSubmit,

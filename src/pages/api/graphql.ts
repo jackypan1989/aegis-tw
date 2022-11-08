@@ -1,7 +1,7 @@
 import { createServer } from '@graphql-yoga/node';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getUser, User } from '@supabase/auth-helpers-nextjs';
+import { createServerSupabaseClient, User } from '@supabase/auth-helpers-nextjs';
 import { PrismaClient } from '../../../codegen/prisma/client';
 import resolvers from '../../../graphql/resolvers/root';
 import { prisma } from '../../utils/prismaClient';
@@ -24,10 +24,11 @@ export default createServer<ServerContext, UserContext>({
     resolvers: resolvers,
   },
   context: async (ctx) => {
-    const { user } = await getUser(ctx)
+    const superbaseClient = createServerSupabaseClient(ctx)
+    const userResponse = await superbaseClient.auth.getUser()
 
     return {
-      user: user,
+      user: userResponse.data.user,
       prisma: prisma
     }
   }
