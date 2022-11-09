@@ -1,27 +1,42 @@
-import { PrismaClient } from '../../codegen/prisma/client'
+import { PrismaClient } from '../../codegen/prisma/client';
 
 declare global {
   // allow global `var` declarations
   // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined
+  var prisma: PrismaClient<{
+    // log: {
+    //     emit: "event";
+    //     level: "query";
+    // }[];
+  }> | undefined
 }
 
 const prisma =
   global.prisma ||
   new PrismaClient({
-    // log: ['query']
+    // log: [{
+    //   emit: 'event',
+    //   level: 'query',
+    // }]
   })
-
-// prisma.$use(async (params, next) => {
-//   const before = Date.now()
-//   const result = await next(params)
-//   const after = Date.now()
-//   console.log(`Query ${params.model}.${params.action} took ${after - before}ms`)
-//   return result
+  
+// prisma.$on('query', (e) => {
+//   console.log('Query: ' + e.query)
+//   console.log('Params: ' + e.params)
+//   console.log('Duration: ' + e.duration + 'ms')
 // })
+
+prisma.$use(async (params, next) => {
+  const before = Date.now()
+  const result = await next(params)
+  const after = Date.now()
+  console.log(`Query ${params.model}.${params.action} took ${after - before}ms`)
+  return result
+})
 
 if (process.env.NODE_ENV !== 'production') global.prisma = prisma
 
 export {
   prisma
-}
+};
+

@@ -6,6 +6,8 @@ import { PrismaClient } from '../../../codegen/prisma/client';
 import resolvers from '../../../graphql/resolvers/root';
 import { prisma } from '../../utils/prismaClient';
 
+import DataLoader from 'dataloader';
+import createLoaders from '../../../graphql/dataLoader';
 import typeDefs from '../../../graphql/typeDefs';
 
 type ServerContext = {
@@ -15,7 +17,8 @@ type ServerContext = {
 
 export type UserContext = {
   user: User | null,
-  prisma: PrismaClient
+  prisma: PrismaClient,
+  loaders?: { [key: string]: DataLoader<string, any, string> }
 }
 
 export default createServer<ServerContext, UserContext>({ 
@@ -26,10 +29,13 @@ export default createServer<ServerContext, UserContext>({
   context: async (ctx) => {
     const superbaseClient = createServerSupabaseClient(ctx)
     const userResponse = await superbaseClient.auth.getUser()
+    const user = userResponse.data.user
+    const loaders = createLoaders({ user, prisma })
 
     return {
-      user: userResponse.data.user,
-      prisma: prisma
+      user: user,
+      prisma: prisma,
+      loaders: loaders
     }
   }
 })

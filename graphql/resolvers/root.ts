@@ -5,7 +5,6 @@ import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
 import { Prisma } from '../../codegen/prisma/client'
 import { UserContext } from '../../src/pages/api/graphql'
-import dataloaders from '../dataLoader'
 
 import Metascraper from 'metascraper'
 import MetascraperTitle from 'metascraper-title'
@@ -29,21 +28,21 @@ const metascraper = Metascraper([
 const resolvers: Resolvers<UserContext> = {  
   Post: {
     poster: (post, _args, context) => {
-      return dataloaders.profileById(context).load(post.posterId)
+      return context.loaders.profileById.load(post.posterId)
     },
     isVoted: (post, _args, context) => {
       if (!context.user) return false
-      return dataloaders.isVoted(context).load(post.id)
+      return context.loaders.isVoted.load(post.id)
     }
   },
   Vote: {
     post: (vote, _args, context) => {
-      return dataloaders.postById(context).load(vote.postId)
+      return context.loaders.postById.load(vote.postId)
     },
   },
   Comment: {
     commenter: (comment, _args, context) => {
-      return dataloaders.profileById(context).load(comment.commenterId)
+      return context.loaders.profileById.load(comment.commenterId)
     },
   },
   Query: {
