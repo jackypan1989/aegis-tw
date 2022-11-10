@@ -1,13 +1,13 @@
 import DataLoader from "dataloader";
-import { Comment, Post, Profile, Vote } from "../codegen/prisma/client";
+import { Comment, Post, Profile, Startup, Vote } from "../codegen/prisma/client";
 import { UserContext } from "../src/pages/api/graphql";
 
-type Model = {
-  id: string
-}
+export type PrismaModel = Profile | Post | Vote | Comment | Startup
+
+export type DataLoaderValue = PrismaModel | boolean
 
 // dataloader has its ids order, but prisma's findMany won't keep order
-function keepOrder<T extends Model>(ids: readonly string[], items: T[]): T[] {
+function keepOrder<T extends PrismaModel>(ids: readonly string[], items: T[]): T[] {
   return ids.map((id) => items.find(item => item.id === id)) as T[]
 }
 
