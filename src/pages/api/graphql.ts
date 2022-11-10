@@ -18,7 +18,7 @@ type ServerContext = {
 export type UserContext = {
   user: User | null,
   prisma: PrismaClient,
-  loaders?: { [key: string]: DataLoader<string, any, string> }
+  loaders: { [key: string]: DataLoader<string, unknown, string> }
 }
 
 export default createServer<ServerContext, UserContext>({ 

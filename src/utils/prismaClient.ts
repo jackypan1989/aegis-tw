@@ -26,15 +26,17 @@ const prisma =
 //   console.log('Duration: ' + e.duration + 'ms')
 // })
 
-prisma.$use(async (params, next) => {
-  const before = Date.now()
-  const result = await next(params)
-  const after = Date.now()
-  console.log(`Query ${params.model}.${params.action} took ${after - before}ms`)
-  return result
-})
-
-if (process.env.NODE_ENV !== 'production') global.prisma = prisma
+if (process.env.NODE_ENV !== 'production') {
+  prisma.$use(async (params, next) => {
+    const before = Date.now()
+    const result = await next(params)
+    const after = Date.now()
+    console.log(`Query ${params.model}.${params.action} took ${after - before}ms`)
+    return result
+  })
+  
+  global.prisma = prisma
+}
 
 export {
   prisma
