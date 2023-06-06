@@ -66,7 +66,7 @@ function MyApp({ Component, pageProps }: AppProps<{ initialSession: Session }>) 
           <MDXProvider components={component}>
             <ChakraProvider>
               <Navbar />
-              {router.pathname === '/' && <Banner />}
+              {/* {router.pathname === '/' && <Banner />} */}
               <Box m={{ lg: '0 auto'}} width={{ lg: '800px' }} minH={{ base: 'calc(100vh - 96px)', lg: 'calc(100vh - 128px)' }}>
                 <Component {...pageProps} />
               </Box>

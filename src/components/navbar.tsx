@@ -49,9 +49,9 @@ const Navbar = () => {
         </Stack>
       </Link>
     </NextLink>
-    {mainTabItems.map((tabItem, index) => <Tab key={index} tabItem={tabItem} />)}
+    {/* {mainTabItems.map((tabItem, index) => <Tab key={index} tabItem={tabItem} />)} */}
     <Spacer />
-    {user
+    {/* {user
       ?<NextLink href={`/profile/${user.id}`} passHref>
         <Link>
           <Avatar size='sm' name={user.email?.[0]}/>
@@ -64,7 +64,7 @@ const Navbar = () => {
           </Stack>  
         </Link>
       </NextLink>
-    }
+    } */}
   </Flex>
 }
 

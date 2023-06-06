@@ -32,14 +32,14 @@ const Hero = () =>
           與我們聯繫
         </Button>
       </NextLink>
-      <NextLink href='/venture'>
+      {/* <NextLink href='/venture'>
         <Button
           rounded='full'
           px='6'
           >
           了解更多
         </Button>
-      </NextLink>
+      </NextLink> */}
     </HStack>
   </Stack>
 
