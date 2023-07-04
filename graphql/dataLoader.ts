@@ -1,6 +1,6 @@
 import DataLoader from "dataloader";
 import { Comment, Post, Profile, Startup, Vote } from "../codegen/prisma/client";
-import { UserContext } from "../src/pages/api/graphql";
+import { UserContext } from "../src/archived/api/graphql";
 
 export type PrismaModel = Profile | Post | Vote | Comment | Startup
 

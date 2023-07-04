@@ -4,7 +4,7 @@ import {
 import { differenceInHours } from 'date-fns'
 import { Resolvers } from "../../codegen/graphql"
 import { Prisma } from '../../codegen/prisma/client'
-import { UserContext } from '../../src/pages/api/graphql'
+import { UserContext } from '../../src/archived/api/graphql'
 
 import Metascraper from 'metascraper'
 import MetascraperTitle from 'metascraper-title'

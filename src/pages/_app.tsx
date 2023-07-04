@@ -1,14 +1,11 @@
-import { Box, ChakraProvider, Heading, Link, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react"
+import { Box, ChakraProvider, Heading, ListItem, OrderedList, Text, UnorderedList } from "@chakra-ui/react"
 import { MDXProvider } from "@mdx-js/react"
-import { Session } from '@supabase/auth-helpers-nextjs'
 import { MDXComponents } from 'mdx/types'
 import { AppProps } from 'next/app'
 import Head from "next/head"
 import Script from "next/script"
-import Footer from '../components/footer'
-import Navbar from '../components/navbar'
 import '../styles/globals.css'
-import { Image } from "@chakra-ui/react"
+import { Session } from "@supabase/supabase-js"
 
 const component: MDXComponents = {
   h1: (props) => <Heading as='h1' size='xl' mb='4' {...props} />,
