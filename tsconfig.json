@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx" ,
     "src/@types/graphql.d.ts"
-  ],
+, "src/pages/index.mdx"  ],
   "exclude": [
     "node_modules",
     "codegen"
